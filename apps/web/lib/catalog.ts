@@ -32,6 +32,11 @@ export type ComponentDoc = {
   files: string[]
   /** Other Bevel components this one is built from, by slug. */
   registryDependencies?: string[]
+  /**
+   * The component this one is a part of, by slug. It gets its own page,
+   * nested under the parent's, and must still work on its own.
+   */
+  parent?: string
   dependencies: string[]
   anatomy: string
   parts: Part[]
@@ -58,6 +63,7 @@ export const components: ComponentDoc[] = [
     slug: "payment-card",
     name: "Payment card",
     category: "money",
+    parent: "wallet",
     description:
       "A plastic payment card at real proportions. Use it on its own, as a radio in a picker, or inside a Wallet.",
     files: ["components/payment-card.tsx", "styles/payment-card.css"],
@@ -226,4 +232,19 @@ export function getComponent(slug: string) {
 
 export function componentsIn(category: Category["slug"]) {
   return components.filter((c) => c.category === category)
+}
+
+/** Top-level components in a category, for navigation. */
+export function rootComponentsIn(category: Category["slug"]) {
+  return componentsIn(category).filter((c) => !c.parent)
+}
+
+export function subcomponentsOf(slug: string) {
+  return components.filter((c) => c.parent === slug)
+}
+
+export function componentHref(component: ComponentDoc) {
+  return component.parent
+    ? `/components/${component.parent}/${component.slug}`
+    : `/components/${component.slug}`
 }

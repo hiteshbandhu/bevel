@@ -87,5 +87,5 @@
     inset 0 1px 0 var(--bevel-highlight),
     inset 0 2px 0 var(--bevel-shade),
     inset 0 -2px 3px var(--bevel-shade);
-  mask-image: radial-gradient(circle at 50% 0, transparent var(--wallet-notch), #000 calc(var(--wallet-notch) + 0.5px));
+  mask-image: radial-gradient(circle at 50% 0, transparent var(--wallet-notch), black calc(var(--wallet-notch) + 0.5px));
 }

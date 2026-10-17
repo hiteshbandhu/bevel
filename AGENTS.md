@@ -35,6 +35,8 @@ Three layers; each only reads from the one below it:
 2. **Component stylesheet** (`wallet.css`, `payment-card.css`): the component's palette and geometry only, mapped onto foundation variables (`--bevel-material`, `--bevel-fill`, `--bevel-led`…) by `data-slot`, `data-variant`, `data-status`.
 3. **Component** (`.tsx`): Tailwind classes that read tokens, e.g. `rounded-(--bevel-radius-md)`, `duration-(--bevel-duration-move) ease-(--bevel-ease-out)`, `text-(length:--bevel-amount)`.
 
+Enforced by `pnpm check:tokens` (scripts/check-tokens.mjs): fails on raw colours, durations, easings or arbitrary lengths in Bevel components and component stylesheets.
+
 Rules: one light source, from the top. Nested radii are concentric (`inner = outer - inset`). Don't add `--text-*` theme keys (`cn` treats unknown `text-*` as colours). Motion is CSS transitions on `transform`/`translate`/`opacity`/`filter` first; reach for JS only for gestures with velocity. Build on existing components (`WalletCard` is a `PaymentCard`) instead of re-styling.
 - Every component needs stories covering: default, every variant, disabled, keyboard interaction (play function), dark mode, and reduced motion.
 
@@ -44,10 +46,12 @@ Rules: one light source, from the top. Nested radii are concentric (`inner = out
 - `apps/web/lib/catalog.ts` is the source of truth: categories, each component's description, files, dependencies, anatomy, parts and examples. Adding a component means adding it there.
 - Examples are self-contained files in `apps/web/components/demos/`, registered in `demos/index.ts`; the site shows each file's source as the example's code. Tile previews live in `apps/web/components/previews.tsx`.
 - Storybook titles follow the category: `"Money/Wallet"`.
+- Sub-components: a part that's useful on its own (e.g. `PaymentCard` in `Wallet`) is its own component with `parent: "<slug>"` in the catalog. Its page lives at `/components/<parent>/<slug>`, nests in the sidebar, and appears in the parent's "Built from" section. It must work with no parent context.
+- To add a component, use the `/new-component` skill (`.claude/skills/new-component`).
 
 ## Skills in `.claude/skills`
 
-`shadcn` (CLI/registry), `migrate-radix-to-base`, Emil Kowalski's `emil-design-eng`, `animate`, `review-animations`, `animation-performance`, `break-ui`, `prototype`, `pick-ui-library`, and Vercel's `web-design-guidelines`. Restore with `pnpm dlx skills experimental_install` (reads `skills-lock.json`).
+`new-component` (this repo's build checklist — use it for every new component), `shadcn` (CLI/registry), `migrate-radix-to-base`, Emil Kowalski's `emil-design-eng`, `animate`, `review-animations`, `animation-performance`, `break-ui`, `prototype`, `pick-ui-library`, and Vercel's `web-design-guidelines`. Restore with `pnpm dlx skills experimental_install` (reads `skills-lock.json`).
 
 <!-- BEGIN:turborepo-agent-rules -->
 

@@ -9,7 +9,8 @@
     "format": "turbo format",
     "typecheck": "turbo typecheck",
     "test": "turbo test",
-    "storybook": "pnpm --filter storybook dev"
+    "storybook": "pnpm --filter storybook dev",
+    "check:tokens": "node scripts/check-tokens.mjs"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",
