@@ -40,6 +40,7 @@
 @import "./visible-file.css";
 @import "./contact-sheet.css";
 @import "./split-flap.css";
+@import "./due-date-slip.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));

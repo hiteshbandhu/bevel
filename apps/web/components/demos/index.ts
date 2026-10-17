@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { DueDateSlipKey } from "./due-date-slip-key"
 import { SplitFlapDeploys } from "./split-flap-deploys"
 import { ContactSheetVariants } from "./contact-sheet-variants"
 import { VisibleFileTasks } from "./visible-file-tasks"
@@ -46,6 +47,7 @@ import { WalletUsage } from "./wallet-usage"
 
 /** Demo components by file name, matching `Example.file` in the catalog. */
 export const demos: Record<string, React.ComponentType> = {
+  "due-date-slip-key.tsx": DueDateSlipKey,
   "split-flap-deploys.tsx": SplitFlapDeploys,
   "contact-sheet-variants.tsx": ContactSheetVariants,
   "visible-file-tasks.tsx": VisibleFileTasks,

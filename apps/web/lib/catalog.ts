@@ -1768,6 +1768,42 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "due-date-slip",
+    name: "Due-date slip",
+    category: "records",
+    description:
+      "The library card in the back of a book: each loan or renewal stamps the next ruled line, and the last date is when it's due. Overdue dates are stamped red. For expiring keys, trials, seats and access grants.",
+    files: ["components/due-date-slip.tsx", "styles/due-date-slip.css"],
+    registryDependencies: ["stamp"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<DueDateSlip title="Production API key" dates={dates} now={today}>
+  <DueDateSlipStatus />
+  <DueDateSlipRenew onClick={renew}>Renew 30 days</DueDateSlipRenew>
+</DueDateSlip>`,
+    parts: [
+      {
+        name: "DueDateSlip",
+        renders: "div (group) + ol",
+        description:
+          "title, dates (oldest first; the last counts), now. New dates land with a stamp; the history doesn't. Dates print in UTC so server and client agree.",
+      },
+      {
+        name: "DueDateSlipStatus",
+        renders: "p (status)",
+        description: "“Due 16 Nov 2026, in 30 days.” or “Overdue by 3 days.” Describes the renew button.",
+      },
+      { name: "DueDateSlipRenew", renders: "Button", description: "Your onClick adds the next date." },
+    ],
+    examples: [
+      {
+        slug: "key",
+        title: "An expiring API key",
+        description: "The key lapsed four days ago. Renew it, and again, until the renewals run out.",
+        file: "due-date-slip-key.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {
