@@ -1,6 +1,7 @@
 import type * as React from "react"
 import { ActivityLogAgent } from "./activity-log-agent"
 import { AmountFormats } from "./amount-formats"
+import { ApprovalSend } from "./approval-send"
 import { BreakerCaps } from "./breaker-caps"
 import { CitationAnswer } from "./citation-answer"
 import { CreditsCheckout } from "./credits-checkout"
@@ -25,6 +26,7 @@ import { WalletUsage } from "./wallet-usage"
 export const demos: Record<string, React.ComponentType> = {
   "activity-log-agent.tsx": ActivityLogAgent,
   "amount-formats.tsx": AmountFormats,
+  "approval-send.tsx": ApprovalSend,
   "breaker-caps.tsx": BreakerCaps,
   "citation-answer.tsx": CitationAnswer,
   "credits-checkout.tsx": CreditsCheckout,

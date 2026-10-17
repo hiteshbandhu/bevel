@@ -1,0 +1,17 @@
+/*
+ * Approval: an action an agent wants to take, waiting for a person. Press
+ * and hold the brass embosser to approve; an embossed seal stays on the
+ * card. Builds on bevel.css and stamp.css (Seal, Stamp).
+ */
+
+:root {
+  --approval-hold: 1200ms; /* how long to hold the embosser */
+  --approval-release: 200ms; /* letting go early: quick, not deliberate */
+  --approval-press-fill: oklch(0.42 0.08 70 / 0.55); /* the embosser darkening as it presses */
+  --approval-seal-size: 5rem;
+}
+
+[data-slot="approval-seal"] {
+  --bevel-material: var(--bevel-brass);
+  --bevel-material-edge: var(--bevel-brass-edge);
+}

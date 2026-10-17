@@ -821,6 +821,56 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "approval",
+    name: "Approval",
+    category: "agents",
+    description:
+      "An action an agent wants to take, waiting for a person. Say what it does and what can't be undone; press and hold the brass seal to approve.",
+    files: ["components/approval.tsx", "styles/approval.css"],
+    registryDependencies: ["stamp"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Approval onApprove={send} onReject={sendBack}>
+  <ApprovalTitle />
+  <ApprovalDescription />
+  <ApprovalSignatures>
+    <ApprovalSignature name="Priya Shah" signed />
+  </ApprovalSignatures>
+  <ApprovalActions>
+    <ApprovalReject />
+    <ApprovalSeal />
+  </ApprovalActions>
+</Approval>`,
+    parts: [
+      {
+        name: "Approval",
+        renders: "div (group)",
+        description:
+          "state (pending, approved, rejected), defaultState, onApprove, onReject. Labelled by its title; the outcome is pressed into the card and announced.",
+      },
+      { name: "ApprovalDescription", renders: "p", description: "What happens and what can't be undone." },
+      {
+        name: "ApprovalSignature",
+        renders: "li",
+        description: "A signature line; signed names are written over it. For dual approval.",
+      },
+      { name: "ApprovalReject", renders: "Button", description: "Send it back. A single press." },
+      {
+        name: "ApprovalSeal",
+        renders: "Button",
+        description:
+          "Press and hold (pointer, Enter or Space) for --approval-hold to approve; letting go early springs back. requireHold={false} for a single press.",
+      },
+    ],
+    examples: [
+      {
+        slug: "send",
+        title: "Before an agent sends email",
+        description: "Hold the seal until it presses. Let go early and nothing happens.",
+        file: "approval-send.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

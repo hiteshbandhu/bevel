@@ -5,6 +5,13 @@ import {
   ActivityLogEntry,
 } from "@workspace/ui/components/activity-log"
 import { Amount } from "@workspace/ui/components/amount"
+import {
+  Approval,
+  ApprovalActions,
+  ApprovalReject,
+  ApprovalSeal,
+  ApprovalTitle,
+} from "@workspace/ui/components/approval"
 import { Breaker, BreakerPanel, BreakerRow } from "@workspace/ui/components/breaker"
 import { Citation, CitationTrigger } from "@workspace/ui/components/citation"
 import { DialMark, Gauge } from "@workspace/ui/components/dial"
@@ -53,6 +60,15 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  approval: () => (
+    <Approval>
+      <ApprovalTitle>Send the redline</ApprovalTitle>
+      <ApprovalActions>
+        <ApprovalReject>Send back</ApprovalReject>
+        <ApprovalSeal />
+      </ApprovalActions>
+    </Approval>
+  ),
   "activity-log": () => (
     <ActivityLog aria-label="Activity">
       <ActivityLogEntries>
