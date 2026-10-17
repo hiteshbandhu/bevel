@@ -1,0 +1,20 @@
+/*
+ * Take-a-number: a ticket dispenser and a Now Serving sign. Your place in
+ * the queue is the number in your hand. Builds on bevel.css (plastic,
+ * paper, recessed) and number-wheel.css.
+ */
+
+:root {
+  --take-a-number-red: oklch(0.55 0.2 27); /* dispenser and sign housing */
+  --take-a-number-red-edge: oklch(0.38 0.15 27);
+  --take-a-number-foreground: oklch(0.97 0.01 90);
+  --take-a-number-turn: oklch(0.8 0.17 150);
+}
+
+[data-slot="take-a-number-sign"],
+[data-slot="take-a-number-dispenser"] {
+  --bevel-material: var(--take-a-number-red);
+  --bevel-material-edge: var(--take-a-number-red-edge);
+  --bevel-material-recess: oklch(0.16 0.01 260);
+  --bevel-led: var(--take-a-number-turn);
+}

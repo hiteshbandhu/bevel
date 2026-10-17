@@ -1,4 +1,19 @@
 import type * as React from "react"
+import { DueDateSlipKey } from "./due-date-slip-key"
+import { SplitFlapDeploys } from "./split-flap-deploys"
+import { ContactSheetVariants } from "./contact-sheet-variants"
+import { VisibleFileTasks } from "./visible-file-tasks"
+import { KeysortFilterContracts } from "./keysort-filter-contracts"
+import { MixerStripAgents } from "./mixer-strip-agents"
+import { MotorizedFaderTemperature } from "./motorized-fader-temperature"
+import { PushToTalkAgent } from "./push-to-talk-agent"
+import { DetentKnobEffort } from "./detent-knob-effort"
+import { AnnunciatorAgent } from "./annunciator-agent"
+import { EngineTelegraphAutonomy } from "./engine-telegraph-autonomy"
+import { TakeANumberSupport } from "./take-a-number-support"
+import { LockoutMigration } from "./lockout-migration"
+import { VigilanceAgent } from "./vigilance-agent"
+import { GuardedSwitchDeploy } from "./guarded-switch-deploy"
 import { ActivityLogAgent } from "./activity-log-agent"
 import { AmountFormats } from "./amount-formats"
 import { ApprovalSend } from "./approval-send"
@@ -27,6 +42,21 @@ import { WalletUsage } from "./wallet-usage"
 
 /** Demo components by file name, matching `Example.file` in the catalog. */
 export const demos: Record<string, React.ComponentType> = {
+  "due-date-slip-key.tsx": DueDateSlipKey,
+  "split-flap-deploys.tsx": SplitFlapDeploys,
+  "contact-sheet-variants.tsx": ContactSheetVariants,
+  "visible-file-tasks.tsx": VisibleFileTasks,
+  "keysort-filter-contracts.tsx": KeysortFilterContracts,
+  "mixer-strip-agents.tsx": MixerStripAgents,
+  "motorized-fader-temperature.tsx": MotorizedFaderTemperature,
+  "push-to-talk-agent.tsx": PushToTalkAgent,
+  "detent-knob-effort.tsx": DetentKnobEffort,
+  "annunciator-agent.tsx": AnnunciatorAgent,
+  "engine-telegraph-autonomy.tsx": EngineTelegraphAutonomy,
+  "take-a-number-support.tsx": TakeANumberSupport,
+  "lockout-migration.tsx": LockoutMigration,
+  "vigilance-agent.tsx": VigilanceAgent,
+  "guarded-switch-deploy.tsx": GuardedSwitchDeploy,
   "activity-log-agent.tsx": ActivityLogAgent,
   "amount-formats.tsx": AmountFormats,
   "approval-send.tsx": ApprovalSend,

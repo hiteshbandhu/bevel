@@ -1,0 +1,16 @@
+/*
+ * Due-date slip: the library card in the back of a book. Each loan or
+ * renewal is stamped on the next ruled line; the last stamp is the one
+ * that counts. Builds on bevel.css (paper, ruled, ink) and stamp.css.
+ */
+
+:root {
+  --due-date-slip-paper: oklch(0.93 0.05 95); /* buff card */
+  --due-date-slip-rule: oklch(0.7 0.08 240 / 0.45);
+  --due-date-slip-header: oklch(0.45 0.12 27);
+  --due-date-slip-line: 2rem; /* one ruled line, one stamp */
+}
+
+[data-slot="due-date-slip"] {
+  --bevel-paper: var(--due-date-slip-paper);
+}

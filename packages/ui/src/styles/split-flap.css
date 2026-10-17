@@ -1,0 +1,54 @@
+/*
+ * Split-flap board: each character is a pair of flaps on a hinge. When it
+ * changes, the top flap falls to show the new character, column by
+ * column. Builds on bevel.css (metal, motion).
+ */
+
+:root {
+  --split-flap-housing: oklch(0.22 0.01 260);
+  --split-flap-housing-edge: oklch(0.14 0.01 260);
+  --split-flap-flap: oklch(0.2 0.005 260);
+  --split-flap-flap-lower: oklch(0.17 0.005 260);
+  --split-flap-hinge: oklch(0.08 0 0);
+  --split-flap-foreground: oklch(0.95 0.02 90);
+  --split-flap-amber: oklch(0.84 0.16 80);
+  --split-flap-cell-width: 1.15em;
+  --split-flap-cell-height: 1.6em;
+  --split-flap-delay: 0s; /* set per column, for the left-to-right cascade */
+  --split-flap-announce-after: 1200ms; /* gather changes, then announce once */
+}
+
+[data-slot="split-flap"] {
+  --bevel-material: var(--split-flap-housing);
+  --bevel-material-edge: var(--split-flap-housing-edge);
+}
+
+@keyframes split-flap-top {
+  to {
+    transform: rotateX(-90deg);
+  }
+}
+@keyframes split-flap-bottom {
+  from {
+    transform: rotateX(90deg);
+  }
+}
+@keyframes split-flap-fade {
+  from {
+    opacity: 0;
+  }
+}
+/* The upper flap falls away, then the lower one lands. */
+@utility split-flap-top {
+  transform-origin: bottom;
+  animation: split-flap-top calc(var(--bevel-duration-small) / 2) var(--bevel-ease-in-out) both;
+  animation-delay: var(--split-flap-delay);
+}
+@utility split-flap-bottom {
+  transform-origin: top;
+  animation: split-flap-bottom calc(var(--bevel-duration-small) / 2) var(--bevel-ease-out) both;
+  animation-delay: calc(var(--split-flap-delay) + var(--bevel-duration-small) / 2);
+}
+@utility split-flap-fade {
+  animation: split-flap-fade var(--bevel-duration-small) var(--bevel-ease-out) both;
+}

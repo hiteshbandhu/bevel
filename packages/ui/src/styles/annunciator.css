@@ -1,0 +1,45 @@
+/*
+ * Annunciator: a panel of lamp windows. A new alarm flashes until someone
+ * acknowledges it, then burns steady until the condition clears. One that
+ * clears unseen keeps flashing, so nothing passes unnoticed.
+ * Builds on bevel.css (metal, recessed, glass).
+ */
+
+:root {
+  --annunciator-panel: oklch(0.3 0.01 260);
+  --annunciator-panel-edge: oklch(0.2 0.01 260);
+  --annunciator-off: oklch(0.24 0.01 260);
+  --annunciator-off-foreground: oklch(0.5 0.01 260);
+  --annunciator-red: oklch(0.62 0.22 27);
+  --annunciator-amber: oklch(0.8 0.16 75);
+  --annunciator-green: oklch(0.74 0.17 150);
+  --annunciator-white: oklch(0.94 0.02 90);
+  --annunciator-lit-foreground: oklch(0.2 0.02 60);
+  --annunciator-flash: 900ms; /* one flash cycle */
+}
+
+[data-slot="annunciator"] {
+  --bevel-material: var(--annunciator-panel);
+  --bevel-material-edge: var(--annunciator-panel-edge);
+}
+[data-slot="annunciator-tile"] {
+  --annunciator-lamp: var(--annunciator-amber);
+}
+[data-slot="annunciator-tile"][data-tone="red"] {
+  --annunciator-lamp: var(--annunciator-red);
+}
+[data-slot="annunciator-tile"][data-tone="green"] {
+  --annunciator-lamp: var(--annunciator-green);
+}
+[data-slot="annunciator-tile"][data-tone="white"] {
+  --annunciator-lamp: var(--annunciator-white);
+}
+
+@keyframes annunciator-flash {
+  50% {
+    opacity: 0.25;
+  }
+}
+@utility annunciator-flash {
+  animation: annunciator-flash var(--annunciator-flash) steps(1, end) infinite;
+}

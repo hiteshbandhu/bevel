@@ -1,4 +1,19 @@
 import type * as React from "react"
+import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
+import { SplitFlap, SplitFlapRow, SplitFlapText } from "@workspace/ui/components/split-flap"
+import { ContactSheet, ContactSheetFrame } from "@workspace/ui/components/contact-sheet"
+import { VisibleFile, VisibleFileRow, VisibleFileSignal } from "@workspace/ui/components/visible-file"
+import { KeysortFilter, KeysortFilterCard, KeysortFilterDeck, KeysortFilterNeedle, KeysortFilterNeedles } from "@workspace/ui/components/keysort-filter"
+import { Mixer, MixerStrip, MixerStripFader, MixerStripMute, MixerStripName, MixerStripSolo } from "@workspace/ui/components/mixer-strip"
+import { MotorizedFader } from "@workspace/ui/components/motorized-fader"
+import { PushToTalk, PushToTalkKey } from "@workspace/ui/components/push-to-talk"
+import { DetentKnob, DetentKnobStop } from "@workspace/ui/components/detent-knob"
+import { Annunciator, AnnunciatorPanel, AnnunciatorTile } from "@workspace/ui/components/annunciator"
+import { EngineTelegraph, EngineTelegraphDial, EngineTelegraphOrder } from "@workspace/ui/components/engine-telegraph"
+import { TakeANumber, TakeANumberSign } from "@workspace/ui/components/take-a-number"
+import { Lockout, LockoutAction, LockoutHasp, LockoutLock } from "@workspace/ui/components/lockout"
+import { Vigilance, VigilanceButton, VigilanceLamps } from "@workspace/ui/components/vigilance"
+import { GuardedSwitch, GuardedSwitchControl, GuardedSwitchLabel } from "@workspace/ui/components/guarded-switch"
 import {
   ActivityLog,
   ActivityLogEntries,
@@ -68,6 +83,134 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "due-date-slip": () => (
+    <DueDateSlip title="API key" dates={["2026-08-14", "2026-09-13", "2026-11-12"]} now="2026-10-17" className="pointer-events-none w-48 scale-90" />
+  ),
+  "split-flap": () => (
+    <SplitFlap aria-label="Board" className="pointer-events-none text-sm">
+      <SplitFlapRow name="a">
+        <SplitFlapText value="EU-WEST" length={7} />
+        <SplitFlapText value="LIVE" length={4} tone="amber" />
+      </SplitFlapRow>
+      <SplitFlapRow name="b">
+        <SplitFlapText value="US-EAST" length={7} />
+        <SplitFlapText value="TEST" length={4} tone="amber" />
+      </SplitFlapRow>
+    </SplitFlap>
+  ),
+  "contact-sheet": () => (
+    <ContactSheet aria-label="Frames" columns={3} defaultValue={{ b: "pick", c: "reject" }} className="pointer-events-none max-w-60 p-2">
+      {[["a", 40], ["b", 230], ["c", 350]].map(([id, h]) => (
+        <ContactSheetFrame key={id} id={id as string} label={id as string} tabIndex={-1}>
+          <span className="block size-full" style={{ background: `oklch(0.65 0.1 ${h})` }} />
+        </ContactSheetFrame>
+      ))}
+    </ContactSheet>
+  ),
+  "visible-file": () => (
+    <VisibleFile aria-label="Tasks" scale={["Q", "P", "B", "T", "D"]} className="pointer-events-none max-w-64 grid-cols-[4.5rem_1fr]">
+      <VisibleFileRow title="Login">
+        <VisibleFileSignal value={3} label="Stage" />
+      </VisibleFileRow>
+      <VisibleFileRow title="Billing">
+        <VisibleFileSignal value={1} label="Stage" tone="amber" />
+      </VisibleFileRow>
+      <VisibleFileRow title="Docs">
+        <VisibleFileSignal value={4} label="Stage" tone="green" />
+      </VisibleFileRow>
+    </VisibleFile>
+  ),
+  "keysort-filter": () => (
+    <KeysortFilter aria-label="Contracts" defaultValue={["a"]} className="pointer-events-none max-w-64">
+      <KeysortFilterNeedles>
+        <KeysortFilterNeedle value="a">NDA</KeysortFilterNeedle>
+        <KeysortFilterNeedle value="b">EU</KeysortFilterNeedle>
+      </KeysortFilterNeedles>
+      <KeysortFilterDeck>
+        <KeysortFilterCard notches={["a", "b"]}>Acme NDA</KeysortFilterCard>
+        <KeysortFilterCard notches={["b"]}>Globex SOW</KeysortFilterCard>
+        <KeysortFilterCard notches={["a"]}>Wayne NDA</KeysortFilterCard>
+      </KeysortFilterDeck>
+    </KeysortFilter>
+  ),
+  "mixer-strip": () => (
+    <Mixer aria-label="Agents" className="pointer-events-none scale-75">
+      {[["Plan", 70], ["Code", 40], ["Test", 55]].map(([name, v]) => (
+        <MixerStrip key={name} name={name as string}>
+          <MixerStripName />
+          <MixerStripMute tabIndex={-1} pressed={name === "Test"} />
+          <MixerStripSolo tabIndex={-1} />
+          <MixerStripFader tabIndex={-1} value={v as number} />
+        </MixerStrip>
+      ))}
+    </Mixer>
+  ),
+  "motorized-fader": () => (
+    <MotorizedFader aria-label="Level" value={65} changedBy="Agent" tabIndex={-1} className="pointer-events-none" />
+  ),
+  "push-to-talk": () => (
+    <PushToTalk talking={false} className="pointer-events-none w-40 gap-3 p-3">
+      <PushToTalkKey tabIndex={-1} className="h-16" />
+    </PushToTalk>
+  ),
+  "detent-knob": () => (
+    <DetentKnob aria-label="Effort" defaultValue="high" className="pointer-events-none scale-75">
+      <DetentKnobStop value="low">Low</DetentKnobStop>
+      <DetentKnobStop value="medium">Medium</DetentKnobStop>
+      <DetentKnobStop value="high">High</DetentKnobStop>
+      <DetentKnobStop value="max">Max</DetentKnobStop>
+    </DetentKnob>
+  ),
+  annunciator: () => (
+    <Annunciator aria-label="Alerts" className="pointer-events-none max-w-60 p-2">
+      <AnnunciatorPanel className="grid-cols-2 sm:grid-cols-2">
+        <AnnunciatorTile id="a" active tone="red">Over budget</AnnunciatorTile>
+        <AnnunciatorTile id="b" active={false}>Rate limited</AnnunciatorTile>
+        <AnnunciatorTile id="c" active={false}>Tests failing</AnnunciatorTile>
+        <AnnunciatorTile id="d" active tone="green">Deploy live</AnnunciatorTile>
+      </AnnunciatorPanel>
+    </Annunciator>
+  ),
+  "engine-telegraph": () => (
+    <EngineTelegraph aria-label="Autonomy" value="act" confirmed="ask" className="pointer-events-none max-w-52">
+      <EngineTelegraphDial />
+      <div className="hidden">
+        <EngineTelegraphOrder value="stop">Stop</EngineTelegraphOrder>
+        <EngineTelegraphOrder value="ask">Ask</EngineTelegraphOrder>
+        <EngineTelegraphOrder value="act">Act</EngineTelegraphOrder>
+        <EngineTelegraphOrder value="auto">Auto</EngineTelegraphOrder>
+      </div>
+    </EngineTelegraph>
+  ),
+  "take-a-number": () => (
+    <TakeANumber aria-label="Queue" serving={42} ticket={44} className="pointer-events-none">
+      <TakeANumberSign />
+    </TakeANumber>
+  ),
+  lockout: () => (
+    <Lockout aria-label="Migration">
+      <LockoutHasp>
+        <LockoutLock id="p" owner="Priya" />
+        <LockoutLock id="s" owner="Sam" />
+      </LockoutHasp>
+    </Lockout>
+  ),
+  vigilance: () => (
+    <div className="flex justify-center">
+      <Vigilance aria-label="Supervision" interval={600000} running={false}>
+        <VigilanceLamps />
+        <VigilanceButton />
+      </Vigilance>
+    </div>
+  ),
+  "guarded-switch": () => (
+    <div className="flex justify-center">
+      <GuardedSwitch autoClose={false}>
+        <GuardedSwitchLabel>Deploy</GuardedSwitchLabel>
+        <GuardedSwitchControl />
+      </GuardedSwitch>
+    </div>
+  ),
   redaction: () => (
     <div className="bevel-paper flex flex-col gap-3 rounded-(--bevel-radius-xs) p-5 text-sm leading-relaxed">
       <Stamp tone="red" className="self-start">

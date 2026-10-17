@@ -1,0 +1,18 @@
+/*
+ * Contact sheet: a strip of film printed frame by frame, marked up with a
+ * grease pencil: circled to keep, crossed out to drop.
+ * Builds on bevel.css (paper, motion).
+ */
+
+:root {
+  --contact-sheet-film: oklch(0.17 0.01 60);
+  --contact-sheet-edge-print: oklch(0.72 0.12 70); /* the orange edge printing */
+  --contact-sheet-sprocket: oklch(0.93 0.01 90);
+  --contact-sheet-pick: oklch(0.6 0.22 27); /* red grease pencil */
+  --contact-sheet-reject: oklch(0.96 0.01 90); /* white grease pencil */
+  --contact-sheet-columns: 4;
+}
+
+[data-slot="contact-sheet-frame"] {
+  --bevel-ink: var(--contact-sheet-pick);
+}

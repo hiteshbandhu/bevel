@@ -1,0 +1,31 @@
+/*
+ * Mixer strip: one channel of a console, per agent or source. A name on
+ * the scribble strip, mute and solo keys, and a motorized fader.
+ * Builds on bevel.css (metal, raised, led) and motorized-fader.css.
+ */
+
+:root {
+  --mixer-strip-panel: oklch(0.32 0.01 260);
+  --mixer-strip-panel-edge: oklch(0.22 0.01 260);
+  --mixer-strip-key: oklch(0.42 0.01 260);
+  --mixer-strip-mute: oklch(0.62 0.22 27);
+  --mixer-strip-solo: oklch(0.84 0.16 90);
+  --mixer-strip-lit-foreground: oklch(0.2 0.02 60);
+  --mixer-strip-scribble: oklch(0.2 0.02 230);
+  --mixer-strip-scribble-foreground: oklch(0.88 0.08 230);
+}
+
+[data-slot="mixer-strip"] {
+  --bevel-material: var(--mixer-strip-panel);
+  --bevel-material-edge: var(--mixer-strip-panel-edge);
+}
+[data-slot="mixer-strip-mute"],
+[data-slot="mixer-strip-solo"] {
+  --bevel-material: var(--mixer-strip-key);
+}
+[data-slot="mixer-strip-mute"][data-pressed] {
+  --bevel-material: var(--mixer-strip-mute);
+}
+[data-slot="mixer-strip-solo"][data-pressed] {
+  --bevel-material: var(--mixer-strip-solo);
+}

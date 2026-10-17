@@ -1,0 +1,21 @@
+/*
+ * Engine telegraph: a ship's order dial. The bridge sets the handle; the
+ * engine room answers by moving its own pointer to match. Until the two
+ * agree, the order is pending. Builds on bevel.css (brass, ivory, metal).
+ */
+
+:root {
+  --engine-telegraph-answer: oklch(0.55 0.2 27); /* the engine room's pointer */
+  --engine-telegraph-pending: oklch(0.78 0.16 75);
+  --engine-telegraph-agreed: oklch(0.72 0.16 150);
+  --engine-telegraph-pivot: 50px 56px; /* the pointers' hub, in dial units */
+}
+
+[data-slot="engine-telegraph"] {
+  --bevel-material: var(--bevel-brass);
+  --bevel-material-edge: var(--bevel-brass-edge);
+  --bevel-led: var(--engine-telegraph-agreed);
+}
+[data-slot="engine-telegraph"][data-pending] {
+  --bevel-led: var(--engine-telegraph-pending);
+}

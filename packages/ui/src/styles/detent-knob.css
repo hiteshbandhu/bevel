@@ -1,0 +1,39 @@
+/*
+ * Detent knob: a rotary switch that clicks into fixed positions and stops
+ * hard at both ends. Builds on bevel.css (metal, raised, motion).
+ */
+
+:root {
+  --detent-knob-cap: oklch(0.3 0.01 260); /* knurled black cap */
+  --detent-knob-cap-edge: oklch(0.18 0.01 260);
+  --detent-knob-pointer: oklch(0.95 0.02 90);
+  --detent-knob-active: oklch(0.82 0.15 85);
+  --detent-knob-label-radius: 5.5rem; /* centre to label */
+  --detent-knob-bump: 4deg; /* how far it gives at an endstop */
+}
+
+[data-slot="detent-knob-cap"] {
+  --bevel-material: var(--detent-knob-cap);
+  --bevel-material-edge: var(--detent-knob-cap-edge);
+}
+
+/* Knurling: fine ridges around the cap's edge. */
+@utility detent-knob-knurl {
+  background-image: repeating-conic-gradient(var(--bevel-highlight) 0deg 3deg, var(--bevel-shade) 3deg 6deg);
+}
+
+/* Pushing past an endstop: it gives a little and springs back. */
+@keyframes detent-knob-bump {
+  40% {
+    rotate: var(--detent-knob-bump-to);
+  }
+}
+[data-slot="detent-knob-body"][data-bump="up"] {
+  --detent-knob-bump-to: var(--detent-knob-bump);
+}
+[data-slot="detent-knob-body"][data-bump="down"] {
+  --detent-knob-bump-to: calc(var(--detent-knob-bump) * -1);
+}
+@utility detent-knob-bump {
+  animation: detent-knob-bump var(--bevel-duration-small) var(--bevel-ease-out);
+}
