@@ -1,0 +1,16 @@
+/*
+ * Redline: proposed edits marked up in proofreader's red ink, each with a
+ * "sign here" flag to accept or reject it. Builds on bevel.css (paper,
+ * pens, sticker, motion).
+ */
+
+:root {
+  --redline-flag: var(--bevel-sticker);
+  --redline-flag-foreground: var(--bevel-sticker-foreground);
+  --redline-strike: 2px;
+}
+
+/* The flag is cut to a point on its leading edge, like a sign-here tab. */
+@utility redline-flag-shape {
+  clip-path: polygon(0.5rem 0, 100% 0, 100% 100%, 0.5rem 100%, 0 50%);
+}

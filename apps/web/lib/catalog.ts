@@ -910,6 +910,48 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "redline",
+    name: "Redline",
+    category: "documents",
+    description:
+      "Proposed edits in proofreader's red ink, each with a sign-here flag to accept or reject it. Nothing is applied until someone decides.",
+    files: ["components/redline.tsx", "styles/redline.css"],
+    dependencies: ["cn"],
+    anatomy: `<Redline onDecisionsChange={save}>
+  <RedlineDocument>
+    … <RedlineChange id="period" deletion="thirty" insertion="sixty" /> …
+  </RedlineDocument>
+  <RedlineToolbar />
+</Redline>`,
+    parts: [
+      {
+        name: "Redline",
+        renders: "div",
+        description: "Holds the decisions: decisions, defaultDecisions, onDecisionsChange ({ id: accepted | rejected }).",
+      },
+      { name: "RedlineDocument", renders: "div", description: "The text being edited." },
+      {
+        name: "RedlineChange",
+        renders: "span (group)",
+        description:
+          "One edit: id, deletion, insertion. Uses real del and ins, read as \u201cdeleted\u201d and \u201cinserted\u201d. Its flag holds Accept and Reject.",
+      },
+      {
+        name: "RedlineToolbar",
+        renders: "div (toolbar)",
+        description: "How many changes are left, with Accept all and Reject all.",
+      },
+    ],
+    examples: [
+      {
+        slug: "clause",
+        title: "A notice clause",
+        description: "Three suggested edits. Decide each one, or all at once.",
+        file: "redline-clause.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

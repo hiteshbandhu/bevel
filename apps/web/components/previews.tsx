@@ -44,6 +44,7 @@ import {
   ReceiptTotal,
   ReceiptValue,
 } from "@workspace/ui/components/receipt"
+import { Redline, RedlineChange, RedlineDocument } from "@workspace/ui/components/redline"
 import { Seal, Stamp, StampDetail } from "@workspace/ui/components/stamp"
 import { TaskPlan, TaskPlanStep, TaskPlanSteps } from "@workspace/ui/components/task-plan"
 import { Ticket, TicketLabel, TicketSheet, TicketValue } from "@workspace/ui/components/ticket-sheet"
@@ -66,6 +67,13 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  redline: () => (
+    <Redline>
+      <RedlineDocument className="text-sm">
+        End on <RedlineChange id="p" deletion="thirty" insertion="sixty" /> days&apos; notice.
+      </RedlineDocument>
+    </Redline>
+  ),
   "delegation-board": () => (
     <DelegationBoard aria-label="Subagents" className="grid-cols-2">
       <DelegationSlot status="active">
