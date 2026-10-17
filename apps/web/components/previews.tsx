@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { BallotBoard, BallotCommit, BallotLever, BallotRace } from "@workspace/ui/components/ballot-board"
 import { Vigilance, VigilanceButton, VigilanceLamps } from "@workspace/ui/components/vigilance"
 import { Interlock, InterlockLever } from "@workspace/ui/components/interlock"
 import { GuardedSwitch, GuardedSwitchControl, GuardedSwitchLabel } from "@workspace/ui/components/guarded-switch"
@@ -71,6 +72,15 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "ballot-board": () => (
+    <BallotBoard>
+      <BallotRace name="a" label="Email the client">
+        <BallotLever value="y">Approve</BallotLever>
+        <BallotLever value="n">Deny</BallotLever>
+      </BallotRace>
+      <BallotCommit />
+    </BallotBoard>
+  ),
   vigilance: () => (
     <div className="flex justify-center">
       <Vigilance aria-label="Supervision" interval={600000} running={false}>

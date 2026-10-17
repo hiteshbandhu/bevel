@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { BallotBoardTools } from "./ballot-board-tools"
 import { VigilanceAgent } from "./vigilance-agent"
 import { InterlockDeploy } from "./interlock-deploy"
 import { GuardedSwitchDeploy } from "./guarded-switch-deploy"
@@ -30,6 +31,7 @@ import { WalletUsage } from "./wallet-usage"
 
 /** Demo components by file name, matching `Example.file` in the catalog. */
 export const demos: Record<string, React.ComponentType> = {
+  "ballot-board-tools.tsx": BallotBoardTools,
   "vigilance-agent.tsx": VigilanceAgent,
   "interlock-deploy.tsx": InterlockDeploy,
   "guarded-switch-deploy.tsx": GuardedSwitchDeploy,

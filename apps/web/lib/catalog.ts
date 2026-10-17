@@ -1113,6 +1113,45 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "ballot-board",
+    name: "Ballot board",
+    category: "safety",
+    description:
+      "A lever voting machine: set many choices, then pull one lever to commit them all and reset. Races refuse choices past their limit, so an invalid ballot can't be built.",
+    files: ["components/ballot-board.tsx", "styles/ballot-board.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<BallotBoard onCommit={send}>
+  <BallotRace name="email" label="Email the client">
+    <BallotLever value="approve">Approve</BallotLever>
+    <BallotLever value="deny">Deny</BallotLever>
+  </BallotRace>
+  <BallotCommit />
+</BallotBoard>`,
+    parts: [
+      { name: "BallotBoard", renders: "div", description: "onCommit receives { race: values[] } and the board resets." },
+      {
+        name: "BallotRace",
+        renders: "fieldset (radiogroup or group)",
+        description: "name, label, max. With max 1 it's a radio group; above that, levers past the limit lock.",
+      },
+      {
+        name: "BallotLever",
+        renders: "button (radio or checkbox)",
+        description: "value. Flips down to point at its choice. Arrow keys move between levers.",
+      },
+      { name: "BallotCommit", renders: "Button", description: "Commits every choice and says what was cast." },
+    ],
+    examples: [
+      {
+        slug: "tools",
+        title: "Approving an agent's proposals",
+        description: "Decide each proposed action and pick two reviewers, then send every decision with one lever.",
+        file: "ballot-board-tools.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {
