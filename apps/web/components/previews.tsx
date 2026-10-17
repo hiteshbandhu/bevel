@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { Interlock, InterlockLever } from "@workspace/ui/components/interlock"
 import { GuardedSwitch, GuardedSwitchControl, GuardedSwitchLabel } from "@workspace/ui/components/guarded-switch"
 import {
   ActivityLog,
@@ -69,6 +70,14 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  interlock: () => (
+    <div className="flex justify-center">
+      <Interlock aria-label="Levers" defaultValues={{ a: true }}>
+        <InterlockLever id="a" label="Migrations" />
+        <InterlockLever id="b" label="Promote" tone="red" requires={["a", "c"]} />
+      </Interlock>
+    </div>
+  ),
   "guarded-switch": () => (
     <div className="flex justify-center">
       <GuardedSwitch autoClose={false}>

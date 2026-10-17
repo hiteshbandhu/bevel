@@ -1,0 +1,35 @@
+/*
+ * Interlock: a railway lever frame (Saxby, 1856). A lever is locked until
+ * the levers it depends on are pulled, and can't be put back while
+ * anything depending on it is pulled. Builds on bevel.css.
+ */
+
+:root {
+  --interlock-frame: oklch(0.32 0.03 150); /* signal-box green */
+  --interlock-frame-edge: oklch(0.22 0.03 150);
+  --interlock-slot: oklch(0.16 0.01 150);
+  --interlock-red: oklch(0.55 0.19 27);
+  --interlock-black: oklch(0.44 0.01 260); /* graphite: dark enough to read as black, light enough to see in the slot */
+  --interlock-blue: oklch(0.48 0.13 255);
+  --interlock-yellow: oklch(0.8 0.15 90);
+  --interlock-plate-foreground: oklch(0.22 0.03 70);
+  --interlock-throw: 1.5rem; /* how far a lever moves when pulled */
+}
+
+[data-slot="interlock"] {
+  --bevel-material: var(--interlock-frame);
+  --bevel-material-edge: var(--interlock-frame-edge);
+  --bevel-material-recess: var(--interlock-slot);
+}
+[data-slot="interlock-lever"] {
+  --interlock-handle: var(--interlock-black);
+}
+[data-slot="interlock-lever"][data-tone="red"] {
+  --interlock-handle: var(--interlock-red);
+}
+[data-slot="interlock-lever"][data-tone="blue"] {
+  --interlock-handle: var(--interlock-blue);
+}
+[data-slot="interlock-lever"][data-tone="yellow"] {
+  --interlock-handle: var(--interlock-yellow);
+}

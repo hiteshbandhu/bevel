@@ -1040,6 +1040,41 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "interlock",
+    name: "Interlock",
+    category: "safety",
+    description:
+      "A railway lever frame. A lever stays locked until the levers it depends on are pulled, and says so; once pulled it holds them in place.",
+    files: ["components/interlock.tsx", "styles/interlock.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Interlock aria-label="Release levers">
+  <InterlockLever id="migrations" label="Migrations applied" />
+  <InterlockLever id="promote" label="Promote" requires={["migrations"]} />
+</Interlock>`,
+    parts: [
+      {
+        name: "Interlock",
+        renders: "div (group)",
+        description: "values, defaultValues, onValuesChange ({ id: pulled }). Give it an aria-label.",
+      },
+      {
+        name: "InterlockLever",
+        renders: "Switch",
+        description:
+          "id, label, requires (ids), tone (red, black, blue, yellow), number. Locked levers are aria-disabled and described: “Locked until: …” or “Held by: …”.",
+      },
+    ],
+    examples: [
+      {
+        slug: "deploy",
+        title: "Release levers",
+        description: "Promote is locked until three levers are pulled. Once it's pulled, they can't go back.",
+        file: "interlock-deploy.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

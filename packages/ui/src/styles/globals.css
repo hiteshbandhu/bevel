@@ -22,6 +22,7 @@
 @import "./redline.css";
 @import "./redaction.css";
 @import "./guarded-switch.css";
+@import "./interlock.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));
