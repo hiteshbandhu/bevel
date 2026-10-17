@@ -64,6 +64,24 @@ export const categories: Category[] = [
     description: "Readouts and controls from a panel: rolling counters, gauges, dials and breakers.",
   },
   {
+    slug: "safety",
+    name: "Safety",
+    description:
+      "Guards for consequential actions: covers over critical switches, levers that won't move until their dependencies are set, a check-in that keeps an agent running, and choices committed in one pull.",
+  },
+  {
+    slug: "coordination",
+    name: "Coordination",
+    description:
+      "Locks, holds, turns and caps for people and agents sharing work: a single edit token, a lockout everyone must release, a chess clock, a kanban rack and a take-a-number queue.",
+  },
+  {
+    slug: "records",
+    name: "Records",
+    description:
+      "Seeing many things at once: notched cards that drop out when filtered, signals along a file's edge, a contact sheet, a departures board and a due-date slip.",
+  },
+  {
     slug: "agents",
     name: "Agents",
     description:
