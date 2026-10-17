@@ -1,6 +1,7 @@
 import type * as React from "react"
 import { AmountFormats } from "./amount-formats"
 import { BreakerCaps } from "./breaker-caps"
+import { CitationAnswer } from "./citation-answer"
 import { CreditsCheckout } from "./credits-checkout"
 import { DialAutoTopUp } from "./dial-auto-top-up"
 import { DialRunway } from "./dial-runway"
@@ -22,6 +23,7 @@ import { WalletUsage } from "./wallet-usage"
 export const demos: Record<string, React.ComponentType> = {
   "amount-formats.tsx": AmountFormats,
   "breaker-caps.tsx": BreakerCaps,
+  "citation-answer.tsx": CitationAnswer,
   "credits-checkout.tsx": CreditsCheckout,
   "dial-auto-top-up.tsx": DialAutoTopUp,
   "dial-runway.tsx": DialRunway,

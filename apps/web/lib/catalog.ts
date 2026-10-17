@@ -691,6 +691,55 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "citation",
+    name: "Citation",
+    category: "documents",
+    description:
+      "An exhibit sticker in the text that opens the exact passage it cites, with a stamp saying whether the source checks out.",
+    files: ["components/citation.tsx", "styles/citation.css"],
+    registryDependencies: ["stamp"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Citation>
+  <CitationTrigger>4</CitationTrigger>
+  <CitationContent>
+    <CitationSource />
+    <CitationLocation />
+    <CitationQuote />
+    <CitationStatus status="verified" />
+  </CitationContent>
+</Citation>`,
+    parts: [
+      { name: "Citation", renders: "Popover", description: "One cited source. open, defaultOpen, onOpenChange." },
+      {
+        name: "CitationTrigger",
+        renders: "button",
+        description:
+          "The exhibit sticker, inline in text: \u201cEx. 4\u201d, read as \u201cExhibit 4\u201d. tone: yellow, blue, white. abbreviation and label change the prefix.",
+      },
+      {
+        name: "CitationContent",
+        renders: "Popover popup",
+        description: "The paper slip. Grows from the sticker; Escape closes it and returns focus.",
+      },
+      { name: "CitationSource", renders: "Popover title", description: "The source's name; titles the slip." },
+      { name: "CitationLocation", renders: "p", description: "Page, paragraph or clause." },
+      { name: "CitationQuote", renders: "blockquote", description: "The passage, highlighted." },
+      {
+        name: "CitationStatus",
+        renders: "Stamp",
+        description: "verified, caution or unverified, always in words. Children replace the word.",
+      },
+    ],
+    examples: [
+      {
+        slug: "answer",
+        title: "An answer with sources",
+        description: "Open a sticker to read the cited passage. The third source has been appealed.",
+        file: "citation-answer.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

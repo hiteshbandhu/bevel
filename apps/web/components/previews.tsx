@@ -1,6 +1,7 @@
 import type * as React from "react"
 import { Amount } from "@workspace/ui/components/amount"
 import { Breaker, BreakerPanel, BreakerRow } from "@workspace/ui/components/breaker"
+import { Citation, CitationTrigger } from "@workspace/ui/components/citation"
 import { DialMark, Gauge } from "@workspace/ui/components/dial"
 import { Keycard, KeycardKey, KeycardLabel, KeycardSlot } from "@workspace/ui/components/keycard"
 import {
@@ -46,6 +47,19 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  citation: () => (
+    <p className="bevel-paper rounded-(--bevel-radius-xs) p-5 text-sm leading-relaxed">
+      Notice must be in writing
+      <Citation>
+        <CitationTrigger>1</CitationTrigger>
+      </Citation>{" "}
+      and sent to the scheduled address
+      <Citation>
+        <CitationTrigger tone="blue">2</CitationTrigger>
+      </Citation>
+      .
+    </p>
+  ),
   "name-tag": () => (
     <div className="flex justify-center">
       <NameTag>
