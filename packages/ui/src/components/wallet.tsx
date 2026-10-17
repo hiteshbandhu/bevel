@@ -10,7 +10,7 @@ import { Separator as SeparatorPrimitive } from "@base-ui/react/separator"
 import { useRender } from "@base-ui/react/use-render"
 import { cn } from "cn"
 import { Amount } from "@workspace/ui/components/amount"
-import { isDigitPart, useAmountParts, type AmountFormat } from "@workspace/ui/lib/amount"
+import { isDigitPart, useAmountParts, type AmountFormat } from "@workspace/ui/lib/format-amount"
 import { PaymentCard, type PaymentCardProps, type PaymentCardTone } from "@workspace/ui/components/payment-card"
 
 type WalletVariant = "saddle" | "noir" | "oxblood"

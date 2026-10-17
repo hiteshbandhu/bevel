@@ -88,14 +88,10 @@ export const previews: Record<string, React.ComponentType> = {
           <ReceiptLabel>50 credits</ReceiptLabel>
           <ReceiptValue>$50.00</ReceiptValue>
         </ReceiptItem>
-        <ReceiptItem>
-          <ReceiptLabel>Fee</ReceiptLabel>
-          <ReceiptValue>$1.75</ReceiptValue>
-        </ReceiptItem>
       </ReceiptItems>
       <ReceiptTotal>
         <ReceiptLabel>Total</ReceiptLabel>
-        <ReceiptValue>$51.75</ReceiptValue>
+        <ReceiptValue>$50.00</ReceiptValue>
       </ReceiptTotal>
       <ReceiptMark>
         <Stamp>Paid</Stamp>
@@ -120,10 +116,10 @@ export const previews: Record<string, React.ComponentType> = {
     </div>
   ),
   breaker: () => (
-    <BreakerPanel aria-label="Caps">
-      <BreakerRow className="justify-center">
-        <Breaker label="Workspace" defaultChecked />
-        <Breaker label="Per person" tripped />
+    <BreakerPanel aria-label="Caps" className="mx-auto w-fit p-4">
+      <BreakerRow className="flex-nowrap justify-center gap-3">
+        <Breaker label="Team" defaultChecked />
+        <Breaker label="Person" tripped />
       </BreakerRow>
     </BreakerPanel>
   ),
@@ -170,7 +166,7 @@ export const previews: Record<string, React.ComponentType> = {
   ),
   wallet: () => (
     <Wallet>
-      <WalletCards>
+      <WalletCards slots={2}>
         <WalletCard>
           <PaymentCardBrand>Amex</PaymentCardBrand>
           <PaymentCardNumber last4="1005" />

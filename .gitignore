@@ -49,3 +49,8 @@ storybook-static
 
 # playwright mcp logs
 .playwright-mcp
+
+# generated shadcn registry (pnpm registry:build)
+/registry.json
+/registry/
+apps/web/public/r/

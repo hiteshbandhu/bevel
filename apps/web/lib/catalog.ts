@@ -72,53 +72,6 @@ export const categories: Category[] = [
 
 export const components: ComponentDoc[] = [
   {
-    slug: "payment-card",
-    name: "Payment card",
-    category: "money",
-    parent: "wallet",
-    description:
-      "A plastic payment card at real proportions. Use it on its own, as a radio in a picker, or inside a Wallet.",
-    files: ["components/payment-card.tsx", "styles/payment-card.css"],
-    dependencies: ["@base-ui/react", "cn"],
-    anatomy: `<PaymentCard>
-  <PaymentCardBrand />
-  <PaymentCardNumber />
-  <PaymentCardChip />
-</PaymentCard>`,
-    parts: [
-      {
-        name: "PaymentCard",
-        renders: "div",
-        description:
-          "The card, at ID-1 proportions (85.60 × 53.98 mm). tone picks sapphire, gold or graphite. Pass render={<Radio.Root value=\"…\" />} to make it selectable.",
-      },
-      {
-        name: "PaymentCardBrand",
-        renders: "span",
-        description: "The card's mark. Text by default; put your own SVG logo inside.",
-      },
-      {
-        name: "PaymentCardNumber",
-        renders: "span",
-        description: "last4 shown as •••• 4242 and read as “ending in 4242”.",
-      },
-      {
-        name: "PaymentCardChip",
-        renders: "span",
-        description: "The metal contact chip. Decorative and hidden from screen readers.",
-      },
-    ],
-    examples: [
-      {
-        slug: "picker",
-        title: "Saved payment methods",
-        description:
-          "Cards as a radio group, without a wallet. The chosen card lifts; arrow keys move between them.",
-        file: "payment-card-picker.tsx",
-      },
-    ],
-  },
-  {
     slug: "wallet",
     name: "Wallet",
     category: "money",
@@ -237,12 +190,59 @@ export const components: ComponentDoc[] = [
     ],
   },
   {
+    slug: "payment-card",
+    name: "Payment card",
+    category: "money",
+    parent: "wallet",
+    description:
+      "A plastic payment card at real proportions. Use it on its own, as a radio in a picker, or inside a Wallet.",
+    files: ["components/payment-card.tsx", "styles/payment-card.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<PaymentCard>
+  <PaymentCardBrand />
+  <PaymentCardNumber />
+  <PaymentCardChip />
+</PaymentCard>`,
+    parts: [
+      {
+        name: "PaymentCard",
+        renders: "div",
+        description:
+          "The card, at ID-1 proportions (85.60 × 53.98 mm). tone picks sapphire, gold or graphite. Pass render={<Radio.Root value=\"…\" />} to make it selectable.",
+      },
+      {
+        name: "PaymentCardBrand",
+        renders: "span",
+        description: "The card's mark. Text by default; put your own SVG logo inside.",
+      },
+      {
+        name: "PaymentCardNumber",
+        renders: "span",
+        description: "last4 shown as •••• 4242 and read as “ending in 4242”.",
+      },
+      {
+        name: "PaymentCardChip",
+        renders: "span",
+        description: "The metal contact chip. Decorative and hidden from screen readers.",
+      },
+    ],
+    examples: [
+      {
+        slug: "picker",
+        title: "Saved payment methods",
+        description:
+          "Cards as a radio group, without a wallet. The chosen card lifts; arrow keys move between them.",
+        file: "payment-card-picker.tsx",
+      },
+    ],
+  },
+  {
     slug: "amount",
     name: "Amount",
     category: "money",
     description:
       "A formatted figure with steady digits, in any currency and locale. Every amount in Bevel is one of these.",
-    files: ["lib/amount.ts", "components/amount.tsx"],
+    files: ["lib/format-amount.ts", "components/amount.tsx"],
     dependencies: ["cn"],
     anatomy: `<Amount value={1240.5} currency="USD" />`,
     parts: [

@@ -12,11 +12,17 @@ export function readDemo(file: string) {
   return readFile(path.join(demosDir, file), "utf8")
 }
 
-export function readLibraryFile(file: string) {
-  return readFile(path.join(uiSrcDir, file), "utf8")
+/**
+ * A library file as a user's project sees it: workspace imports rewritten to
+ * the "@/" form, the same rewrite the registry build applies.
+ */
+export async function readLibraryFile(file: string) {
+  return (await readFile(path.join(uiSrcDir, file), "utf8"))
+    .replaceAll("@workspace/ui/components/", "@/components/ui/")
+    .replaceAll("@workspace/ui/lib/", "@/lib/")
 }
 
-export function highlight(code: string, lang: "tsx" | "css" | "bash" = "tsx") {
+export function highlight(code: string, lang: "tsx" | "css" | "bash" | "json" = "tsx") {
   return codeToHtml(code.trimEnd(), {
     lang,
     themes: { light: "github-light", dark: "github-dark" },

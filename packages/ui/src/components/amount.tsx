@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "cn"
-import { isDigitPart, useAmountParts, type AmountFormat } from "@workspace/ui/lib/amount"
+import { isDigitPart, useAmountParts, type AmountFormat } from "@workspace/ui/lib/format-amount"
 
 type AmountProps = AmountFormat &
   Omit<React.ComponentProps<"span">, "children"> & {
