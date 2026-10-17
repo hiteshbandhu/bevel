@@ -14,6 +14,7 @@ import { MeterPostage } from "./meter-postage"
 import { NumberWheelCounter } from "./number-wheel-counter"
 import { PaymentCardPicker } from "./payment-card-picker"
 import { StampMarks } from "./stamp-marks"
+import { TaskPlanAgent } from "./task-plan-agent"
 import { TicketSheetPlans } from "./ticket-sheet-plans"
 import { WalletBilling } from "./wallet-billing"
 import { WalletCheckout } from "./wallet-checkout"
@@ -36,6 +37,7 @@ export const demos: Record<string, React.ComponentType> = {
   "number-wheel-counter.tsx": NumberWheelCounter,
   "payment-card-picker.tsx": PaymentCardPicker,
   "stamp-marks.tsx": StampMarks,
+  "task-plan-agent.tsx": TaskPlanAgent,
   "ticket-sheet-plans.tsx": TicketSheetPlans,
   "wallet-billing.tsx": WalletBilling,
   "wallet-checkout.tsx": WalletCheckout,

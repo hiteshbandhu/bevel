@@ -740,6 +740,48 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "task-plan",
+    name: "Task plan",
+    category: "agents",
+    description:
+      "An agent's plan on a legal pad. Finished steps are ticked in ink, the current one is underlined in red pen, the rest are still in pencil.",
+    files: ["components/task-plan.tsx", "styles/task-plan.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<TaskPlan>
+  <TaskPlanHeader>
+    <TaskPlanTitle />
+    <TaskPlanProgress value={2} max={5} />
+  </TaskPlanHeader>
+  <TaskPlanSteps>
+    <TaskPlanStep status="done" />
+    <TaskPlanStep status="current" />
+  </TaskPlanSteps>
+</TaskPlan>`,
+    parts: [
+      { name: "TaskPlan", renders: "div", description: "The pad. Every row sits on a rule." },
+      {
+        name: "TaskPlanProgress",
+        renders: "Progress",
+        description: "value and max. Read as \u201c2 of 5 done\u201d; children replace the visible text.",
+      },
+      { name: "TaskPlanSteps", renders: "ol", description: "The steps, in order." },
+      {
+        name: "TaskPlanStep",
+        renders: "li",
+        description:
+          "status: done, current, pending, error or skipped, spoken before the step. The current step is marked aria-current. The tick draws itself when a step finishes.",
+      },
+    ],
+    examples: [
+      {
+        slug: "agent",
+        title: "An agent at work",
+        description: "The plan advances on its own. Each step is ticked in ink as it finishes.",
+        file: "task-plan-agent.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

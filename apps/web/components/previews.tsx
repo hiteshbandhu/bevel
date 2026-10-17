@@ -27,6 +27,7 @@ import {
   ReceiptValue,
 } from "@workspace/ui/components/receipt"
 import { Seal, Stamp, StampDetail } from "@workspace/ui/components/stamp"
+import { TaskPlan, TaskPlanStep, TaskPlanSteps } from "@workspace/ui/components/task-plan"
 import { Ticket, TicketLabel, TicketSheet, TicketValue } from "@workspace/ui/components/ticket-sheet"
 import {
   Wallet,
@@ -47,6 +48,15 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "task-plan": () => (
+    <TaskPlan>
+      <TaskPlanSteps>
+        <TaskPlanStep status="done">Read the lease</TaskPlanStep>
+        <TaskPlanStep status="current">Check notice periods</TaskPlanStep>
+        <TaskPlanStep status="pending">Draft a redline</TaskPlanStep>
+      </TaskPlanSteps>
+    </TaskPlan>
+  ),
   citation: () => (
     <p className="bevel-paper rounded-(--bevel-radius-xs) p-5 text-sm leading-relaxed">
       Notice must be in writing

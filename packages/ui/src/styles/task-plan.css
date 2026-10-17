@@ -1,0 +1,31 @@
+/*
+ * Task plan: an agent's plan written on a yellow legal pad. Builds on
+ * bevel.css (bevel-ruled, pad, pens, pencil, motion).
+ */
+
+:root {
+  --task-plan-binding: oklch(0.36 0.09 25); /* the gummed strip along the top of the pad */
+  --task-plan-check-length: 24; /* path length of the tick, for drawing it */
+}
+
+[data-slot="task-plan"] {
+  --bevel-sheet: var(--bevel-pad);
+  --bevel-sheet-rule: var(--bevel-pad-rule);
+  --bevel-sheet-margin: var(--bevel-pad-margin);
+  --bevel-rule-height: 2rem;
+  --bevel-rule-margin: 2.5rem;
+  --task-plan-indent: calc(var(--bevel-rule-margin) + 0.75rem); /* writing starts past the margin */
+  --task-plan-sink: 0.4rem; /* lowers each line of writing onto its rule */
+  color: var(--bevel-pad-foreground);
+}
+
+[data-slot="task-plan-step"] {
+  --task-plan-ink: var(--bevel-pen-blue);
+}
+[data-slot="task-plan-step"][data-status="pending"],
+[data-slot="task-plan-step"][data-status="skipped"] {
+  --task-plan-ink: var(--bevel-pencil);
+}
+[data-slot="task-plan-step"][data-status="error"] {
+  --task-plan-ink: var(--bevel-pen-red);
+}
