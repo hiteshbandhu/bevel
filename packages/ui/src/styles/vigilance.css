@@ -1,0 +1,38 @@
+/*
+ * Vigilance control: a dead man's switch, as in a train cab. A run keeps
+ * going only while a person checks in; miss the window and it steps from
+ * warning to stopping. Builds on bevel.css (metal, led, raised).
+ */
+
+:root {
+  --vigilance-panel: oklch(0.26 0.008 260);
+  --vigilance-panel-edge: oklch(0.17 0.008 260);
+  --vigilance-clear: oklch(0.8 0.17 150);
+  --vigilance-warning: oklch(0.83 0.16 80);
+  --vigilance-stopping: oklch(0.66 0.21 27);
+  --vigilance-off: oklch(0.36 0.01 260);
+  --vigilance-tick: 250ms; /* how often the countdown updates; the bar eases between updates */
+}
+
+[data-slot="vigilance"] {
+  --bevel-material: var(--vigilance-panel);
+  --bevel-material-edge: var(--vigilance-panel-edge);
+  --bevel-material-recess: var(--vigilance-panel-edge);
+}
+[data-slot="vigilance-button"] {
+  --bevel-material: var(--bevel-brass);
+  --bevel-material-edge: var(--bevel-brass-edge);
+}
+[data-slot="vigilance-lamp"] {
+  --bevel-led: var(--vigilance-off);
+}
+[data-slot="vigilance-lamp"][data-lit][data-stage="clear"] {
+  --bevel-led: var(--vigilance-clear);
+}
+[data-slot="vigilance-lamp"][data-lit][data-stage="warning"] {
+  --bevel-led: var(--vigilance-warning);
+}
+[data-slot="vigilance-lamp"][data-lit][data-stage="stopping"],
+[data-slot="vigilance-lamp"][data-lit][data-stage="paused"] {
+  --bevel-led: var(--vigilance-stopping);
+}

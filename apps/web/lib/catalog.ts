@@ -1075,6 +1075,44 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "vigilance",
+    name: "Dead man's switch",
+    category: "safety",
+    description:
+      "A train cab's vigilance control for supervised agent runs: the run keeps going only while someone checks in. Miss the window and it warns, then pauses.",
+    files: ["components/vigilance.tsx", "styles/vigilance.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Vigilance interval={30000} onTrip={pauseAgent}>
+  <VigilanceLamps />
+  <VigilanceTimer />
+  <VigilanceButton />
+</Vigilance>`,
+    parts: [
+      {
+        name: "Vigilance",
+        renders: "div (group)",
+        description:
+          "interval (ms), warnAt and stopAt (share left), running, onTrip, onCheckIn, onResume.",
+      },
+      {
+        name: "VigilanceLamps",
+        renders: "div",
+        description:
+          "Clear, Warning, Stopping lamps (steady, never flashing) and the stage in words. Only stage changes are announced; the final warning and the pause assertively.",
+      },
+      { name: "VigilanceTimer", renders: "Progress", description: "Time until the next check-in, read in seconds." },
+      { name: "VigilanceButton", renders: "Button", description: "Check in. While paused it becomes Resume." },
+    ],
+    examples: [
+      {
+        slug: "agent",
+        title: "A supervised agent run",
+        description: "Check in every 12 seconds to keep it going. Stop checking in and watch it warn, then pause.",
+        file: "vigilance-agent.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

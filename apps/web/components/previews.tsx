@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { Vigilance, VigilanceButton, VigilanceLamps } from "@workspace/ui/components/vigilance"
 import { Interlock, InterlockLever } from "@workspace/ui/components/interlock"
 import { GuardedSwitch, GuardedSwitchControl, GuardedSwitchLabel } from "@workspace/ui/components/guarded-switch"
 import {
@@ -70,6 +71,14 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  vigilance: () => (
+    <div className="flex justify-center">
+      <Vigilance aria-label="Supervision" interval={600000} running={false}>
+        <VigilanceLamps />
+        <VigilanceButton />
+      </Vigilance>
+    </div>
+  ),
   interlock: () => (
     <div className="flex justify-center">
       <Interlock aria-label="Levers" defaultValues={{ a: true }}>

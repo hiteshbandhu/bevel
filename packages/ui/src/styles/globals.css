@@ -23,6 +23,7 @@
 @import "./redaction.css";
 @import "./guarded-switch.css";
 @import "./interlock.css";
+@import "./vigilance.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));
