@@ -40,7 +40,7 @@ function Redaction({ className, revealed = false, length = 8, reason, children, 
     <span
       data-slot="redaction"
       className={cn(
-        "redaction-bar relative inline-block h-(--redaction-height) translate-y-(--redaction-drop) rounded-(--bevel-radius-xs) align-baseline",
+        "redaction-bar relative inline-block max-w-full h-(--redaction-height) translate-y-(--redaction-drop) rounded-(--bevel-radius-xs) align-baseline",
         "forced-colors:bg-[CanvasText]",
         className
       )}
