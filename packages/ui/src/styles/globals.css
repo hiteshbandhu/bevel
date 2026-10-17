@@ -36,6 +36,7 @@
 @import "./push-to-talk.css";
 @import "./motorized-fader.css";
 @import "./mixer-strip.css";
+@import "./keysort-filter.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));

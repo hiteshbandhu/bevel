@@ -1601,6 +1601,58 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "keysort-filter",
+    name: "Keysort filter",
+    category: "records",
+    description:
+      "Edge-notched cards from the 1950s office: each hole along the top is an attribute, notched open if the card has it. Push needles through and the cards notched for all of them drop out. AND filtering you can see. For documents, tickets and records with tags.",
+    files: ["components/keysort-filter.tsx", "styles/keysort-filter.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<KeysortFilter aria-label="Contracts">
+  <KeysortFilterNeedles>
+    <KeysortFilterNeedle value="nda">NDA</KeysortFilterNeedle>
+    <KeysortFilterNeedle value="signed">Signed</KeysortFilterNeedle>
+  </KeysortFilterNeedles>
+  <KeysortFilterDeck>
+    <KeysortFilterCard notches={["nda", "signed"]}>Acme mutual NDA</KeysortFilterCard>
+  </KeysortFilterDeck>
+  <KeysortFilterCount />
+</KeysortFilter>`,
+    parts: [
+      {
+        name: "KeysortFilter",
+        renders: "div (group)",
+        description: "value, defaultValue and onValueChange: the needles pushed through. Give it an aria-label.",
+      },
+      { name: "KeysortFilterNeedles", renders: "fieldset", description: "The needle rack." },
+      {
+        name: "KeysortFilterNeedle",
+        renders: "Checkbox",
+        description: "One attribute. Its hole appears on every card, in the order the needles are listed.",
+      },
+      { name: "KeysortFilterDeck", renders: "ul", description: "The cards, in a grid." },
+      {
+        name: "KeysortFilterCard",
+        renders: "li",
+        description: "notches: the attributes it has. Drops, and says “Matches”, when notched for every needle in.",
+      },
+      {
+        name: "KeysortFilterCount",
+        renders: "p (status)",
+        description: "“2 of 8 cards match NDA and Signed.” Announced as needles go in and out.",
+      },
+    ],
+    examples: [
+      {
+        slug: "contracts",
+        title: "A drawer of contracts",
+        description: "Push needles through to find the contracts with every attribute.",
+        file: "keysort-filter-contracts.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

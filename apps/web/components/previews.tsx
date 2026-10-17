@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { KeysortFilter, KeysortFilterCard, KeysortFilterDeck, KeysortFilterNeedle } from "@workspace/ui/components/keysort-filter"
 import { Mixer, MixerStrip, MixerStripFader, MixerStripMute, MixerStripName, MixerStripSolo } from "@workspace/ui/components/mixer-strip"
 import { MotorizedFader } from "@workspace/ui/components/motorized-fader"
 import { PushToTalk, PushToTalkKey } from "@workspace/ui/components/push-to-talk"
@@ -83,6 +84,19 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "keysort-filter": () => (
+    <KeysortFilter aria-label="Contracts" defaultValue={["a"]} className="pointer-events-none max-w-64">
+      <div className="hidden">
+        <KeysortFilterNeedle value="a">A</KeysortFilterNeedle>
+        <KeysortFilterNeedle value="b">B</KeysortFilterNeedle>
+        <KeysortFilterNeedle value="c">C</KeysortFilterNeedle>
+      </div>
+      <KeysortFilterDeck className="grid-cols-2">
+        <KeysortFilterCard notches={["a", "c"]}>Acme NDA</KeysortFilterCard>
+        <KeysortFilterCard notches={["b"]}>Globex SOW</KeysortFilterCard>
+      </KeysortFilterDeck>
+    </KeysortFilter>
+  ),
   "mixer-strip": () => (
     <Mixer aria-label="Agents" className="pointer-events-none scale-75">
       {[["Plan", 70], ["Code", 40], ["Test", 55]].map(([name, v]) => (

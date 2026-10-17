@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { KeysortFilterContracts } from "./keysort-filter-contracts"
 import { MixerStripAgents } from "./mixer-strip-agents"
 import { MotorizedFaderTemperature } from "./motorized-fader-temperature"
 import { PushToTalkAgent } from "./push-to-talk-agent"
@@ -42,6 +43,7 @@ import { WalletUsage } from "./wallet-usage"
 
 /** Demo components by file name, matching `Example.file` in the catalog. */
 export const demos: Record<string, React.ComponentType> = {
+  "keysort-filter-contracts.tsx": KeysortFilterContracts,
   "mixer-strip-agents.tsx": MixerStripAgents,
   "motorized-fader-temperature.tsx": MotorizedFaderTemperature,
   "push-to-talk-agent.tsx": PushToTalkAgent,
