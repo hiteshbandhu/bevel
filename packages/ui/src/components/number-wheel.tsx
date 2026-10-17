@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "cn"
-import { formatAmountParts, type AmountFormat } from "@workspace/ui/lib/amount"
+import { formatAmountParts, type AmountFormat } from "@workspace/ui/lib/format-amount"
 
 const DIGITS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 

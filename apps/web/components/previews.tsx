@@ -1,6 +1,25 @@
 import type * as React from "react"
+import {
+  ActivityLog,
+  ActivityLogEntries,
+  ActivityLogEntry,
+} from "@workspace/ui/components/activity-log"
 import { Amount } from "@workspace/ui/components/amount"
+import {
+  Approval,
+  ApprovalActions,
+  ApprovalReject,
+  ApprovalSeal,
+  ApprovalTitle,
+} from "@workspace/ui/components/approval"
 import { Breaker, BreakerPanel, BreakerRow } from "@workspace/ui/components/breaker"
+import { Citation, CitationTrigger } from "@workspace/ui/components/citation"
+import {
+  DelegationAgent,
+  DelegationBoard,
+  DelegationSlot,
+  DelegationTask,
+} from "@workspace/ui/components/delegation-board"
 import { DialMark, Gauge } from "@workspace/ui/components/dial"
 import { Keycard, KeycardKey, KeycardLabel, KeycardSlot } from "@workspace/ui/components/keycard"
 import {
@@ -13,6 +32,7 @@ import {
   LedgerTable,
 } from "@workspace/ui/components/ledger"
 import { Meter, MeterFlag, MeterHeader, MeterLabel, MeterReading } from "@workspace/ui/components/meter"
+import { NameTag, NameTagDetail, NameTagName } from "@workspace/ui/components/name-tag"
 import { NumberWheel } from "@workspace/ui/components/number-wheel"
 import {
   Receipt,
@@ -24,7 +44,10 @@ import {
   ReceiptTotal,
   ReceiptValue,
 } from "@workspace/ui/components/receipt"
+import { Redaction } from "@workspace/ui/components/redaction"
+import { Redline, RedlineChange, RedlineDocument } from "@workspace/ui/components/redline"
 import { Seal, Stamp, StampDetail } from "@workspace/ui/components/stamp"
+import { TaskPlan, TaskPlanStep, TaskPlanSteps } from "@workspace/ui/components/task-plan"
 import { Ticket, TicketLabel, TicketSheet, TicketValue } from "@workspace/ui/components/ticket-sheet"
 import {
   Wallet,
@@ -45,6 +68,91 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  redaction: () => (
+    <div className="bevel-paper flex flex-col gap-3 rounded-(--bevel-radius-xs) p-5 text-sm leading-relaxed">
+      <Stamp tone="red" className="self-start">
+        Privileged
+      </Stamp>
+      <p>
+        Notice was sent by <Redaction length={14} /> on 3 March, so <Redaction length={20} />.
+      </p>
+    </div>
+  ),
+  redline: () => (
+    <Redline>
+      <RedlineDocument className="text-sm">
+        End on <RedlineChange id="p" deletion="thirty" insertion="sixty" /> days&apos; notice.
+      </RedlineDocument>
+    </Redline>
+  ),
+  "delegation-board": () => (
+    <DelegationBoard aria-label="Subagents" className="grid-cols-2">
+      <DelegationSlot status="active">
+        <DelegationAgent>
+          <NameTag variant="plain">
+            <NameTagName>Research</NameTagName>
+          </NameTag>
+        </DelegationAgent>
+        <DelegationTask>Find cases</DelegationTask>
+      </DelegationSlot>
+      <DelegationSlot status="complete">
+        <DelegationAgent>
+          <NameTag variant="plain">
+            <NameTagName>Cite</NameTagName>
+          </NameTag>
+        </DelegationAgent>
+        <DelegationTask>Verified</DelegationTask>
+      </DelegationSlot>
+    </DelegationBoard>
+  ),
+  approval: () => (
+    <Approval>
+      <ApprovalTitle>Send the redline</ApprovalTitle>
+      <ApprovalActions>
+        <ApprovalReject>Send back</ApprovalReject>
+        <ApprovalSeal />
+      </ApprovalActions>
+    </Approval>
+  ),
+  "activity-log": () => (
+    <ActivityLog aria-label="Activity">
+      <ActivityLogEntries>
+        <ActivityLogEntry kind="action" time="14:02">Opened lease.pdf</ActivityLogEntry>
+        <ActivityLogEntry kind="question" time="14:03">Email as notice?</ActivityLogEntry>
+        <ActivityLogEntry kind="response" time="14:05">Redline ready</ActivityLogEntry>
+      </ActivityLogEntries>
+    </ActivityLog>
+  ),
+  "task-plan": () => (
+    <TaskPlan>
+      <TaskPlanSteps>
+        <TaskPlanStep status="done">Read the lease</TaskPlanStep>
+        <TaskPlanStep status="current">Check notice periods</TaskPlanStep>
+        <TaskPlanStep status="pending">Draft a redline</TaskPlanStep>
+      </TaskPlanSteps>
+    </TaskPlan>
+  ),
+  citation: () => (
+    <p className="bevel-paper rounded-(--bevel-radius-xs) p-5 text-sm leading-relaxed">
+      Notice must be in writing
+      <Citation>
+        <CitationTrigger>1</CitationTrigger>
+      </Citation>{" "}
+      and sent to the scheduled address
+      <Citation>
+        <CitationTrigger tone="blue">2</CitationTrigger>
+      </Citation>
+      .
+    </p>
+  ),
+  "name-tag": () => (
+    <div className="flex justify-center">
+      <NameTag>
+        <NameTagName>Research</NameTagName>
+        <NameTagDetail>acting for Priya</NameTagDetail>
+      </NameTag>
+    </div>
+  ),
   amount: () => (
     <div className="flex flex-col items-center gap-1 py-6 text-center">
       <span className="text-4xl font-semibold tracking-tight">
@@ -88,14 +196,10 @@ export const previews: Record<string, React.ComponentType> = {
           <ReceiptLabel>50 credits</ReceiptLabel>
           <ReceiptValue>$50.00</ReceiptValue>
         </ReceiptItem>
-        <ReceiptItem>
-          <ReceiptLabel>Fee</ReceiptLabel>
-          <ReceiptValue>$1.75</ReceiptValue>
-        </ReceiptItem>
       </ReceiptItems>
       <ReceiptTotal>
         <ReceiptLabel>Total</ReceiptLabel>
-        <ReceiptValue>$51.75</ReceiptValue>
+        <ReceiptValue>$50.00</ReceiptValue>
       </ReceiptTotal>
       <ReceiptMark>
         <Stamp>Paid</Stamp>
@@ -120,10 +224,10 @@ export const previews: Record<string, React.ComponentType> = {
     </div>
   ),
   breaker: () => (
-    <BreakerPanel aria-label="Caps">
-      <BreakerRow className="justify-center">
-        <Breaker label="Workspace" defaultChecked />
-        <Breaker label="Per person" tripped />
+    <BreakerPanel aria-label="Caps" className="mx-auto w-fit p-4">
+      <BreakerRow className="flex-nowrap justify-center gap-3">
+        <Breaker label="Team" defaultChecked />
+        <Breaker label="Person" tripped />
       </BreakerRow>
     </BreakerPanel>
   ),
@@ -170,7 +274,7 @@ export const previews: Record<string, React.ComponentType> = {
   ),
   wallet: () => (
     <Wallet>
-      <WalletCards>
+      <WalletCards slots={2}>
         <WalletCard>
           <PaymentCardBrand>Amex</PaymentCardBrand>
           <PaymentCardNumber last4="1005" />

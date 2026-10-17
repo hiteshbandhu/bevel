@@ -1,0 +1,24 @@
+/*
+ * Citation: an exhibit sticker in the text that opens the cited passage on
+ * a paper slip. Builds on bevel.css (sticker, paper, ink, motion).
+ */
+
+:root {
+  --citation-tilt: -2deg;
+  --citation-size: 0.75em; /* the sticker, relative to the text it sits in */
+  --citation-abbreviation-size: 0.8em;
+  --citation-highlight: oklch(0.93 0.13 100 / 0.75); /* highlighter over the quoted passage */
+  --citation-sticker-blue: oklch(0.86 0.06 240);
+  --citation-sticker-white: oklch(0.97 0.004 90);
+  --citation-pop-scale: 0.96; /* the slip starts slightly small, from the sticker */
+}
+
+[data-slot="citation-trigger"] {
+  --citation-sticker: var(--bevel-sticker);
+}
+[data-slot="citation-trigger"][data-tone="blue"] {
+  --citation-sticker: var(--citation-sticker-blue);
+}
+[data-slot="citation-trigger"][data-tone="white"] {
+  --citation-sticker: var(--citation-sticker-white);
+}

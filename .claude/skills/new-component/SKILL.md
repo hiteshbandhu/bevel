@@ -51,6 +51,8 @@ Title `"<Category>/<Name>"` — sub-components use their own name under the same
 2. `components/demos/<name>-<example>.tsx` — self-contained (the site shows this file as the example's code), registered in `components/demos/index.ts`.
 3. `components/previews.tsx` — a still, non-interactive preview for the tile.
 
+The registry picks the component up from the catalog: run `pnpm registry:build`, then check `npx shadcn@latest add @bevel/<slug> --dry-run` against a local app with `"@bevel": "http://localhost:3000/r/{name}.json"` in its `components.json`. Don't give a `lib/` file and a component the same base name.
+
 Sub-components then appear nested: `/components/<parent>/<slug>`, indented in the sidebar, in the parent's "Built from" section, and with a "Part of <Parent>" line on their page.
 
 ## 7. Verify

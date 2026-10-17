@@ -7,7 +7,7 @@ const meta = {
   component: Stamp,
   args: { tone: "red", shape: "rect", children: "Received" },
   argTypes: {
-    tone: { control: "inline-radio", options: ["red", "blue", "green", "black"] },
+    tone: { control: "inline-radio", options: ["red", "blue", "green", "amber", "black"] },
     shape: { control: "inline-radio", options: ["rect", "round"] },
   },
   parameters: { layout: "centered" },
@@ -35,6 +35,7 @@ export const Tones: Story = {
       <Stamp>Received</Stamp>
       <Stamp tone="blue">Refunded</Stamp>
       <Stamp tone="green">Auto</Stamp>
+      <Stamp tone="amber">Caution</Stamp>
       <Stamp tone="black">Held</Stamp>
     </div>
   ),

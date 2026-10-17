@@ -23,7 +23,7 @@ function LedgerTitle({ className, ...props }: React.ComponentProps<"p">) {
     <p
       data-slot="ledger-title"
       className={cn(
-        "flex h-(--ledger-rule) items-end pr-4 pb-1 pl-(--ledger-indent) font-semibold tracking-(--bevel-tracking-label) uppercase",
+        "flex h-(--ledger-rule) items-end pr-4 pb-(--ledger-baseline) pl-(--ledger-indent) font-semibold tracking-(--bevel-tracking-label) uppercase",
         className
       )}
       {...props}
@@ -65,7 +65,8 @@ function LedgerHead({ className, ...props }: React.ComponentProps<"th">) {
       data-slot="ledger-head"
       scope="col"
       className={cn(
-        "px-3 align-bottom font-semibold whitespace-nowrap first:w-(--ledger-margin) first:pr-3 first:pl-2 first:text-right",
+        "px-3 pb-(--ledger-baseline) align-bottom font-semibold whitespace-nowrap",
+        "first:w-(--ledger-margin) first:min-w-(--ledger-margin) first:pr-3 first:pl-2 first:text-right",
         className
       )}
       {...props}
@@ -78,7 +79,9 @@ function LedgerCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="ledger-cell"
       className={cn(
-        "px-3 align-middle whitespace-nowrap first:w-(--ledger-margin) first:pr-3 first:pl-2 first:text-right",
+        // Written on the line, like ink on ruled paper.
+        "px-3 pb-(--ledger-baseline) align-bottom whitespace-nowrap",
+        "first:w-(--ledger-margin) first:min-w-(--ledger-margin) first:pr-3 first:pl-2 first:text-right",
         className
       )}
       {...props}

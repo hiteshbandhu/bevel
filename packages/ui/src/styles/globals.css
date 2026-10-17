@@ -13,6 +13,14 @@
 @import "./breaker.css";
 @import "./ledger.css";
 @import "./keycard.css";
+@import "./name-tag.css";
+@import "./citation.css";
+@import "./task-plan.css";
+@import "./activity-log.css";
+@import "./approval.css";
+@import "./delegation-board.css";
+@import "./redline.css";
+@import "./redaction.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));

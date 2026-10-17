@@ -10,13 +10,16 @@
     "typecheck": "turbo typecheck",
     "test": "turbo test",
     "storybook": "pnpm --filter storybook dev",
-    "check:tokens": "node scripts/check-tokens.mjs"
+    "check:tokens": "node scripts/check-tokens.mjs",
+    "registry:build": "node scripts/build-registry.mts && shadcn build registry.json --output apps/web/public/r"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
+    "postcss": "8.5.30",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "shadcn": "4.21.5",
     "turbo": "^2.11.7",
     "typescript": "^5"
   },

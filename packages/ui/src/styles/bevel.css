@@ -103,6 +103,7 @@
   --bevel-ink-blue: oklch(0.44 0.14 262);
   --bevel-ink-green: oklch(0.5 0.12 155);
   --bevel-ink-black: oklch(0.3 0.01 260);
+  --bevel-ink-amber: oklch(0.55 0.13 65);
 
   /* Brass and ivory: instrument hardware and dial faces */
   --bevel-brass: oklch(0.76 0.11 82);
@@ -110,6 +111,19 @@
   --bevel-ivory: oklch(0.95 0.025 90);
   --bevel-ivory-foreground: oklch(0.25 0.015 60);
   --bevel-needle: oklch(0.55 0.2 27);
+
+  /* Desk stationery: legal pads, pens, pencils, exhibit stickers */
+  --bevel-pad: oklch(0.95 0.075 98); /* yellow legal pad */
+  --bevel-pad-foreground: oklch(0.27 0.03 255);
+  --bevel-pad-rule: oklch(0.72 0.06 235 / 0.45);
+  --bevel-pad-margin: oklch(0.62 0.16 25 / 0.55);
+  --bevel-pen-red: oklch(0.52 0.2 27); /* correcting pen */
+  --bevel-pen-blue: oklch(0.42 0.15 262); /* writing pen */
+  --bevel-pencil: oklch(0.55 0.01 260); /* not written in ink yet */
+  --bevel-sticker: oklch(0.9 0.12 95); /* exhibit sticker */
+  --bevel-sticker-foreground: oklch(0.26 0.03 70);
+  /* Handwriting. Bring a marker font (e.g. Permanent Marker) for the full effect; these are fallbacks. */
+  --bevel-font-marker: "Permanent Marker", "Marker Felt", "Chalkboard SE", ui-rounded, "Arial Rounded MT Bold", system-ui, sans-serif;
 }
 
 .dark {
@@ -117,6 +131,7 @@
   /* Paper under dim light, not inverted: it's still paper. */
   --bevel-paper: oklch(0.88 0.008 85);
   --bevel-ivory: oklch(0.86 0.022 90);
+  --bevel-pad: oklch(0.86 0.07 98);
   --bevel-cast: oklch(0 0 0 / 0.55);
 }
 
@@ -227,4 +242,32 @@
 }
 .dark :is([data-bevel-family="leather"], [data-bevel-family="paper"]) {
   --bevel-cast: oklch(0 0 0 / 0.55);
+}
+
+/*
+ * Ruled paper: rules every --bevel-rule-height and a margin line at
+ * --bevel-rule-margin. Set --bevel-sheet for the paper colour. The ruling
+ * scrolls with the content.
+ */
+@utility bevel-ruled {
+  background-color: var(--bevel-sheet, var(--bevel-paper));
+  background-image:
+    linear-gradient(
+      to right,
+      transparent calc(var(--bevel-rule-margin) - 1px),
+      var(--bevel-sheet-margin, var(--bevel-paper-margin)) calc(var(--bevel-rule-margin) - 1px) calc(var(--bevel-rule-margin) + 1px),
+      transparent calc(var(--bevel-rule-margin) + 1px)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 calc(var(--bevel-rule-height) - 1px),
+      var(--bevel-sheet-rule, var(--bevel-paper-rule)) calc(var(--bevel-rule-height) - 1px) var(--bevel-rule-height)
+    ),
+    var(--bevel-fibre);
+  background-size: 100% 100%, 100% 100%, 240px 240px;
+  background-attachment: local;
+  color: var(--bevel-paper-foreground);
+  box-shadow:
+    0 1px 1px var(--bevel-cast),
+    0 6px 14px -4px var(--bevel-cast);
 }

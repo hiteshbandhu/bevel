@@ -15,7 +15,9 @@ shadcn-style registry of tactile, skeuomorphic components built on Base UI (`@ba
 ## Layout
 
 - `packages/ui` — the components (`src/components/*.tsx`). This is what ships via the registry; keep it free of Storybook/test deps.
-- `apps/web` — Next.js docs site; will also host the shadcn registry (`registry.json` → `shadcn build`).
+- `apps/web` — Next.js docs site; also serves the shadcn registry at `/r/{name}.json`.
+- Registry: `pnpm registry:build` runs `scripts/build-registry.mts`, which generates `registry.json` and `registry/bevel/**` from `apps/web/lib/catalog.ts` (imports rewritten from `@workspace/ui/...` to `@/...`, stylesheets converted into each item's `css` field, `bevel.css` as the `@bevel/bevel` item every component depends on), then `shadcn build` writes `apps/web/public/r`. All three are generated and gitignored; `apps/web` dev and build run it first. Users install with `npx shadcn@latest add @bevel/<slug>` after adding `"registries": { "@bevel": "<site>/r/{name}.json" }`. Set `NEXT_PUBLIC_SITE_URL` in production.
+- Two files may not share a base name across `components/` and `lib/` (the CLI resolves imports by file name): the amount helper is `lib/format-amount.ts` for that reason.
 - `apps/storybook` — Storybook 10 (Vite). Stories live in `src/stories`. `pnpm --filter storybook test` runs every story as a Vitest browser test (Chromium via Playwright) with a11y checks set to fail.
 - `docs/reference/components-build/` — the components.build spec (shadcn + Hayden Bleasel). Read the relevant chapter before designing a component API.
 

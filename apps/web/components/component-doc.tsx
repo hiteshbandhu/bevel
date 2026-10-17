@@ -11,6 +11,7 @@ import {
   type ComponentDoc,
 } from "@/lib/catalog"
 import { readDemo, readLibraryFile } from "@/lib/source"
+import { registryNamespace, registryUrl } from "@/lib/site"
 
 const crumbClass =
   "rounded-sm outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
@@ -98,63 +99,110 @@ export async function ComponentDocPage({ component }: { component: ComponentDoc 
 
       <section className="mt-20">
         <h2 className="text-2xl font-semibold tracking-tight">Installation</h2>
-        <ol className="mt-6 flex list-decimal flex-col gap-8 pl-5 marker:text-muted-foreground">
+
+        <h3 className="mt-8 font-semibold">Add with the CLI</h3>
+        <ol className="mt-4 flex list-decimal flex-col gap-6 pl-5 marker:text-muted-foreground">
           <li>
-            <p>Install the dependencies.</p>
+            <p>
+              Once per project, add the Bevel registry to{" "}
+              <code className="font-mono text-sm">components.json</code>.
+            </p>
             <CodeBlock
               className="mt-3"
-              lang="bash"
-              title="Terminal"
-              code={`pnpm add ${component.dependencies.join(" ")}`}
+              lang="json"
+              title="components.json"
+              code={JSON.stringify({ registries: { [registryNamespace]: registryUrl } }, null, 2)}
             />
           </li>
           <li>
             <p>
-              Add the Bevel foundation, if you haven&apos;t already.{" "}
-              <span className="text-muted-foreground">{foundation.description}</span>
+              Add {component.name}.{" "}
+              <span className="text-muted-foreground">
+                This brings in{" "}
+                {builtFrom.length > 0
+                  ? `${builtFrom.map((d) => d.name).join(", ")} and the Bevel foundation`
+                  : "the Bevel foundation"}
+                , installs {component.dependencies.join(" and ")}, and merges the styles into your
+                global CSS.
+              </span>
             </p>
-            <CodeBlock className="mt-3" lang="css" title={foundation.file} code={foundationSource} />
-          </li>
-          {builtFrom.length > 0 && (
-            <li>
-              <p>
-                Install the components {component.name} is built from:{" "}
-                {builtFrom.map((dependency, i) => (
-                  <span key={dependency.slug}>
-                    {i > 0 && ", "}
-                    <Link href={componentHref(dependency)} className={linkClass}>
-                      {dependency.name}
-                    </Link>
-                  </span>
-                ))}
-                .
-              </p>
-            </li>
-          )}
-          {component.files.map((file, i) => (
-            <li key={file}>
-              <p>
-                Copy <code className="font-mono text-sm">{file.split("/").pop()}</code> into your
-                project.
-              </p>
-              <CodeBlock
-                className="mt-3"
-                lang={file.endsWith(".css") ? "css" : "tsx"}
-                title={file}
-                code={librarySources[i]!}
-              />
-            </li>
-          ))}
-          <li>
-            <p>Import the stylesheets after Tailwind in your global CSS, foundation first.</p>
             <CodeBlock
               className="mt-3"
-              lang="css"
-              title="globals.css"
-              code={stylesheets.map((file) => `@import "./${fileName(file)}";`).join("\n")}
+              lang="bash"
+              title="Terminal"
+              code={`npx shadcn@latest add ${registryNamespace}/${component.slug}`}
             />
           </li>
         </ol>
+
+        <details className="group mt-10 rounded-xl border">
+          <summary className="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 font-semibold outline-none select-none focus-visible:ring-2 focus-visible:ring-ring">
+            Install manually
+            <span aria-hidden className="text-muted-foreground transition-[rotate] duration-(--bevel-duration-small) group-open:rotate-45">
+              +
+            </span>
+          </summary>
+          <ol className="flex list-decimal flex-col gap-8 border-t px-4 pt-6 pb-6 pl-9 marker:text-muted-foreground">
+            <li>
+              <p>Install the dependencies.</p>
+              <CodeBlock
+                className="mt-3"
+                lang="bash"
+                title="Terminal"
+                code={`pnpm add ${component.dependencies.join(" ")}`}
+              />
+            </li>
+            <li>
+              <p>
+                Add the Bevel foundation, if you haven&apos;t already.{" "}
+                <span className="text-muted-foreground">{foundation.description}</span>
+              </p>
+              <CodeBlock className="mt-3" lang="css" title={foundation.file} code={foundationSource} />
+            </li>
+            {builtFrom.length > 0 && (
+              <li>
+                <p>
+                  Install the components {component.name} is built from:{" "}
+                  {builtFrom.map((dependency, i) => (
+                    <span key={dependency.slug}>
+                      {i > 0 && ", "}
+                      <Link href={componentHref(dependency)} className={linkClass}>
+                        {dependency.name}
+                      </Link>
+                    </span>
+                  ))}
+                  .
+                </p>
+              </li>
+            )}
+            {component.files.map((file, i) => (
+              <li key={file}>
+                <p>
+                  Copy <code className="font-mono text-sm">{file.split("/").pop()}</code> into{" "}
+                  <code className="font-mono text-sm">
+                    {file.startsWith("lib/") ? "lib" : file.endsWith(".css") ? "your styles" : "components/ui"}
+                  </code>
+                  .
+                </p>
+                <CodeBlock
+                  className="mt-3"
+                  lang={file.endsWith(".css") ? "css" : "tsx"}
+                  title={file}
+                  code={librarySources[i]!}
+                />
+              </li>
+            ))}
+            <li>
+              <p>Import the stylesheets after Tailwind in your global CSS, foundation first.</p>
+              <CodeBlock
+                className="mt-3"
+                lang="css"
+                title="globals.css"
+                code={stylesheets.map((file) => `@import "./${fileName(file)}";`).join("\n")}
+              />
+            </li>
+          </ol>
+        </details>
       </section>
 
       <section className="mt-20">

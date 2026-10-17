@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Meter as MeterPrimitive } from "@base-ui/react/meter"
 import { cn } from "cn"
-import { formatAmount } from "@workspace/ui/lib/amount"
+import { formatAmount } from "@workspace/ui/lib/format-amount"
 
 /* The needle sweeps 270°, from bottom-left (-135°) to bottom-right (135°). */
 const SWEEP = 270

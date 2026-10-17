@@ -64,60 +64,24 @@ export const categories: Category[] = [
     description: "Readouts and controls from a panel: rolling counters, gauges, dials and breakers.",
   },
   {
+    slug: "agents",
+    name: "Agents",
+    description:
+      "Plans, logs, delegation and approvals for AI agents at work. Who's doing what, how far along, and what needs you.",
+  },
+  {
+    slug: "documents",
+    name: "Documents",
+    description: "Sources and edits: citations that open their passage, and redlines you accept or reject.",
+  },
+  {
     slug: "marks",
     name: "Marks",
-    description: "Ink and relief pressed into paper: status stamps and embossed seals.",
+    description: "Ink and relief on paper: status stamps, embossed seals and redactions.",
   },
 ]
 
 export const components: ComponentDoc[] = [
-  {
-    slug: "payment-card",
-    name: "Payment card",
-    category: "money",
-    parent: "wallet",
-    description:
-      "A plastic payment card at real proportions. Use it on its own, as a radio in a picker, or inside a Wallet.",
-    files: ["components/payment-card.tsx", "styles/payment-card.css"],
-    dependencies: ["@base-ui/react", "cn"],
-    anatomy: `<PaymentCard>
-  <PaymentCardBrand />
-  <PaymentCardNumber />
-  <PaymentCardChip />
-</PaymentCard>`,
-    parts: [
-      {
-        name: "PaymentCard",
-        renders: "div",
-        description:
-          "The card, at ID-1 proportions (85.60 × 53.98 mm). tone picks sapphire, gold or graphite. Pass render={<Radio.Root value=\"…\" />} to make it selectable.",
-      },
-      {
-        name: "PaymentCardBrand",
-        renders: "span",
-        description: "The card's mark. Text by default; put your own SVG logo inside.",
-      },
-      {
-        name: "PaymentCardNumber",
-        renders: "span",
-        description: "last4 shown as •••• 4242 and read as “ending in 4242”.",
-      },
-      {
-        name: "PaymentCardChip",
-        renders: "span",
-        description: "The metal contact chip. Decorative and hidden from screen readers.",
-      },
-    ],
-    examples: [
-      {
-        slug: "picker",
-        title: "Saved payment methods",
-        description:
-          "Cards as a radio group, without a wallet. The chosen card lifts; arrow keys move between them.",
-        file: "payment-card-picker.tsx",
-      },
-    ],
-  },
   {
     slug: "wallet",
     name: "Wallet",
@@ -237,12 +201,59 @@ export const components: ComponentDoc[] = [
     ],
   },
   {
+    slug: "payment-card",
+    name: "Payment card",
+    category: "money",
+    parent: "wallet",
+    description:
+      "A plastic payment card at real proportions. Use it on its own, as a radio in a picker, or inside a Wallet.",
+    files: ["components/payment-card.tsx", "styles/payment-card.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<PaymentCard>
+  <PaymentCardBrand />
+  <PaymentCardNumber />
+  <PaymentCardChip />
+</PaymentCard>`,
+    parts: [
+      {
+        name: "PaymentCard",
+        renders: "div",
+        description:
+          "The card, at ID-1 proportions (85.60 × 53.98 mm). tone picks sapphire, gold or graphite. Pass render={<Radio.Root value=\"…\" />} to make it selectable.",
+      },
+      {
+        name: "PaymentCardBrand",
+        renders: "span",
+        description: "The card's mark. Text by default; put your own SVG logo inside.",
+      },
+      {
+        name: "PaymentCardNumber",
+        renders: "span",
+        description: "last4 shown as •••• 4242 and read as “ending in 4242”.",
+      },
+      {
+        name: "PaymentCardChip",
+        renders: "span",
+        description: "The metal contact chip. Decorative and hidden from screen readers.",
+      },
+    ],
+    examples: [
+      {
+        slug: "picker",
+        title: "Saved payment methods",
+        description:
+          "Cards as a radio group, without a wallet. The chosen card lifts; arrow keys move between them.",
+        file: "payment-card-picker.tsx",
+      },
+    ],
+  },
+  {
     slug: "amount",
     name: "Amount",
     category: "money",
     description:
       "A formatted figure with steady digits, in any currency and locale. Every amount in Bevel is one of these.",
-    files: ["lib/amount.ts", "components/amount.tsx"],
+    files: ["lib/format-amount.ts", "components/amount.tsx"],
     dependencies: ["cn"],
     anatomy: `<Amount value={1240.5} currency="USD" />`,
     parts: [
@@ -644,6 +655,331 @@ export const components: ComponentDoc[] = [
         description:
           "Drag the card through the reader, or flick it. A short drag springs back. Keyboard: focus the card, press Enter.",
         file: "keycard-swipe.tsx",
+      },
+    ],
+  },
+  {
+    slug: "name-tag",
+    name: "Name tag",
+    category: "agents",
+    description:
+      "Who someone is: an agent, a person, a guest. The \u201cHELLO my name is\u201d sticker, a visitor badge for outside collaborators, and a plain tag for lists.",
+    files: ["components/name-tag.tsx", "styles/name-tag.css"],
+    dependencies: ["cn"],
+    anatomy: `<NameTag variant="sticker">
+  <NameTagName />
+  <NameTagDetail />
+</NameTag>`,
+    parts: [
+      {
+        name: "NameTag",
+        renders: "div",
+        description:
+          "variant: sticker, visitor or plain. greeting and caption translate the printed words, which screen readers skip.",
+      },
+      { name: "NameTagName", renders: "span", description: "The name, in marker on the sticker and badge." },
+      { name: "NameTagDetail", renders: "span", description: "A role, or who an agent acts for." },
+      { name: "NameTagInput", renders: "input", description: "Write a new name on the tag. Labelled \u201cName\u201d." },
+    ],
+    examples: [
+      {
+        slug: "agents",
+        title: "Agents and guests",
+        description: "Rename the agent by writing on its sticker. Guests get a visitor badge; lists use the plain tag.",
+        file: "name-tag-agents.tsx",
+        wide: true,
+      },
+    ],
+  },
+  {
+    slug: "citation",
+    name: "Citation",
+    category: "documents",
+    description:
+      "An exhibit sticker in the text that opens the exact passage it cites, with a stamp saying whether the source checks out.",
+    files: ["components/citation.tsx", "styles/citation.css"],
+    registryDependencies: ["stamp"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Citation>
+  <CitationTrigger>4</CitationTrigger>
+  <CitationContent>
+    <CitationSource />
+    <CitationLocation />
+    <CitationQuote />
+    <CitationStatus status="verified" />
+  </CitationContent>
+</Citation>`,
+    parts: [
+      { name: "Citation", renders: "Popover", description: "One cited source. open, defaultOpen, onOpenChange." },
+      {
+        name: "CitationTrigger",
+        renders: "button",
+        description:
+          "The exhibit sticker, inline in text: \u201cEx. 4\u201d, read as \u201cExhibit 4\u201d. tone: yellow, blue, white. abbreviation and label change the prefix.",
+      },
+      {
+        name: "CitationContent",
+        renders: "Popover popup",
+        description: "The paper slip. Grows from the sticker; Escape closes it and returns focus.",
+      },
+      { name: "CitationSource", renders: "Popover title", description: "The source's name; titles the slip." },
+      { name: "CitationLocation", renders: "p", description: "Page, paragraph or clause." },
+      { name: "CitationQuote", renders: "blockquote", description: "The passage, highlighted." },
+      {
+        name: "CitationStatus",
+        renders: "Stamp",
+        description: "verified, caution or unverified, always in words. Children replace the word.",
+      },
+    ],
+    examples: [
+      {
+        slug: "answer",
+        title: "An answer with sources",
+        description: "Open a sticker to read the cited passage. The third source has been appealed.",
+        file: "citation-answer.tsx",
+      },
+    ],
+  },
+  {
+    slug: "task-plan",
+    name: "Task plan",
+    category: "agents",
+    description:
+      "An agent's plan on a legal pad. Finished steps are ticked in ink, the current one is underlined in red pen, the rest are still in pencil.",
+    files: ["components/task-plan.tsx", "styles/task-plan.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<TaskPlan>
+  <TaskPlanHeader>
+    <TaskPlanTitle />
+    <TaskPlanProgress value={2} max={5} />
+  </TaskPlanHeader>
+  <TaskPlanSteps>
+    <TaskPlanStep status="done" />
+    <TaskPlanStep status="current" />
+  </TaskPlanSteps>
+</TaskPlan>`,
+    parts: [
+      { name: "TaskPlan", renders: "div", description: "The pad. Every row sits on a rule." },
+      {
+        name: "TaskPlanProgress",
+        renders: "Progress",
+        description: "value and max. Read as \u201c2 of 5 done\u201d; children replace the visible text.",
+      },
+      { name: "TaskPlanSteps", renders: "ol", description: "The steps, in order." },
+      {
+        name: "TaskPlanStep",
+        renders: "li",
+        description:
+          "status: done, current, pending, error or skipped, spoken before the step. The current step is marked aria-current. The tick draws itself when a step finishes.",
+      },
+    ],
+    examples: [
+      {
+        slug: "agent",
+        title: "An agent at work",
+        description: "The plan advances on its own. Each step is ticked in ink as it finishes.",
+        file: "task-plan-agent.tsx",
+      },
+    ],
+  },
+  {
+    slug: "activity-log",
+    name: "Activity log",
+    category: "agents",
+    description:
+      "A docket of what an agent did: thoughts, actions, questions, responses and errors, each timed. Questions waiting on you are highlighted.",
+    files: ["components/activity-log.tsx", "styles/activity-log.css"],
+    dependencies: ["cn"],
+    anatomy: `<ActivityLog aria-label="Agent activity">
+  <ActivityLogTitle />
+  <ActivityLogEntries>
+    <ActivityLogEntry kind="action" time="14:02" />
+  </ActivityLogEntries>
+</ActivityLog>`,
+    parts: [
+      { name: "ActivityLog", renders: "section", description: "The docket page. Give it an aria-label." },
+      {
+        name: "ActivityLogEntries",
+        renders: "div (log)",
+        description:
+          "A live log: new entries are announced politely. Scrolls past --activity-log-height and follows new entries only while you're at the bottom.",
+      },
+      {
+        name: "ActivityLogEntry",
+        renders: "div",
+        description:
+          "kind: thought, action, question, response or error (shown in words), time and dateTime. Entries added later print in.",
+      },
+    ],
+    examples: [
+      {
+        slug: "agent",
+        title: "Two agents on a matter",
+        description: "Entries arrive as the agents work. Who acted is a plain Name tag.",
+        file: "activity-log-agent.tsx",
+        wide: true,
+      },
+    ],
+  },
+  {
+    slug: "approval",
+    name: "Approval",
+    category: "agents",
+    description:
+      "An action an agent wants to take, waiting for a person. Say what it does and what can't be undone; press and hold the brass seal to approve.",
+    files: ["components/approval.tsx", "styles/approval.css"],
+    registryDependencies: ["stamp"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Approval onApprove={send} onReject={sendBack}>
+  <ApprovalTitle />
+  <ApprovalDescription />
+  <ApprovalSignatures>
+    <ApprovalSignature name="Priya Shah" signed />
+  </ApprovalSignatures>
+  <ApprovalActions>
+    <ApprovalReject />
+    <ApprovalSeal />
+  </ApprovalActions>
+</Approval>`,
+    parts: [
+      {
+        name: "Approval",
+        renders: "div (group)",
+        description:
+          "state (pending, approved, rejected), defaultState, onApprove, onReject. Labelled by its title; the outcome is pressed into the card and announced.",
+      },
+      { name: "ApprovalDescription", renders: "p", description: "What happens and what can't be undone." },
+      {
+        name: "ApprovalSignature",
+        renders: "li",
+        description: "A signature line; signed names are written over it. For dual approval.",
+      },
+      { name: "ApprovalReject", renders: "Button", description: "Send it back. A single press." },
+      {
+        name: "ApprovalSeal",
+        renders: "Button",
+        description:
+          "Press and hold (pointer, Enter or Space) for --approval-hold to approve; letting go early springs back. requireHold={false} for a single press.",
+      },
+    ],
+    examples: [
+      {
+        slug: "send",
+        title: "Before an agent sends email",
+        description: "Hold the seal until it presses. Let go early and nothing happens.",
+        file: "approval-send.tsx",
+      },
+    ],
+  },
+  {
+    slug: "delegation-board",
+    name: "Delegation board",
+    category: "agents",
+    description:
+      "Pigeonholes for delegated work, one per subagent: its task slip, a lamp and a word for its status, and its progress. Finished work rises out of its cubby.",
+    files: ["components/delegation-board.tsx", "styles/delegation-board.css"],
+    registryDependencies: ["name-tag"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<DelegationBoard aria-label="Subagents">
+  <DelegationSlot status="active">
+    <DelegationAgent>
+      <NameTag variant="plain">…</NameTag>
+    </DelegationAgent>
+    <DelegationTask />
+    <DelegationProgress value={40} aria-label="Research progress" />
+  </DelegationSlot>
+</DelegationBoard>`,
+    parts: [
+      { name: "DelegationBoard", renders: "ul", description: "The board. Give it an aria-label." },
+      {
+        name: "DelegationSlot",
+        renders: "li",
+        description: "One subagent. status: pending, active, awaiting, error or complete, shown as a lamp and in words.",
+      },
+      { name: "DelegationAgent", renders: "div", description: "Who it is, with the status lamp. Holds a Name tag." },
+      { name: "DelegationTask", renders: "div", description: "The task slip. Rises out of the cubby when complete." },
+      { name: "DelegationProgress", renders: "Progress", description: "value and max; name it after the agent." },
+    ],
+    examples: [
+      {
+        slug: "agents",
+        title: "A coordinator's subagents",
+        description: "Four agents working in parallel. Drafting stops to ask you a question; answer it to unblock Review.",
+        file: "delegation-board-agents.tsx",
+        wide: true,
+      },
+    ],
+  },
+  {
+    slug: "redline",
+    name: "Redline",
+    category: "documents",
+    description:
+      "Proposed edits in proofreader's red ink, each with a sign-here flag to accept or reject it. Nothing is applied until someone decides.",
+    files: ["components/redline.tsx", "styles/redline.css"],
+    dependencies: ["cn"],
+    anatomy: `<Redline onDecisionsChange={save}>
+  <RedlineDocument>
+    … <RedlineChange id="period" deletion="thirty" insertion="sixty" /> …
+  </RedlineDocument>
+  <RedlineToolbar />
+</Redline>`,
+    parts: [
+      {
+        name: "Redline",
+        renders: "div",
+        description: "Holds the decisions: decisions, defaultDecisions, onDecisionsChange ({ id: accepted | rejected }).",
+      },
+      { name: "RedlineDocument", renders: "div", description: "The text being edited." },
+      {
+        name: "RedlineChange",
+        renders: "span (group)",
+        description:
+          "One edit: id, deletion, insertion. Uses real del and ins, read as \u201cdeleted\u201d and \u201cinserted\u201d. Its flag holds Accept and Reject.",
+      },
+      {
+        name: "RedlineToolbar",
+        renders: "div (toolbar)",
+        description: "How many changes are left, with Accept all and Reject all.",
+      },
+    ],
+    examples: [
+      {
+        slug: "clause",
+        title: "A notice clause",
+        description: "Three suggested edits. Decide each one, or all at once.",
+        file: "redline-clause.tsx",
+      },
+    ],
+  },
+  {
+    slug: "redaction",
+    name: "Redaction",
+    category: "marks",
+    description:
+      "A black marker bar over withheld text, read as \u201cRedacted\u201d with the reason. Hidden text is never rendered; revealed text keeps a trace of the marker.",
+    files: ["components/redaction.tsx", "styles/redaction.css"],
+    dependencies: ["cn"],
+    anatomy: `{canSee ? (
+  <Redaction revealed>the withheld text</Redaction>
+) : (
+  <Redaction length={22} reason="privileged" />
+)}`,
+    parts: [
+      {
+        name: "Redaction",
+        renders: "span",
+        description:
+          "length (in characters) sizes the bar; reason is read to screen readers; revealed shows children. Only pass children to viewers allowed to read them: anything sent to the browser can be read there.",
+      },
+    ],
+    examples: [
+      {
+        slug: "privilege",
+        title: "Privilege marks",
+        description: "A privileged memo, stamped. Switch who's reading: opposing counsel sees the redactions.",
+        file: "privilege-marks.tsx",
+        wide: true,
       },
     ],
   },
