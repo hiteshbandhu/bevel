@@ -1184,6 +1184,45 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "lockout",
+    name: "Lockout",
+    category: "coordination",
+    description:
+      "A lockout-tagout hasp: everyone working on something hangs their own padlock and tag, and it can't start until the last lock comes off. For freezes and holds.",
+    files: ["components/lockout.tsx", "styles/lockout.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Lockout aria-label="Database migration">
+  <LockoutHasp>
+    <LockoutLock id="priya" owner="Priya" reason="Restoring a backup" />
+  </LockoutHasp>
+  <LockoutAction>Run migration</LockoutAction>
+</Lockout>`,
+    parts: [
+      { name: "Lockout", renders: "div (group)", description: "Counts the locks on it. Give it an aria-label." },
+      { name: "LockoutHasp", renders: "ul", description: "The bar the locks hang from." },
+      {
+        name: "LockoutLock",
+        renders: "li",
+        description:
+          "id, owner, reason, shown on a danger tag. onRemove adds “Remove my lock”: pass it only for the current user's lock.",
+      },
+      {
+        name: "LockoutAction",
+        renders: "Button",
+        description: "Disabled while any lock remains, described as “Locked by 2: Priya, Sam”.",
+      },
+    ],
+    examples: [
+      {
+        slug: "migration",
+        title: "A migration on hold",
+        description: "Three locks hold the migration. Remove yours; the others come off as their work finishes.",
+        file: "lockout-migration.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

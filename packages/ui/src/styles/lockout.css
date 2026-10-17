@@ -1,0 +1,25 @@
+/*
+ * Lockout: a lockout-tagout hasp. Everyone working on something hangs
+ * their own padlock and tag; it can't start until the last one comes off.
+ * Builds on bevel.css (metal, paper, raised).
+ */
+
+:root {
+  --lockout-hasp: oklch(0.72 0.01 260); /* bright steel */
+  --lockout-hasp-edge: oklch(0.48 0.01 260);
+  --lockout-lock: oklch(0.55 0.2 27); /* safety red */
+  --lockout-lock-edge: oklch(0.38 0.16 27);
+  --lockout-shackle: oklch(0.82 0.01 260);
+  --lockout-tag: oklch(0.86 0.15 90); /* danger-tag yellow */
+  --lockout-tag-foreground: oklch(0.22 0.02 260);
+  --lockout-clear: oklch(0.6 0.15 150);
+}
+
+[data-slot="lockout"] {
+  --bevel-material: var(--lockout-hasp);
+  --bevel-material-edge: var(--lockout-hasp-edge);
+}
+[data-slot="lockout-lock-body"] {
+  --bevel-material: var(--lockout-lock);
+  --bevel-material-edge: var(--lockout-lock-edge);
+}

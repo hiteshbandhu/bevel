@@ -26,6 +26,7 @@
 @import "./vigilance.css";
 @import "./ballot-board.css";
 @import "./token-instrument.css";
+@import "./lockout.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));

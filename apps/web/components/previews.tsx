@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { Lockout, LockoutAction, LockoutHasp, LockoutLock } from "@workspace/ui/components/lockout"
 import { TokenInstrument, TokenInstrumentAction, TokenInstrumentSlot } from "@workspace/ui/components/token-instrument"
 import { BallotBoard, BallotCommit, BallotLever, BallotRace } from "@workspace/ui/components/ballot-board"
 import { Vigilance, VigilanceButton, VigilanceLamps } from "@workspace/ui/components/vigilance"
@@ -73,6 +74,14 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  lockout: () => (
+    <Lockout aria-label="Migration">
+      <LockoutHasp>
+        <LockoutLock id="p" owner="Priya" />
+        <LockoutLock id="s" owner="Sam" />
+      </LockoutHasp>
+    </Lockout>
+  ),
   "token-instrument": () => (
     <div className="flex justify-center">
       <TokenInstrument section="Lease" holder={null} you="You">
