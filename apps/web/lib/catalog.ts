@@ -1223,6 +1223,49 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "chess-clock",
+    name: "Chess clock",
+    category: "coordination",
+    description:
+      "Two clocks on one rocker: ending your turn stops your clock and starts the other, so exactly one runs. When a side runs out, its flag falls. For turn-taking with time budgets.",
+    files: ["components/chess-clock.tsx", "styles/chess-clock.css"],
+    dependencies: ["cn"],
+    anatomy: `<ChessClock aria-label="Review turns" names={["You", "Agent"]} time={120_000}>
+  <ChessClockFaces>
+    <ChessClockFace side={0} />
+    <ChessClockFace side={1} />
+  </ChessClockFaces>
+  <ChessClockRocker />
+</ChessClock>`,
+    parts: [
+      {
+        name: "ChessClock",
+        renders: "div (group)",
+        description:
+          "names, time (ms each), defaultActive, onTurn(active), onFlag(side). Announces turns and fallen flags, not seconds.",
+      },
+      { name: "ChessClockFaces", renders: "div", description: "Lays the two faces side by side." },
+      {
+        name: "ChessClockFace",
+        renders: "div",
+        description: "side 0 or 1. The hand climbs to twelve as time runs out; a timer below reads the time left.",
+      },
+      {
+        name: "ChessClockRocker",
+        renders: "div",
+        description: "Two buttons. Before play, a side's button starts its clock; then the waiting side's is down and disabled, and the running side's ends its turn.",
+      },
+    ],
+    examples: [
+      {
+        slug: "review",
+        title: "Taking turns with an agent",
+        description: "You and the agent have two minutes each. End your turn; the agent answers and hands back.",
+        file: "chess-clock-review.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

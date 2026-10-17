@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { ChessClockReview } from "./chess-clock-review"
 import { LockoutMigration } from "./lockout-migration"
 import { TokenInstrumentEdit } from "./token-instrument-edit"
 import { BallotBoardTools } from "./ballot-board-tools"
@@ -33,6 +34,7 @@ import { WalletUsage } from "./wallet-usage"
 
 /** Demo components by file name, matching `Example.file` in the catalog. */
 export const demos: Record<string, React.ComponentType> = {
+  "chess-clock-review.tsx": ChessClockReview,
   "lockout-migration.tsx": LockoutMigration,
   "token-instrument-edit.tsx": TokenInstrumentEdit,
   "ballot-board-tools.tsx": BallotBoardTools,
