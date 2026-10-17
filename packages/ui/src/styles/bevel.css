@@ -25,7 +25,7 @@
   /* 3. Material defaults; components and variants override these. */
   --bevel-material: oklch(0.47 0.085 52);
   --bevel-material-edge: oklch(0.3 0.06 44);
-  --bevel-material-recess: oklch(0.29 0.055 44);
+  --bevel-material-recess: oklch(0.2 0.008 260); /* neutral dark; materials set their own */
   --bevel-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .7 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   --bevel-grain-size: 180px;
 
