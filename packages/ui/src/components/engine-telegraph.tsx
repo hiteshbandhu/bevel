@@ -35,7 +35,7 @@ function angleOf(orders: Order[], value: string) {
 type EngineTelegraphProps = Omit<React.ComponentProps<"div">, "onChange"> & {
   /** The order you've set. */
   value: string
-  onValueChange: (value: string) => void
+  onValueChange?: (value: string) => void
   /** The order the other side has acknowledged. Differs from value while an order is pending. */
   confirmed: string
 }
@@ -72,7 +72,7 @@ function EngineTelegraph({ className, value, onValueChange, confirmed, children,
       >
         <RadioGroup
           value={value}
-          onValueChange={(next) => onValueChange(next as string)}
+          onValueChange={(next) => onValueChange?.(next as string)}
           aria-describedby={statusId}
           className="contents"
         >

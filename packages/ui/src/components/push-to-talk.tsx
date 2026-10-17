@@ -17,7 +17,7 @@ type PushToTalkProps = Omit<React.ComponentProps<"div">, "onChange"> & {
   /** Whether the key is held right now. Set it from onTalkingChange. */
   talking: boolean
   /** Called with true when the key goes down and false when it's let go. */
-  onTalkingChange: (talking: boolean) => void
+  onTalkingChange?: (talking: boolean) => void
   disabled?: boolean
 }
 
@@ -27,7 +27,7 @@ type PushToTalkProps = Omit<React.ComponentProps<"div">, "onChange"> & {
  */
 function PushToTalk({ className, talking, onTalkingChange, disabled = false, children, ...props }: PushToTalkProps) {
   return (
-    <PushToTalkContext value={{ talking, disabled, setTalking: onTalkingChange }}>
+    <PushToTalkContext value={{ talking, disabled, setTalking: (t) => onTalkingChange?.(t) }}>
       <div
         data-slot="push-to-talk"
         data-talking={talking ? "" : undefined}

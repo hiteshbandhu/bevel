@@ -6,7 +6,7 @@ import { cn } from "cn"
 type MotorizedFaderProps = Omit<React.ComponentProps<"div">, "onChange" | "defaultValue"> & {
   value: number
   /** Called when you move it. Set changedBy to you when you take it. */
-  onValueChange: (value: number) => void
+  onValueChange?: (value: number) => void
   min?: number
   max?: number
   step?: number
@@ -44,7 +44,7 @@ function MotorizedFader({
 
   const set = (next: number) => {
     const snapped = Math.min(max, Math.max(min, Math.round((next - min) / step) * step + min))
-    if (snapped !== value) onValueChange(snapped)
+    if (snapped !== value) onValueChange?.(snapped)
   }
   const fromPointer = (event: React.PointerEvent) => {
     const box = track.current?.getBoundingClientRect()
