@@ -1399,6 +1399,49 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "annunciator",
+    name: "Annunciator",
+    category: "instruments",
+    description:
+      "A panel of alarm lamps from a control room. A new alarm flashes until someone acknowledges it, then stays lit while its condition lasts; one that clears unseen keeps flashing, so nothing passes unnoticed. For agent, build and system alerts.",
+    files: ["components/annunciator.tsx", "styles/annunciator.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Annunciator aria-label="Agent alerts">
+  <AnnunciatorPanel>
+    <AnnunciatorTile id="budget" active={overBudget} tone="red">Over budget</AnnunciatorTile>
+    <AnnunciatorTile id="tests" active={failing}>Tests failing</AnnunciatorTile>
+  </AnnunciatorPanel>
+  <AnnunciatorAcknowledge />
+</Annunciator>`,
+    parts: [
+      {
+        name: "Annunciator",
+        renders: "div (group)",
+        description: "Latches alarms and announces each one as it comes in and clears. Give it an aria-label.",
+      },
+      { name: "AnnunciatorPanel", renders: "div", description: "The grid of lamp windows." },
+      {
+        name: "AnnunciatorTile",
+        renders: "button",
+        description:
+          "id, active, tone red, amber, green or white. Named with its state (“Over budget: new alarm”); pressing it acknowledges it. With reduced motion, a dot marks it new instead of flashing.",
+      },
+      {
+        name: "AnnunciatorAcknowledge",
+        renders: "Button",
+        description: "“Acknowledge 2”: acknowledges every unseen alarm. Disabled, but focusable, when there are none.",
+      },
+    ],
+    examples: [
+      {
+        slug: "agent",
+        title: "An agent's alert panel",
+        description: "Conditions come and go on their own. Acknowledge them one by one, or all at once.",
+        file: "annunciator-agent.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

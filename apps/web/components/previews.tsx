@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { Annunciator, AnnunciatorPanel, AnnunciatorTile } from "@workspace/ui/components/annunciator"
 import { EngineTelegraph, EngineTelegraphDial, EngineTelegraphOrder } from "@workspace/ui/components/engine-telegraph"
 import { TakeANumber, TakeANumberSign } from "@workspace/ui/components/take-a-number"
 import { KanbanRack, KanbanRackPockets } from "@workspace/ui/components/kanban-rack"
@@ -78,6 +79,16 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  annunciator: () => (
+    <Annunciator aria-label="Alerts" className="pointer-events-none max-w-60 p-2">
+      <AnnunciatorPanel className="grid-cols-2 sm:grid-cols-2">
+        <AnnunciatorTile id="a" active tone="red">Over budget</AnnunciatorTile>
+        <AnnunciatorTile id="b" active={false}>Rate limited</AnnunciatorTile>
+        <AnnunciatorTile id="c" active={false}>Tests failing</AnnunciatorTile>
+        <AnnunciatorTile id="d" active tone="green">Deploy live</AnnunciatorTile>
+      </AnnunciatorPanel>
+    </Annunciator>
+  ),
   "engine-telegraph": () => (
     <EngineTelegraph aria-label="Autonomy" value="act" onValueChange={() => {}} confirmed="ask" className="pointer-events-none max-w-52">
       <EngineTelegraphDial />

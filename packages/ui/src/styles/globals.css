@@ -31,6 +31,7 @@
 @import "./kanban-rack.css";
 @import "./take-a-number.css";
 @import "./engine-telegraph.css";
+@import "./annunciator.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));
