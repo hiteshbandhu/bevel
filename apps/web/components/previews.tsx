@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { MotorizedFader } from "@workspace/ui/components/motorized-fader"
 import { PushToTalk, PushToTalkKey } from "@workspace/ui/components/push-to-talk"
 import { DetentKnob, DetentKnobStop } from "@workspace/ui/components/detent-knob"
 import { Annunciator, AnnunciatorPanel, AnnunciatorTile } from "@workspace/ui/components/annunciator"
@@ -81,6 +82,9 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "motorized-fader": () => (
+    <MotorizedFader aria-label="Level" value={65} changedBy="Agent" onValueChange={() => {}} tabIndex={-1} className="pointer-events-none" />
+  ),
   "push-to-talk": () => (
     <PushToTalk talking={false} onTalkingChange={() => {}} className="pointer-events-none w-40 gap-3 p-3">
       <PushToTalkKey tabIndex={-1} className="h-16" />

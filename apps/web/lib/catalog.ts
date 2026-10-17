@@ -1516,6 +1516,43 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "motorized-fader",
+    name: "Motorized fader",
+    category: "instruments",
+    description:
+      "A console fader with a motor: when someone else sets it, the cap travels there on its own and says who moved it. Grab it and it's yours. For settings an agent, a teammate or an automation can change too.",
+    files: ["components/motorized-fader.tsx", "styles/motorized-fader.css"],
+    dependencies: ["cn"],
+    anatomy: `<MotorizedFader
+  aria-label="Temperature"
+  value={value}
+  changedBy={changedBy}
+  onValueChange={(v) => { setValue(v); setChangedBy("You") }}
+/>
+<MotorizedFaderReadout value={format(value)} changedBy={changedBy} />`,
+    parts: [
+      {
+        name: "MotorizedFader",
+        renders: "div (slider)",
+        description:
+          "value, onValueChange, min, max, step, changedBy, you, format, disabled. Arrow keys, Page Up and Down, Home and End, or drag. Reads as “0.70, set by Agent”. With reduced motion it jumps instead of travelling.",
+      },
+      {
+        name: "MotorizedFaderReadout",
+        renders: "p",
+        description: "A scribble strip: the value and who set it, lit when it wasn't you. Works on its own.",
+      },
+    ],
+    examples: [
+      {
+        slug: "temperature",
+        title: "Temperature the agent tunes",
+        description: "The agent adjusts its own temperature; grab the fader to take over, then hand it back.",
+        file: "motorized-fader-temperature.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

@@ -1,0 +1,25 @@
+/*
+ * Motorized fader: a console fader with a motor. When someone else sets
+ * it, the cap travels there on its own; grab it and you have control.
+ * Builds on bevel.css (metal, recessed, motion).
+ */
+
+:root {
+  --motorized-fader-travel: 9rem; /* how far the cap moves, end to end */
+  --motorized-fader-cap: 1.75rem; /* cap height */
+  --motorized-fader-panel: oklch(0.3 0.01 260);
+  --motorized-fader-panel-edge: oklch(0.2 0.01 260);
+  --motorized-fader-cap-colour: oklch(0.86 0.01 260); /* brushed aluminium */
+  --motorized-fader-cap-edge: oklch(0.6 0.01 260);
+  --motorized-fader-line: oklch(0.3 0.01 260);
+  --motorized-fader-remote: oklch(0.78 0.15 230); /* lit while the motor moves it */
+}
+
+[data-slot="motorized-fader"] {
+  --bevel-material-recess: oklch(0.12 0.01 260);
+  --bevel-led: var(--motorized-fader-remote);
+}
+[data-slot="motorized-fader-cap"] {
+  --bevel-material: var(--motorized-fader-cap-colour);
+  --bevel-material-edge: var(--motorized-fader-cap-edge);
+}
