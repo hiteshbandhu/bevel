@@ -1,0 +1,42 @@
+{
+  "fps": 30,
+  "beat": 16,
+  "bpm": 112.5,
+  "scenes": {
+    "cold": [0, 192],
+    "reveal": [192, 320],
+    "switch": [320, 448],
+    "lamps": [448, 576],
+    "mixer": [576, 704],
+    "controls": [704, 832],
+    "records": [832, 960],
+    "montage": [960, 1088],
+    "demos": [1088, 1216],
+    "install": [1216, 1344],
+    "end": [1344, 1472]
+  },
+  "events": {
+    "coldWords": [0, 32, 64, 96, 128, 160],
+    "coldMacros": [16, 48, 80, 112, 144],
+    "leverFlip": 200,
+    "lightsOn": 208,
+    "titleLands": 256,
+    "coverLift": 336,
+    "switchFlip": 368,
+    "ship": 400,
+    "lamps": [448, 464, 480, 496, 512],
+    "acknowledge": 544,
+    "faderGrab": 640,
+    "knobClicks": [704, 720, 736, 752, 768, 784, 800, 816],
+    "telegraphOrder": 720,
+    "telegraphAnswer": 752,
+    "flapRows": [840, 856, 872, 888],
+    "pencilMarks": [880, 896, 912, 928],
+    "montageCuts": 8,
+    "demoFlips": [1120, 1152, 1184],
+    "typingStart": 1222,
+    "typingStep": 1.5,
+    "enter": 1296,
+    "endChord": 1344
+  }
+}

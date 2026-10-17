@@ -34,3 +34,28 @@ body {
   margin: 0;
   background: var(--night);
 }
+
+/*
+ * Film hooks: the frame drives a component's physical parts through these
+ * variables, so a lever throws, a knob springs between detents and a lamp
+ * flashes in time with the music, instead of jumping between states.
+ */
+.film-lever [data-slot="guarded-switch-lever"] {
+  translate: 0 calc(var(--guarded-switch-throw) * var(--film-lever, 1)) !important;
+}
+.film-knob [data-slot="detent-knob-cap"] {
+  rotate: var(--film-knob) !important;
+}
+.film-flash [data-slot="annunciator-tile"][data-state="new"] > span:first-child {
+  opacity: var(--film-flash, 1) !important;
+}
+.film-telegraph [data-slot="engine-telegraph-dial"] svg > g:nth-last-of-type(1) {
+  rotate: var(--film-handle) !important;
+}
+.film-telegraph [data-slot="engine-telegraph-dial"] svg > g:nth-last-of-type(2) {
+  rotate: var(--film-answer) !important;
+}
+.film-pencil [data-slot="contact-sheet-frame"][data-mark="pick"] svg path:first-child {
+  stroke-dasharray: 320;
+  stroke-dashoffset: calc(320 * (1 - var(--film-draw, 1)));
+}
