@@ -1306,6 +1306,51 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "take-a-number",
+    name: "Take a number",
+    category: "coordination",
+    description:
+      "A ticket dispenser and a Now Serving sign: your place in the queue is the number in your hand. For support queues, waitlists and jobs waiting their turn.",
+    files: ["components/take-a-number.tsx", "styles/take-a-number.css"],
+    registryDependencies: ["number-wheel"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<TakeANumber aria-label="Support queue" serving={42} ticket={ticket}>
+  <TakeANumberSign />
+  <TakeANumberDispenser onClick={take} />
+  <TakeANumberStatus />
+</TakeANumber>`,
+    parts: [
+      {
+        name: "TakeANumber",
+        renders: "div (group)",
+        description: "serving, and ticket: the number you hold, or null. Give it an aria-label.",
+      },
+      {
+        name: "TakeANumberSign",
+        renders: "div",
+        description: "Now Serving, on number wheels that roll to each new number. Its lamp lights on your turn.",
+      },
+      {
+        name: "TakeANumberDispenser",
+        renders: "Button",
+        description: "“Take a number”. Tears off your ticket; disabled, but focusable, while you hold one.",
+      },
+      {
+        name: "TakeANumberStatus",
+        renders: "p (status)",
+        description: "“You're 44: 2 ahead of you.” Announced once per number served.",
+      },
+    ],
+    examples: [
+      {
+        slug: "support",
+        title: "A support queue",
+        description: "Take a number; the sign rolls on every two seconds until it's your turn.",
+        file: "take-a-number-support.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

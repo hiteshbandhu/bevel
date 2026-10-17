@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { TakeANumberSupport } from "./take-a-number-support"
 import { KanbanRackRuns } from "./kanban-rack-runs"
 import { ChessClockReview } from "./chess-clock-review"
 import { LockoutMigration } from "./lockout-migration"
@@ -35,6 +36,7 @@ import { WalletUsage } from "./wallet-usage"
 
 /** Demo components by file name, matching `Example.file` in the catalog. */
 export const demos: Record<string, React.ComponentType> = {
+  "take-a-number-support.tsx": TakeANumberSupport,
   "kanban-rack-runs.tsx": KanbanRackRuns,
   "chess-clock-review.tsx": ChessClockReview,
   "lockout-migration.tsx": LockoutMigration,

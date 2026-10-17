@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { TakeANumber, TakeANumberSign } from "@workspace/ui/components/take-a-number"
 import { KanbanRack, KanbanRackPockets } from "@workspace/ui/components/kanban-rack"
 import { ChessClock, ChessClockFace, ChessClockFaces } from "@workspace/ui/components/chess-clock"
 import { Lockout, LockoutAction, LockoutHasp, LockoutLock } from "@workspace/ui/components/lockout"
@@ -76,6 +77,11 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "take-a-number": () => (
+    <TakeANumber aria-label="Queue" serving={42} ticket={44} className="pointer-events-none">
+      <TakeANumberSign />
+    </TakeANumber>
+  ),
   "kanban-rack": () => (
     <KanbanRack aria-label="Runs" capacity={3} inUse={["Fix login"]} className="pointer-events-none max-w-56">
       <KanbanRackPockets />
