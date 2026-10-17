@@ -871,6 +871,45 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "delegation-board",
+    name: "Delegation board",
+    category: "agents",
+    description:
+      "Pigeonholes for delegated work, one per subagent: its task slip, a lamp and a word for its status, and its progress. Finished work rises out of its cubby.",
+    files: ["components/delegation-board.tsx", "styles/delegation-board.css"],
+    registryDependencies: ["name-tag"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<DelegationBoard aria-label="Subagents">
+  <DelegationSlot status="active">
+    <DelegationAgent>
+      <NameTag variant="plain">…</NameTag>
+    </DelegationAgent>
+    <DelegationTask />
+    <DelegationProgress value={40} aria-label="Research progress" />
+  </DelegationSlot>
+</DelegationBoard>`,
+    parts: [
+      { name: "DelegationBoard", renders: "ul", description: "The board. Give it an aria-label." },
+      {
+        name: "DelegationSlot",
+        renders: "li",
+        description: "One subagent. status: pending, active, awaiting, error or complete, shown as a lamp and in words.",
+      },
+      { name: "DelegationAgent", renders: "div", description: "Who it is, with the status lamp. Holds a Name tag." },
+      { name: "DelegationTask", renders: "div", description: "The task slip. Rises out of the cubby when complete." },
+      { name: "DelegationProgress", renders: "Progress", description: "value and max; name it after the agent." },
+    ],
+    examples: [
+      {
+        slug: "agents",
+        title: "A coordinator's subagents",
+        description: "Four agents working in parallel. Drafting stops to ask you a question; answer it to unblock Review.",
+        file: "delegation-board-agents.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

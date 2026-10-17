@@ -14,6 +14,12 @@ import {
 } from "@workspace/ui/components/approval"
 import { Breaker, BreakerPanel, BreakerRow } from "@workspace/ui/components/breaker"
 import { Citation, CitationTrigger } from "@workspace/ui/components/citation"
+import {
+  DelegationAgent,
+  DelegationBoard,
+  DelegationSlot,
+  DelegationTask,
+} from "@workspace/ui/components/delegation-board"
 import { DialMark, Gauge } from "@workspace/ui/components/dial"
 import { Keycard, KeycardKey, KeycardLabel, KeycardSlot } from "@workspace/ui/components/keycard"
 import {
@@ -60,6 +66,26 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "delegation-board": () => (
+    <DelegationBoard aria-label="Subagents" className="grid-cols-2">
+      <DelegationSlot status="active">
+        <DelegationAgent>
+          <NameTag variant="plain">
+            <NameTagName>Research</NameTagName>
+          </NameTag>
+        </DelegationAgent>
+        <DelegationTask>Find cases</DelegationTask>
+      </DelegationSlot>
+      <DelegationSlot status="complete">
+        <DelegationAgent>
+          <NameTag variant="plain">
+            <NameTagName>Cite</NameTagName>
+          </NameTag>
+        </DelegationAgent>
+        <DelegationTask>Verified</DelegationTask>
+      </DelegationSlot>
+    </DelegationBoard>
+  ),
   approval: () => (
     <Approval>
       <ApprovalTitle>Send the redline</ApprovalTitle>

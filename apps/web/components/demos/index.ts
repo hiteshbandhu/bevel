@@ -5,6 +5,7 @@ import { ApprovalSend } from "./approval-send"
 import { BreakerCaps } from "./breaker-caps"
 import { CitationAnswer } from "./citation-answer"
 import { CreditsCheckout } from "./credits-checkout"
+import { DelegationBoardAgents } from "./delegation-board-agents"
 import { DialAutoTopUp } from "./dial-auto-top-up"
 import { DialRunway } from "./dial-runway"
 import { KeycardByok } from "./keycard-byok"
@@ -30,6 +31,7 @@ export const demos: Record<string, React.ComponentType> = {
   "breaker-caps.tsx": BreakerCaps,
   "citation-answer.tsx": CitationAnswer,
   "credits-checkout.tsx": CreditsCheckout,
+  "delegation-board-agents.tsx": DelegationBoardAgents,
   "dial-auto-top-up.tsx": DialAutoTopUp,
   "dial-runway.tsx": DialRunway,
   "keycard-byok.tsx": KeycardByok,

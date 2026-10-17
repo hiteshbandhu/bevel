@@ -1,0 +1,40 @@
+/*
+ * Delegation board: pigeonholes, one per subagent. Each cubby holds the
+ * agent's task slip; finished work rises out of its cubby. Builds on
+ * bevel.css (leather, recessed, paper, led, motion).
+ */
+
+:root {
+  --delegation-board: oklch(0.33 0.05 52); /* walnut-dark panel */
+  --delegation-board-edge: oklch(0.22 0.04 48);
+  --delegation-cubby: oklch(0.2 0.03 45);
+  --delegation-foreground: oklch(0.93 0.02 80);
+  --delegation-pending: oklch(0.5 0.01 260);
+  --delegation-active: oklch(0.82 0.16 75);
+  --delegation-awaiting: oklch(0.8 0.17 55);
+  --delegation-error: oklch(0.68 0.2 27);
+  --delegation-complete: oklch(0.8 0.17 150);
+  --delegation-return: 0.5rem; /* how far finished work rises out of its cubby */
+}
+
+[data-slot="delegation-board"] {
+  --bevel-material: var(--delegation-board);
+  --bevel-material-edge: var(--delegation-board-edge);
+  --bevel-material-recess: var(--delegation-cubby);
+}
+
+[data-slot="delegation-slot"] {
+  --bevel-led: var(--delegation-pending);
+}
+[data-slot="delegation-slot"][data-status="active"] {
+  --bevel-led: var(--delegation-active);
+}
+[data-slot="delegation-slot"][data-status="awaiting"] {
+  --bevel-led: var(--delegation-awaiting);
+}
+[data-slot="delegation-slot"][data-status="error"] {
+  --bevel-led: var(--delegation-error);
+}
+[data-slot="delegation-slot"][data-status="complete"] {
+  --bevel-led: var(--delegation-complete);
+}

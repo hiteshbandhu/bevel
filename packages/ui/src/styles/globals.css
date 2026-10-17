@@ -18,6 +18,7 @@
 @import "./task-plan.css";
 @import "./activity-log.css";
 @import "./approval.css";
+@import "./delegation-board.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));
