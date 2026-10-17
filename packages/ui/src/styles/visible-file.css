@@ -1,0 +1,35 @@
+/*
+ * Visible file (Kardex): a tray of shingled cards, each showing only its
+ * bottom edge in a clear pocket. Coloured signal clips slide along that
+ * edge to mark where each record stands. Builds on bevel.css (metal,
+ * paper, plastic, glass, motion).
+ */
+
+:root {
+  --visible-file-tray: oklch(0.55 0.03 150); /* green steel */
+  --visible-file-tray-edge: oklch(0.38 0.03 150);
+  --visible-file-card: oklch(0.96 0.01 90);
+  --visible-file-card-foreground: oklch(0.25 0.02 260);
+  --visible-file-rule: oklch(0.85 0.02 90);
+  --visible-file-red: oklch(0.6 0.2 27);
+  --visible-file-amber: oklch(0.8 0.16 75);
+  --visible-file-green: oklch(0.65 0.16 150);
+  --visible-file-blue: oklch(0.6 0.15 250);
+}
+
+[data-slot="visible-file"] {
+  --bevel-material: var(--visible-file-tray);
+  --bevel-material-edge: var(--visible-file-tray-edge);
+}
+[data-slot="visible-file-signal"] {
+  --bevel-material: var(--visible-file-blue);
+}
+[data-slot="visible-file-signal"][data-tone="red"] {
+  --bevel-material: var(--visible-file-red);
+}
+[data-slot="visible-file-signal"][data-tone="amber"] {
+  --bevel-material: var(--visible-file-amber);
+}
+[data-slot="visible-file-signal"][data-tone="green"] {
+  --bevel-material: var(--visible-file-green);
+}

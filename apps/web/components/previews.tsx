@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { VisibleFile, VisibleFileRow, VisibleFileSignal } from "@workspace/ui/components/visible-file"
 import { KeysortFilter, KeysortFilterCard, KeysortFilterDeck, KeysortFilterNeedle } from "@workspace/ui/components/keysort-filter"
 import { Mixer, MixerStrip, MixerStripFader, MixerStripMute, MixerStripName, MixerStripSolo } from "@workspace/ui/components/mixer-strip"
 import { MotorizedFader } from "@workspace/ui/components/motorized-fader"
@@ -84,6 +85,19 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "visible-file": () => (
+    <VisibleFile aria-label="Tasks" scale={["Q", "P", "B", "T", "D"]} className="pointer-events-none max-w-64 grid-cols-[4.5rem_1fr]">
+      <VisibleFileRow title="Login">
+        <VisibleFileSignal value={3} label="Stage" />
+      </VisibleFileRow>
+      <VisibleFileRow title="Billing">
+        <VisibleFileSignal value={1} label="Stage" tone="amber" />
+      </VisibleFileRow>
+      <VisibleFileRow title="Docs">
+        <VisibleFileSignal value={4} label="Stage" tone="green" />
+      </VisibleFileRow>
+    </VisibleFile>
+  ),
   "keysort-filter": () => (
     <KeysortFilter aria-label="Contracts" defaultValue={["a"]} className="pointer-events-none max-w-64">
       <div className="hidden">

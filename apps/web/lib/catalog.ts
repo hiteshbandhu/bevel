@@ -1653,6 +1653,46 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "visible-file",
+    name: "Visible file",
+    category: "records",
+    description:
+      "A Kardex visible-index tray: each record shows only its edge, and coloured signal clips slide along it to mark where it stands, so a whole tray reads at a glance. For pipelines, renewals and task stages.",
+    files: ["components/visible-file.tsx", "styles/visible-file.css"],
+    dependencies: ["cn"],
+    anatomy: `<VisibleFile aria-label="Agent tasks" scale={["Queued", "Plan", "Build", "Done"]}>
+  <VisibleFileRow title="Fix login redirect" detail="Coder">
+    <VisibleFileSignal value={2} label="Stage" />
+  </VisibleFileRow>
+</VisibleFile>`,
+    parts: [
+      {
+        name: "VisibleFile",
+        renders: "div (group) + ul",
+        description: "scale: the positions printed across the top. Give it an aria-label.",
+      },
+      {
+        name: "VisibleFileRow",
+        renders: "li",
+        description: "title and detail, typed on the card edge in its clear pocket.",
+      },
+      {
+        name: "VisibleFileSignal",
+        renders: "span",
+        description: "value (an index into the scale), label, tone. Slides when it changes; reads as “Stage: Build.”",
+      },
+    ],
+    examples: [
+      {
+        slug: "tasks",
+        title: "Agent tasks by stage",
+        description: "Signals slide along each card as its task moves through the stages.",
+        file: "visible-file-tasks.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {
