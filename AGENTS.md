@@ -25,8 +25,25 @@ shadcn-style registry of tactile, skeuomorphic components built on Base UI (`@ba
 - Every rendered part sets `data-slot="<name>"`; expose state as `data-*` attributes (Base UI already emits `data-pressed`, `data-checked`, `data-disabled`, …) and style off those, not JS-switched classes.
 - Use Base UI's `render` prop for polymorphism; never invent an `as`/`asChild` API.
 - Spread `...props` last-but-className onto the primitive; merge classes with `cn()`; `className` always wins.
-- Tokens are CSS variables in `packages/ui/src/styles/globals.css`, registered via `@theme inline`. Components never hard-code colors or shadows.
+- Components never hard-code colors, shadows, radii, durations, easings or type sizes. See "Design system" below.
+
+## Design system (`packages/ui/src/styles/bevel.css`)
+
+Three layers; each only reads from the one below it:
+
+1. **Foundation** (`bevel.css`): light (`--bevel-highlight`, `--bevel-shade`, `--bevel-cast`), depth (`--bevel-depth-{recessed,flush,raised,pressed,object,sheet}`), materials (`--bevel-material*`, grain), motion (`--bevel-ease-{out,in-out,spring}`, `--bevel-duration-{press,small,move,ambient}`, `--bevel-stagger`, `--bevel-lift`), shape (`--bevel-radius-{xs,sm,md,lg,xl}`, stitch, `--bevel-amount*`, `--bevel-label`, `--bevel-fine`, tracking). Utilities apply them: `bevel-{recessed,flush,raised,pressed,object}`, `bevel-{leather,plastic,metal}`, `bevel-{deboss,stitch,fill,led}`.
+2. **Component stylesheet** (`wallet.css`, `payment-card.css`): the component's palette and geometry only, mapped onto foundation variables (`--bevel-material`, `--bevel-fill`, `--bevel-led`…) by `data-slot`, `data-variant`, `data-status`.
+3. **Component** (`.tsx`): Tailwind classes that read tokens, e.g. `rounded-(--bevel-radius-md)`, `duration-(--bevel-duration-move) ease-(--bevel-ease-out)`, `text-(length:--bevel-amount)`.
+
+Rules: one light source, from the top. Nested radii are concentric (`inner = outer - inset`). Don't add `--text-*` theme keys (`cn` treats unknown `text-*` as colours). Motion is CSS transitions on `transform`/`translate`/`opacity`/`filter` first; reach for JS only for gestures with velocity. Build on existing components (`WalletCard` is a `PaymentCard`) instead of re-styling.
 - Every component needs stories covering: default, every variant, disabled, keyboard interaction (play function), dark mode, and reduced motion.
+
+## Categories and the docs site
+
+- Components belong to a category (e.g. `money`). The category is metadata, not a folder: files in `packages/ui/src/components` stay flat.
+- `apps/web/lib/catalog.ts` is the source of truth: categories, each component's description, files, dependencies, anatomy, parts and examples. Adding a component means adding it there.
+- Examples are self-contained files in `apps/web/components/demos/`, registered in `demos/index.ts`; the site shows each file's source as the example's code. Tile previews live in `apps/web/components/previews.tsx`.
+- Storybook titles follow the category: `"Money/Wallet"`.
 
 ## Skills in `.claude/skills`
 

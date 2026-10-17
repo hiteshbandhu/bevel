@@ -3,7 +3,7 @@ import { expect, fn } from "storybook/test"
 import { Button } from "@workspace/ui/components/button"
 
 const meta = {
-  title: "Components/Button",
+  title: "Primitives/Button",
   component: Button,
   args: { children: "Button", onClick: fn() },
   argTypes: {

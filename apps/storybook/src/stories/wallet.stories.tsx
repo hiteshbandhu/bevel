@@ -8,8 +8,6 @@ import {
   WalletAmount,
   WalletBalance,
   WalletCard,
-  WalletCardBrand,
-  WalletCardNumber,
   WalletCards,
   WalletDetail,
   WalletDetailLabel,
@@ -25,6 +23,7 @@ import {
   WalletSeparator,
   WalletStatus,
 } from "@workspace/ui/components/wallet"
+import { PaymentCardBrand, PaymentCardNumber } from "@workspace/ui/components/payment-card"
 
 function Cards() {
   return (
@@ -37,7 +36,7 @@ function Cards() {
 }
 
 const meta = {
-  title: "Components/Wallet",
+  title: "Money/Wallet",
   component: Wallet,
   args: { variant: "saddle", status: "default" },
   argTypes: {
@@ -121,10 +120,11 @@ export const Checkout: Story = {
       </Wallet>
     )
   },
-  play: async ({ args, canvas, userEvent }) => {
+  play: async ({ args, canvas, canvasElement, userEvent }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Pay $86.40" }))
     await expect(args.onClick).toHaveBeenCalledOnce()
-    await expect(canvas.getByText("-$86.40")).toBeVisible()
+    const amounts = [...canvasElement.querySelectorAll("[data-slot=wallet-amount]")]
+    await expect(amounts.map((a) => a.textContent)).toContain("-$86.40")
   },
 }
 
@@ -330,8 +330,8 @@ export const PickACard: Story = {
       >
         {savedCards.map((card) => (
           <WalletCard key={card.id} value={card.id}>
-            <WalletCardBrand>{card.brand}</WalletCardBrand>
-            <WalletCardNumber last4={card.last4} />
+            <PaymentCardBrand>{card.brand}</PaymentCardBrand>
+            <PaymentCardNumber last4={card.last4} />
           </WalletCard>
         ))}
       </WalletCards>
@@ -370,8 +370,8 @@ export const CardCounts: Story = {
           <WalletCards>
             {Array.from({ length: count }, (_, i) => (
               <WalletCard key={i}>
-                <WalletCardBrand>Card {i + 1}</WalletCardBrand>
-                <WalletCardNumber last4={String(1000 + i * 1111)} />
+                <PaymentCardBrand>Card {i + 1}</PaymentCardBrand>
+                <PaymentCardNumber last4={String(1000 + i * 1111)} />
               </WalletCard>
             ))}
           </WalletCards>
@@ -400,8 +400,8 @@ function AddCardDemo() {
       <WalletCards>
         {cards.map((card) => (
           <WalletCard key={card.id}>
-            <WalletCardBrand>{card.brand}</WalletCardBrand>
-            <WalletCardNumber last4={card.last4} />
+            <PaymentCardBrand>{card.brand}</PaymentCardBrand>
+            <PaymentCardNumber last4={card.last4} />
           </WalletCard>
         ))}
       </WalletCards>
@@ -424,10 +424,10 @@ function AddCardDemo() {
 export const AddCard: Story = {
   render: () => <AddCardDemo />,
   play: async ({ canvasElement, canvas, userEvent }) => {
-    const first = canvasElement.querySelector("[data-slot=wallet-card]")!
+    const first = canvasElement.querySelector("[data-wallet-card]")!
     await userEvent.click(canvas.getByRole("button", { name: "Add card" }))
     await waitFor(() => expect(canvas.getByText("8210")).toBeInTheDocument())
-    const added = [...canvasElement.querySelectorAll("[data-slot=wallet-card]")].at(-1)!
+    const added = [...canvasElement.querySelectorAll("[data-wallet-card]")].at(-1)!
     // Only the new card fades in. The original may still move (it now sits
     // behind and takes a tilt), but it must not re-enter.
     const fades = (el: Element) =>

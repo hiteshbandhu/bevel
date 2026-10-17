@@ -1,0 +1,27 @@
+/*
+ * Payment card: an ID-1 plastic card (ISO/IEC 7810, 85.60 × 53.98 mm).
+ * Builds on bevel.css; this file only adds the card tones.
+ */
+
+:root {
+  --payment-card-sapphire: oklch(0.55 0.14 258);
+  --payment-card-sapphire-foreground: oklch(0.98 0.01 258);
+  --payment-card-gold: oklch(0.8 0.11 86);
+  --payment-card-gold-foreground: oklch(0.28 0.04 70);
+  --payment-card-graphite: oklch(0.27 0.015 260);
+  --payment-card-graphite-foreground: oklch(0.93 0.005 260);
+  --payment-card-chip: oklch(0.8 0.09 85);
+}
+
+[data-slot="payment-card"][data-tone="sapphire"] {
+  --bevel-material: var(--payment-card-sapphire);
+  --payment-card-foreground: var(--payment-card-sapphire-foreground);
+}
+[data-slot="payment-card"][data-tone="gold"] {
+  --bevel-material: var(--payment-card-gold);
+  --payment-card-foreground: var(--payment-card-gold-foreground);
+}
+[data-slot="payment-card"][data-tone="graphite"] {
+  --bevel-material: var(--payment-card-graphite);
+  --payment-card-foreground: var(--payment-card-graphite-foreground);
+}

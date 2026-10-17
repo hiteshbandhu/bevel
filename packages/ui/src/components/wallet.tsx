@@ -2,13 +2,14 @@
 
 import * as React from "react"
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
+import { mergeProps } from "@base-ui/react/merge-props"
 import { Meter as MeterPrimitive } from "@base-ui/react/meter"
 import { Radio as RadioPrimitive } from "@base-ui/react/radio"
 import { RadioGroup } from "@base-ui/react/radio-group"
-import { mergeProps } from "@base-ui/react/merge-props"
 import { Separator as SeparatorPrimitive } from "@base-ui/react/separator"
 import { useRender } from "@base-ui/react/use-render"
 import { cn } from "cn"
+import { PaymentCard, type PaymentCardProps, type PaymentCardTone } from "@workspace/ui/components/payment-card"
 
 type WalletVariant = "saddle" | "noir" | "oxblood"
 type WalletStatus = "default" | "low" | "empty" | "insufficient"
@@ -18,6 +19,10 @@ type WalletProps = useRender.ComponentProps<"div"> & {
   variant?: WalletVariant
   /** Drives the status light, meter fill and any `group-data-[status=*]/wallet` styling. */
   status?: WalletStatus
+}
+
+function cssVars(vars: Record<`--${string}`, string | number>) {
+  return vars as React.CSSProperties
 }
 
 const WalletContext = React.createContext<{ status: WalletStatus }>({ status: "default" })
@@ -39,9 +44,10 @@ function Wallet({
         "data-variant": variant,
         "data-status": status,
         className: cn(
-          "group/wallet wallet-lining relative isolate flex w-full max-w-sm flex-col rounded-2xl text-left text-(--wallet-foreground) outline-none",
+          "group/wallet bevel-leather bevel-object relative isolate flex w-full max-w-sm flex-col rounded-(--bevel-radius-lg) text-left text-(--wallet-foreground) outline-none",
           "focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-          "before:pointer-events-none before:absolute before:inset-1.5 before:rounded-[0.8rem] before:border-[1.5px] before:wallet-stitch",
+          // Stitching follows the outline: inner radius = outer radius - inset.
+          "before:bevel-stitch before:pointer-events-none before:absolute before:inset-(--bevel-stitch-inset) before:rounded-[calc(var(--bevel-radius-lg)-var(--bevel-stitch-inset))]",
           "forced-colors:border forced-colors:border-[CanvasText]",
           className
         ),
@@ -50,10 +56,6 @@ function Wallet({
     ),
   })
   return <WalletContext value={context}>{element}</WalletContext>
-}
-
-function cssVars(vars: Record<`--${string}`, string | number>) {
-  return vars as React.CSSProperties
 }
 
 type WalletCardsContextValue = {
@@ -100,7 +102,7 @@ function WalletCards({
     "data-slot": "wallet-cards",
     className: cn(
       "relative mx-5 mt-4 h-[calc(var(--wallet-card-peek)+max(var(--wallet-card-count)-1,0)*var(--wallet-card-step))] shrink-0",
-      "transition-[height] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none",
+      "transition-[height] duration-(--bevel-duration-move) ease-(--bevel-ease-out) motion-reduce:transition-none",
       // Picking needs a strip per card that stays tappable while one is pulled.
       selectable ? "[--wallet-card-step:2rem]" : "pointer-events-none [--wallet-card-step:1.25rem]",
       className
@@ -136,82 +138,55 @@ function WalletCards({
 
 // Resting tilt for each card behind the front one; the front card sits square.
 const cardTilts = [-1.25, 0.75, -0.5, 1, -0.75]
+const cardTones: PaymentCardTone[] = ["sapphire", "gold", "graphite"]
 
-type WalletCardProps = Omit<RadioPrimitive.Root.Props<string>, "value" | "style"> & {
-  style?: React.CSSProperties
+type WalletCardProps = Omit<PaymentCardProps, "render"> & {
   /** Selection value when the cards are a radio group. Defaults to the card's position. */
   value?: string
+  disabled?: boolean
 }
 
-function WalletCard({ className, style, value, children, ...props }: WalletCardProps) {
+/** A PaymentCard placed in the wallet's stack. */
+function WalletCard({ className, style, value, disabled, tone, children, ...props }: WalletCardProps) {
   const { selectable, mountedRef } = React.useContext(WalletCardsContext)
-  const [enters] = React.useState(() => mountedRef.current)
   const { index, count } = React.useContext(WalletCardPositionContext)
+  const [enters] = React.useState(() => mountedRef.current)
   const fromFront = count - 1 - index
-  const tone = (index % 3) + 1
 
-  const shared = {
-    "data-slot": "wallet-card",
-    "data-enter": enters ? "" : undefined,
-    "aria-hidden": selectable || children ? undefined : true,
-    className: cn(
-      "wallet-card absolute inset-x-0 top-0 flex h-32 items-start gap-2 rounded-[0.6rem] bg-(--wallet-card-bg) px-3 pt-1 text-(--wallet-card-fg) outline-none select-none",
-      "[--wallet-card-lift:0px] [translate:0_calc(var(--wallet-card-index)*var(--wallet-card-step)+var(--wallet-card-lift))] rotate-(--wallet-card-tilt)",
-      "transition-[translate,rotate,opacity,filter] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none",
-      "group-hover/wallet:not-data-checked:[--wallet-card-lift:-3px] group-hover/wallet:not-data-checked:delay-[calc(var(--wallet-card-index)*30ms)]",
-      "data-checked:rotate-0 data-checked:[--wallet-card-lift:calc(var(--wallet-card-pull)*-1)]",
-      "data-enter:starting:opacity-0 data-enter:starting:[--wallet-card-lift:-3rem]",
-      "[&[role=radio]]:cursor-pointer [&[role=radio]]:not-data-checked:brightness-[0.82]",
-      "focus-visible:ring-2 focus-visible:ring-(--wallet-foreground)/80",
-      "data-disabled:cursor-not-allowed data-disabled:brightness-75 data-disabled:saturate-50",
-      className
-    ),
-    style: {
-      ...cssVars({
-        "--wallet-card-index": index,
-        "--wallet-card-tilt": `${fromFront === 0 ? 0 : cardTilts[(fromFront - 1) % cardTilts.length]}deg`,
-        "--wallet-card-bg": `var(--wallet-card-${tone})`,
-        "--wallet-card-fg": `var(--wallet-card-${tone}-foreground)`,
-      }),
-      ...style,
-    },
-    children,
-  }
-
-  if (selectable) {
-    return <RadioPrimitive.Root value={value ?? String(index)} {...props} {...shared} />
-  }
-  return <div {...(props as React.ComponentProps<"div">)} {...shared} />
-}
-
-function WalletCardBrand({ className, ...props }: React.ComponentProps<"span">) {
   return (
-    <span
-      data-slot="wallet-card-brand"
+    <PaymentCard
+      tone={tone ?? cardTones[index % cardTones.length]}
+      render={
+        selectable ? (
+          <RadioPrimitive.Root value={value ?? String(index)} disabled={disabled} />
+        ) : undefined
+      }
+      aria-hidden={selectable || children ? undefined : true}
+      data-wallet-card=""
+      data-enter={enters ? "" : undefined}
       className={cn(
-        "inline-flex items-center gap-1 text-[0.6875rem] leading-4 font-semibold tracking-[0.06em] uppercase [&_svg]:h-3 [&_svg]:w-auto",
+        // Only the top strip shows above the pocket, so the card is shorter than a real one.
+        "absolute inset-x-0 top-0 aspect-auto h-32",
+        "[--wallet-card-lift:0px] [translate:0_calc(var(--wallet-card-index)*var(--wallet-card-step)+var(--wallet-card-lift))] rotate-(--wallet-card-tilt)",
+        "transition-[translate,rotate,opacity,filter] duration-(--bevel-duration-move) ease-(--bevel-ease-out) motion-reduce:transition-none",
+        "group-hover/wallet:not-data-checked:[--wallet-card-lift:calc(var(--bevel-lift)*-1)] group-hover/wallet:not-data-checked:delay-[calc(var(--wallet-card-index)*var(--bevel-stagger))]",
+        // Pulled out with a spring; it straightens as it comes up.
+        "data-checked:rotate-0 data-checked:ease-(--bevel-ease-spring) data-checked:[--wallet-card-lift:calc(var(--wallet-card-pull)*-1)]",
+        "data-enter:starting:opacity-0 data-enter:starting:[--wallet-card-lift:calc(var(--wallet-card-enter)*-1)]",
+        "[&[role=radio]]:cursor-pointer [&[role=radio]]:not-data-checked:brightness-(--bevel-dim)",
         className
       )}
-      {...props}
-    />
-  )
-}
-
-function WalletCardNumber({
-  last4,
-  className,
-  ...props
-}: { last4: string } & Omit<React.ComponentProps<"span">, "children">) {
-  return (
-    <span
-      data-slot="wallet-card-number"
-      className={cn("ms-auto font-mono text-[0.6875rem] leading-4 tabular-nums", className)}
+      style={{
+        ...cssVars({
+          "--wallet-card-index": index,
+          "--wallet-card-tilt": `${fromFront === 0 ? 0 : cardTilts[(fromFront - 1) % cardTilts.length]}deg`,
+        }),
+        ...style,
+      }}
       {...props}
     >
-      <span aria-hidden>•••• </span>
-      <span className="sr-only">ending in </span>
-      {last4}
-    </span>
+      {children}
+    </PaymentCard>
   )
 }
 
@@ -220,15 +195,16 @@ function WalletPocket({ className, children, ...props }: React.ComponentProps<"d
     <div
       data-slot="wallet-pocket"
       className={cn(
-        "wallet-pocket relative z-10 flex flex-col gap-4 rounded-t-sm rounded-b-2xl px-5 pt-9 pb-5",
+        "wallet-pocket relative z-10 flex flex-col gap-4 rounded-t-(--bevel-radius-xs) rounded-b-(--bevel-radius-lg) px-5 pt-9 pb-5",
         "forced-colors:border-t forced-colors:border-[CanvasText]",
         className
       )}
       {...props}
     >
+      {/* The pocket's top is a fold, so it is stitched on three sides only. */}
       <span
         aria-hidden
-        className="wallet-stitch pointer-events-none absolute inset-x-1.5 top-0 bottom-1.5 rounded-b-[0.8rem] border-[1.5px] border-t-0"
+        className="bevel-stitch pointer-events-none absolute inset-x-(--bevel-stitch-inset) top-0 bottom-(--bevel-stitch-inset) rounded-b-[calc(var(--bevel-radius-lg)-var(--bevel-stitch-inset))] border-t-0"
       />
       {children}
     </div>
@@ -250,7 +226,7 @@ function WalletLabel({ className, ...props }: React.ComponentProps<"p">) {
     <p
       data-slot="wallet-label"
       className={cn(
-        "wallet-deboss text-xs font-semibold tracking-[0.08em] text-(--wallet-muted-foreground) uppercase",
+        "bevel-deboss text-(length:--bevel-label) font-semibold tracking-(--bevel-tracking-label) text-(--wallet-muted-foreground) uppercase",
         className
       )}
       {...props}
@@ -272,14 +248,12 @@ function WalletStatusLight({ className, children, ...props }: React.ComponentPro
     <span
       data-slot="wallet-status"
       className={cn(
-        "wallet-deboss inline-flex items-center gap-1.5 text-xs font-medium text-(--wallet-muted-foreground)",
-        "[--wallet-led:var(--wallet-ok)] group-data-[status=low]/wallet:[--wallet-led:var(--wallet-low)]",
-        "group-data-[status=empty]/wallet:[--wallet-led:var(--wallet-danger)] group-data-[status=insufficient]/wallet:[--wallet-led:var(--wallet-danger)]",
+        "bevel-deboss inline-flex items-center gap-1.5 text-(length:--bevel-label) font-medium text-(--wallet-muted-foreground)",
         className
       )}
       {...props}
     >
-      <span aria-hidden className="wallet-led size-2 shrink-0 rounded-full" />
+      <span aria-hidden className="bevel-led size-2 shrink-0 rounded-full" />
       {children ?? statusText[status]}
     </span>
   )
@@ -306,6 +280,14 @@ function useAmountParts({ value, currency, locale = "en-US", format }: AmountFor
   )
 }
 
+// Tabular figures keep digits from shifting as amounts change, but some
+// fonts make separators tabular too, so apply them to digit groups only.
+const isDigits = (type: Intl.NumberFormatPartTypes) => type === "integer" || type === "fraction"
+const isMinor = (type: Intl.NumberFormatPartTypes) =>
+  type === "currency" || type === "decimal" || type === "fraction" || type === "literal"
+const isMuted = (type: Intl.NumberFormatPartTypes) =>
+  type === "currency" || type === "decimal" || type === "fraction"
+
 function WalletBalance({
   value,
   currency,
@@ -315,14 +297,10 @@ function WalletBalance({
   ...props
 }: AmountFormat & Omit<React.ComponentProps<"p">, "children">) {
   const parts = useAmountParts({ value, currency, locale, format })
-  const isDecimal = (type: Intl.NumberFormatPartTypes) => type === "decimal" || type === "fraction"
   return (
     <p
       data-slot="wallet-balance"
-      className={cn(
-        "wallet-deboss flex items-baseline font-semibold tracking-tight tabular-nums",
-        className
-      )}
+      className={cn("bevel-deboss flex items-baseline font-semibold tracking-tight", className)}
       {...props}
     >
       {parts.map((part, i) => (
@@ -330,10 +308,11 @@ function WalletBalance({
           key={i}
           data-part={part.type}
           className={cn(
-            "text-4xl leading-none",
-            part.type === "currency" && "mr-0.5 self-start pt-1 text-xl text-(--wallet-muted-foreground)",
-            isDecimal(part.type) && "text-xl text-(--wallet-muted-foreground)",
-            part.type === "literal" && "text-xl",
+            "text-(length:--bevel-amount) leading-none",
+            isDigits(part.type) && "tabular-nums",
+            isMinor(part.type) && "text-(length:--bevel-amount-minor)",
+            isMuted(part.type) && "text-(--wallet-muted-foreground)",
+            part.type === "currency" && "mr-0.5 self-start pt-1",
             part.type === "minusSign" && "mr-0.5"
           )}
         >
@@ -355,8 +334,12 @@ function WalletAmount({
 }: AmountFormat & Omit<React.ComponentProps<"span">, "children">) {
   const parts = useAmountParts({ value, currency, locale, format })
   return (
-    <span data-slot="wallet-amount" className={cn("tabular-nums", className)} {...props}>
-      {parts.map((part) => part.value).join("")}
+    <span data-slot="wallet-amount" className={cn("whitespace-nowrap", className)} {...props}>
+      {parts.map((part, i) => (
+        <span key={i} className={isDigits(part.type) ? "tabular-nums" : undefined}>
+          {part.value}
+        </span>
+      ))}
     </span>
   )
 }
@@ -371,7 +354,7 @@ function WalletDetail({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="wallet-detail"
-      className={cn("wallet-deboss flex items-baseline justify-between gap-4", className)}
+      className={cn("bevel-deboss flex items-baseline justify-between gap-4", className)}
       {...props}
     />
   )
@@ -388,16 +371,14 @@ function WalletDetailLabel({ className, ...props }: React.ComponentProps<"dt">) 
 }
 
 function WalletDetailValue({ className, ...props }: React.ComponentProps<"dd">) {
-  return (
-    <dd data-slot="wallet-detail-value" className={cn("font-medium tabular-nums", className)} {...props} />
-  )
+  return <dd data-slot="wallet-detail-value" className={cn("font-medium", className)} {...props} />
 }
 
 function WalletSeparator({ className, ...props }: SeparatorPrimitive.Props) {
   return (
     <SeparatorPrimitive
       data-slot="wallet-separator"
-      className={cn("wallet-stitch -mx-1 border-t-[1.5px]", className)}
+      className={cn("bevel-stitch -mx-1 border-x-0 border-b-0", className)}
       {...props}
     />
   )
@@ -407,22 +388,17 @@ function WalletMeter({ className, children, ...props }: MeterPrimitive.Root.Prop
   return (
     <MeterPrimitive.Root
       data-slot="wallet-meter"
-      className={cn(
-        "grid grid-cols-[1fr_auto] items-baseline gap-x-3 gap-y-2",
-        "group-data-[status=low]/wallet:[--wallet-fill:var(--wallet-low)]",
-        "group-data-[status=empty]/wallet:[--wallet-fill:var(--wallet-danger)] group-data-[status=insufficient]/wallet:[--wallet-fill:var(--wallet-danger)]",
-        className
-      )}
+      className={cn("grid grid-cols-[1fr_auto] items-baseline gap-x-3 gap-y-2", className)}
       {...props}
     >
       {children}
       <MeterPrimitive.Track
         data-slot="wallet-meter-track"
-        className="wallet-groove col-span-full h-2 overflow-hidden rounded-full p-px"
+        className="bevel-recessed col-span-full h-2 overflow-hidden rounded-full p-px"
       >
         <MeterPrimitive.Indicator
           data-slot="wallet-meter-indicator"
-          className="wallet-fill h-full rounded-full forced-colors:bg-[Highlight]"
+          className="bevel-fill h-full rounded-full forced-colors:bg-[Highlight]"
         />
       </MeterPrimitive.Track>
     </MeterPrimitive.Root>
@@ -433,7 +409,7 @@ function WalletMeterLabel({ className, ...props }: MeterPrimitive.Label.Props) {
   return (
     <MeterPrimitive.Label
       data-slot="wallet-meter-label"
-      className={cn("wallet-deboss text-sm text-(--wallet-muted-foreground)", className)}
+      className={cn("bevel-deboss text-sm text-(--wallet-muted-foreground)", className)}
       {...props}
     />
   )
@@ -443,7 +419,7 @@ function WalletMeterValue({ className, ...props }: MeterPrimitive.Value.Props) {
   return (
     <MeterPrimitive.Value
       data-slot="wallet-meter-value"
-      className={cn("wallet-deboss text-sm font-medium tabular-nums", className)}
+      className={cn("bevel-deboss text-sm font-medium tabular-nums", className)}
       {...props}
     />
   )
@@ -460,9 +436,9 @@ function WalletAction({ className, ...props }: ButtonPrimitive.Props) {
     <ButtonPrimitive
       data-slot="wallet-action"
       className={cn(
-        "wallet-raised wallet-deboss inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-medium text-(--wallet-foreground) outline-none select-none",
-        "transition-[translate,box-shadow] duration-100 ease-out motion-reduce:transition-none",
-        "active:translate-y-0.5 active:wallet-sunken data-pressed:translate-y-0.5 data-pressed:wallet-sunken",
+        "bevel-raised bevel-deboss inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-(--bevel-radius-sm) px-3 text-sm font-medium text-(--wallet-foreground) outline-none select-none",
+        "transition-[translate,box-shadow] duration-(--bevel-duration-press) ease-(--bevel-ease-out) motion-reduce:transition-none",
+        "active:translate-y-0.5 active:bevel-pressed data-pressed:translate-y-0.5 data-pressed:bevel-pressed",
         "focus-visible:ring-3 focus-visible:ring-(--wallet-foreground)/40",
         "data-disabled:cursor-not-allowed data-disabled:opacity-60 data-disabled:active:translate-y-0",
         "forced-colors:border forced-colors:border-[ButtonText]",
@@ -478,8 +454,6 @@ export {
   Wallet,
   WalletCards,
   WalletCard,
-  WalletCardBrand,
-  WalletCardNumber,
   WalletPocket,
   WalletHeader,
   WalletLabel,
@@ -497,4 +471,10 @@ export {
   WalletFooter,
   WalletAction,
 }
-export type { WalletProps, WalletCardsProps, WalletCardProps, WalletVariant, WalletStatus as WalletStatusValue }
+export type {
+  WalletProps,
+  WalletCardsProps,
+  WalletCardProps,
+  WalletVariant,
+  WalletStatus as WalletStatusValue,
+}

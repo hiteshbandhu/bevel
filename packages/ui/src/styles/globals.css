@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./bevel.css";
+@import "./payment-card.css";
 @import "./wallet.css";
 @import "./theme-transition.css";
 
