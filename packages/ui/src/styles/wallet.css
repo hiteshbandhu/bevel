@@ -1,0 +1,170 @@
+/*
+ * Wallet — an open bifold: a leather lining panel holding a stack of cards,
+ * with a stitched card pocket in front. One light source, top and slightly
+ * in front: top edges catch highlight, bottom edges fall into shade, and
+ * anything stamped into the leather is shadowed on its upper inner edge.
+ */
+
+:root {
+  --wallet-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .7 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --wallet-notch: 1.75rem;
+
+  --wallet: oklch(0.47 0.085 52);
+  --wallet-lining: oklch(0.36 0.07 46);
+  --wallet-edge: oklch(0.3 0.06 44);
+  --wallet-recess: oklch(0.29 0.055 44);
+  --wallet-foreground: oklch(0.97 0.02 82);
+  --wallet-muted-foreground: oklch(0.88 0.035 72);
+  --wallet-stitch: oklch(0.88 0.05 82 / 0.8);
+  --wallet-meter: oklch(0.84 0.12 85);
+
+  --wallet-card-1: oklch(0.55 0.14 258);
+  --wallet-card-2: oklch(0.8 0.11 86);
+  --wallet-card-3: oklch(0.27 0.015 260);
+  --wallet-card-1-foreground: oklch(0.98 0.01 258);
+  --wallet-card-2-foreground: oklch(0.28 0.04 70);
+  --wallet-card-3-foreground: oklch(0.93 0.005 260);
+  /* Stack geometry: visible strip of the front card, and how far a chosen card is pulled. */
+  --wallet-card-peek: 2.25rem;
+  --wallet-card-pull: 0.5rem;
+
+  --wallet-ok: oklch(0.82 0.18 150);
+  --wallet-low: oklch(0.86 0.16 82);
+  --wallet-danger: oklch(0.72 0.19 28);
+
+  --wallet-highlight: oklch(1 0 0 / 0.22);
+  --wallet-shade: oklch(0 0 0 / 0.32);
+  --wallet-cast-shadow: oklch(0.25 0.03 50 / 0.22);
+}
+
+.dark {
+  --wallet-highlight: oklch(1 0 0 / 0.14);
+  --wallet-cast-shadow: oklch(0 0 0 / 0.55);
+}
+
+[data-slot="wallet"][data-variant="noir"] {
+  --wallet: oklch(0.29 0.008 260);
+  --wallet-lining: oklch(0.22 0.008 260);
+  --wallet-edge: oklch(0.16 0.006 260);
+  --wallet-recess: oklch(0.17 0.006 260);
+  --wallet-foreground: oklch(0.96 0.004 260);
+  --wallet-muted-foreground: oklch(0.8 0.008 260);
+  --wallet-stitch: oklch(0.72 0.01 260 / 0.75);
+  --wallet-meter: oklch(0.88 0.01 260);
+}
+
+[data-slot="wallet"][data-variant="oxblood"] {
+  --wallet: oklch(0.38 0.105 22);
+  --wallet-lining: oklch(0.29 0.085 20);
+  --wallet-edge: oklch(0.23 0.07 20);
+  --wallet-recess: oklch(0.22 0.065 20);
+  --wallet-foreground: oklch(0.96 0.02 70);
+  --wallet-muted-foreground: oklch(0.87 0.035 50);
+  --wallet-stitch: oklch(0.86 0.05 75 / 0.75);
+  --wallet-meter: oklch(0.84 0.12 85);
+}
+
+/* Inner panel the cards sit against. */
+@utility wallet-lining {
+  background-color: var(--wallet-lining);
+  background-image:
+    var(--wallet-grain),
+    linear-gradient(to bottom, var(--wallet-highlight), transparent 30%);
+  background-size: 180px 180px, 100% 100%;
+  background-blend-mode: soft-light, normal;
+  box-shadow:
+    inset 0 1px 0 var(--wallet-highlight),
+    inset 0 -1px 0 var(--wallet-shade),
+    0 0 0 1px var(--wallet-edge),
+    0 1px 1px var(--wallet-cast-shadow),
+    0 6px 12px -2px var(--wallet-cast-shadow),
+    0 18px 32px -8px var(--wallet-cast-shadow);
+}
+
+/*
+ * Front pocket. The top edge is a fold (highlight, then the fold's thickness),
+ * and a thumb notch is cut out so the cards show through.
+ */
+@utility wallet-pocket {
+  background-color: var(--wallet);
+  background-image:
+    radial-gradient(
+      circle at 50% 0,
+      transparent var(--wallet-notch),
+      var(--wallet-highlight) calc(var(--wallet-notch) + 1px),
+      transparent calc(var(--wallet-notch) + 4px)
+    ),
+    var(--wallet-grain),
+    linear-gradient(to bottom, var(--wallet-highlight), transparent 28%, transparent 72%, var(--wallet-shade));
+  background-size: 100% 100%, 180px 180px, 100% 100%;
+  background-blend-mode: normal, soft-light, normal;
+  box-shadow:
+    inset 0 1px 0 var(--wallet-highlight),
+    inset 0 2px 0 var(--wallet-shade),
+    inset 0 -2px 3px var(--wallet-shade);
+  mask-image: radial-gradient(circle at 50% 0, transparent var(--wallet-notch), #000 calc(var(--wallet-notch) + 0.5px));
+}
+
+@utility wallet-stitch {
+  border-color: var(--wallet-stitch);
+  border-style: dashed;
+  filter: drop-shadow(0 1px 0 var(--wallet-shade));
+}
+
+/* Stamped into the leather: shade on the upper inner edge, catch-light below. */
+@utility wallet-deboss {
+  text-shadow:
+    0 -1px 0 oklch(0 0 0 / 0.45),
+    0 1px 0 oklch(1 0 0 / 0.12);
+}
+
+@utility wallet-card {
+  background-image:
+    linear-gradient(115deg, oklch(1 0 0 / 0.3), transparent 40%),
+    linear-gradient(to bottom, transparent 25%, oklch(0 0 0 / 0.45));
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.35),
+    inset 0 0 0 1px oklch(0 0 0 / 0.12),
+    0 -1px 2px oklch(0 0 0 / 0.18);
+}
+
+/* A groove pressed into the leather. */
+@utility wallet-groove {
+  background-color: var(--wallet-recess);
+  box-shadow:
+    inset 0 1px 2px oklch(0 0 0 / 0.55),
+    0 1px 0 var(--wallet-highlight);
+}
+
+@utility wallet-fill {
+  background-color: var(--wallet-fill, var(--wallet-meter));
+  background-image: linear-gradient(to bottom, oklch(1 0 0 / 0.55), transparent 55%, oklch(0 0 0 / 0.18));
+  box-shadow: 0 0 6px -1px var(--wallet-fill, var(--wallet-meter));
+}
+
+@utility wallet-led {
+  background-color: var(--wallet-led, var(--wallet-ok));
+  background-image: radial-gradient(circle at 35% 30%, oklch(1 0 0 / 0.85), transparent 45%);
+  box-shadow:
+    0 0 6px var(--wallet-led, var(--wallet-ok)),
+    inset 0 -1px 1px oklch(0 0 0 / 0.35),
+    0 1px 0 var(--wallet-highlight);
+}
+
+/* A leather tab raised off the pocket; it sinks when pressed. */
+@utility wallet-raised {
+  background-color: color-mix(in oklch, var(--wallet), white 7%);
+  background-image: linear-gradient(to bottom, var(--wallet-highlight), transparent 60%);
+  box-shadow:
+    inset 0 1px 0 var(--wallet-highlight),
+    0 1px 0 var(--wallet-edge),
+    0 2px 0 var(--wallet-edge),
+    0 3px 5px var(--wallet-shade);
+}
+
+@utility wallet-sunken {
+  background-color: color-mix(in oklch, var(--wallet), black 4%);
+  box-shadow:
+    inset 0 1px 2px var(--wallet-shade),
+    0 1px 0 var(--wallet-highlight);
+}
