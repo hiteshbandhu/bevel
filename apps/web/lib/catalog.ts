@@ -1351,6 +1351,54 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "engine-telegraph",
+    name: "Engine telegraph",
+    category: "instruments",
+    description:
+      "A ship's engine order telegraph: you set an order, the other side answers by moving its own pointer to match. Both show on one dial, so a pending order is visible at a glance. For autonomy levels, deploy stages and any setting that takes effect only once acknowledged.",
+    files: ["components/engine-telegraph.tsx", "styles/engine-telegraph.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<EngineTelegraph aria-label="Agent autonomy" value={value} onValueChange={setValue} confirmed={confirmed}>
+  <EngineTelegraphDial />
+  <EngineTelegraphOrders>
+    <EngineTelegraphOrder value="ask">Ask</EngineTelegraphOrder>
+    <EngineTelegraphOrder value="act">Act</EngineTelegraphOrder>
+  </EngineTelegraphOrders>
+  <EngineTelegraphStatus />
+</EngineTelegraph>`,
+    parts: [
+      {
+        name: "EngineTelegraph",
+        renders: "div (group) + RadioGroup",
+        description: "value and onValueChange for your order; confirmed for the other side's answer. Give it an aria-label.",
+      },
+      {
+        name: "EngineTelegraphDial",
+        renders: "div (decorative)",
+        description: "Your handle (dark, long) and the answer pointer (red, short) over the orders, in the order they're listed.",
+      },
+      { name: "EngineTelegraphOrders", renders: "div", description: "Lays out the order plates." },
+      {
+        name: "EngineTelegraphOrder",
+        renders: "Radio",
+        description: "One order; its text is its label on the dial too. Arrow keys move between orders.",
+      },
+      {
+        name: "EngineTelegraphStatus",
+        renders: "p (status)",
+        description: "“Ordered: Act. Waiting for confirmation”, or “Confirmed: Act.” Describes the group.",
+      },
+    ],
+    examples: [
+      {
+        slug: "autonomy",
+        title: "Agent autonomy",
+        description: "Set how much the agent may do alone. It answers once its current step is done.",
+        file: "engine-telegraph-autonomy.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

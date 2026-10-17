@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { EngineTelegraph, EngineTelegraphDial, EngineTelegraphOrder } from "@workspace/ui/components/engine-telegraph"
 import { TakeANumber, TakeANumberSign } from "@workspace/ui/components/take-a-number"
 import { KanbanRack, KanbanRackPockets } from "@workspace/ui/components/kanban-rack"
 import { ChessClock, ChessClockFace, ChessClockFaces } from "@workspace/ui/components/chess-clock"
@@ -77,6 +78,17 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "engine-telegraph": () => (
+    <EngineTelegraph aria-label="Autonomy" value="act" onValueChange={() => {}} confirmed="ask" className="pointer-events-none max-w-52">
+      <EngineTelegraphDial />
+      <div className="hidden">
+        <EngineTelegraphOrder value="stop">Stop</EngineTelegraphOrder>
+        <EngineTelegraphOrder value="ask">Ask</EngineTelegraphOrder>
+        <EngineTelegraphOrder value="act">Act</EngineTelegraphOrder>
+        <EngineTelegraphOrder value="auto">Auto</EngineTelegraphOrder>
+      </div>
+    </EngineTelegraph>
+  ),
   "take-a-number": () => (
     <TakeANumber aria-label="Queue" serving={42} ticket={44} className="pointer-events-none">
       <TakeANumberSign />
