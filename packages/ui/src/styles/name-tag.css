@@ -1,0 +1,32 @@
+/*
+ * Name tag: the "HELLO my name is" sticker, a clip-on visitor badge, and a
+ * plain tag for dense lists. Says who an agent, person or guest is.
+ * Builds on bevel.css (marker font, plastic, metal, depth).
+ */
+
+:root {
+  --name-tag-red: oklch(0.55 0.2 27);
+  --name-tag-blue: oklch(0.45 0.15 262);
+  --name-tag-card: oklch(0.99 0.004 90);
+  --name-tag-ink: oklch(0.22 0.02 260);
+  --name-tag-band-foreground: oklch(0.99 0 0);
+}
+
+[data-slot="name-tag"] {
+  --name-tag-band: var(--name-tag-red);
+  --name-tag-name-size: 1.75rem;
+}
+[data-slot="name-tag"][data-variant="visitor"] {
+  --name-tag-band: var(--name-tag-blue);
+  --name-tag-name-size: 1.5rem;
+}
+[data-slot="name-tag"][data-variant="plain"] {
+  --name-tag-name-size: 0.875rem;
+}
+
+/* A printed sticker: a faint sheen across the face and a thin edge. */
+@utility name-tag-sticker {
+  background-color: var(--name-tag-band);
+  background-image: linear-gradient(115deg, var(--bevel-highlight-strong), transparent 35%);
+  box-shadow: var(--bevel-depth-sheet);
+}

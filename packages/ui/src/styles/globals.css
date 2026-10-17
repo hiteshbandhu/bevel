@@ -13,6 +13,7 @@
 @import "./breaker.css";
 @import "./ledger.css";
 @import "./keycard.css";
+@import "./name-tag.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));

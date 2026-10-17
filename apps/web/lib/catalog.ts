@@ -658,6 +658,39 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "name-tag",
+    name: "Name tag",
+    category: "agents",
+    description:
+      "Who someone is: an agent, a person, a guest. The \u201cHELLO my name is\u201d sticker, a visitor badge for outside collaborators, and a plain tag for lists.",
+    files: ["components/name-tag.tsx", "styles/name-tag.css"],
+    dependencies: ["cn"],
+    anatomy: `<NameTag variant="sticker">
+  <NameTagName />
+  <NameTagDetail />
+</NameTag>`,
+    parts: [
+      {
+        name: "NameTag",
+        renders: "div",
+        description:
+          "variant: sticker, visitor or plain. greeting and caption translate the printed words, which screen readers skip.",
+      },
+      { name: "NameTagName", renders: "span", description: "The name, in marker on the sticker and badge." },
+      { name: "NameTagDetail", renders: "span", description: "A role, or who an agent acts for." },
+      { name: "NameTagInput", renders: "input", description: "Write a new name on the tag. Labelled \u201cName\u201d." },
+    ],
+    examples: [
+      {
+        slug: "agents",
+        title: "Agents and guests",
+        description: "Rename the agent by writing on its sticker. Guests get a visitor badge; lists use the plain tag.",
+        file: "name-tag-agents.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

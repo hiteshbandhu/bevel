@@ -8,6 +8,7 @@ import { KeycardByok } from "./keycard-byok"
 import { KeycardSwipeDemo } from "./keycard-swipe"
 import { LedgerHistory } from "./ledger-history"
 import { MeterLiveUsage } from "./meter-live-usage"
+import { NameTagAgents } from "./name-tag-agents"
 import { MeterPostage } from "./meter-postage"
 import { NumberWheelCounter } from "./number-wheel-counter"
 import { PaymentCardPicker } from "./payment-card-picker"
@@ -29,6 +30,7 @@ export const demos: Record<string, React.ComponentType> = {
   "ledger-history.tsx": LedgerHistory,
   "meter-live-usage.tsx": MeterLiveUsage,
   "meter-postage.tsx": MeterPostage,
+  "name-tag-agents.tsx": NameTagAgents,
   "number-wheel-counter.tsx": NumberWheelCounter,
   "payment-card-picker.tsx": PaymentCardPicker,
   "stamp-marks.tsx": StampMarks,

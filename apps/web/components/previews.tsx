@@ -13,6 +13,7 @@ import {
   LedgerTable,
 } from "@workspace/ui/components/ledger"
 import { Meter, MeterFlag, MeterHeader, MeterLabel, MeterReading } from "@workspace/ui/components/meter"
+import { NameTag, NameTagDetail, NameTagName } from "@workspace/ui/components/name-tag"
 import { NumberWheel } from "@workspace/ui/components/number-wheel"
 import {
   Receipt,
@@ -45,6 +46,14 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "name-tag": () => (
+    <div className="flex justify-center">
+      <NameTag>
+        <NameTagName>Research</NameTagName>
+        <NameTagDetail>acting for Priya</NameTagDetail>
+      </NameTag>
+    </div>
+  ),
   amount: () => (
     <div className="flex flex-col items-center gap-1 py-6 text-center">
       <span className="text-4xl font-semibold tracking-tight">
