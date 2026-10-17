@@ -22,6 +22,9 @@
   --wallet-card-peek: 2.25rem;
   --wallet-card-pull: 0.5rem;
   --wallet-card-enter: 3rem; /* how far above the pocket a new card starts */
+  --wallet-card-step: 1.25rem; /* gap between cards on display */
+  --wallet-card-step-pick: 2rem; /* gap when picking: every card keeps a tappable strip */
+  --wallet-card-lift: 0px; /* resting; hover and pull override it on the card */
 }
 
 [data-slot="wallet"][data-variant="noir"] {

@@ -1,0 +1,34 @@
+/*
+ * Number wheel: printed drums behind a window, one per digit. Builds on
+ * bevel.css; this file adds the drum faces and their geometry.
+ */
+
+:root {
+  --number-wheel-cell: 1.25em; /* one digit's height on the drum */
+  --number-wheel-drum: 0.72em; /* drum width */
+  --number-wheel-plate: 0.08em; /* padding on fixed separator plates */
+}
+
+[data-slot="number-wheel"] {
+  /* The window the drums sit behind. */
+  --bevel-material-recess: oklch(0.16 0.01 260);
+  --number-wheel-face: var(--bevel-ivory);
+  --number-wheel-foreground: var(--bevel-ivory-foreground);
+}
+[data-slot="number-wheel"][data-tone="black"] {
+  --number-wheel-face: oklch(0.22 0.01 260);
+  --number-wheel-foreground: oklch(0.95 0.01 90);
+}
+
+/* A drum: the face curves away top and bottom, so it shades at both ends. */
+@utility number-wheel-drum {
+  background-color: var(--number-wheel-face);
+  background-image: linear-gradient(
+    to bottom,
+    var(--bevel-shade-strong) 0%,
+    transparent 28%,
+    transparent 72%,
+    var(--bevel-shade-strong) 100%
+  );
+  color: var(--number-wheel-foreground);
+}

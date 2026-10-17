@@ -9,6 +9,8 @@ import { RadioGroup } from "@base-ui/react/radio-group"
 import { Separator as SeparatorPrimitive } from "@base-ui/react/separator"
 import { useRender } from "@base-ui/react/use-render"
 import { cn } from "cn"
+import { Amount } from "@workspace/ui/components/amount"
+import { isDigitPart, useAmountParts, type AmountFormat } from "@workspace/ui/lib/amount"
 import { PaymentCard, type PaymentCardProps, type PaymentCardTone } from "@workspace/ui/components/payment-card"
 
 type WalletVariant = "saddle" | "noir" | "oxblood"
@@ -104,7 +106,7 @@ function WalletCards({
       "relative mx-5 mt-4 h-[calc(var(--wallet-card-peek)+max(var(--wallet-card-count)-1,0)*var(--wallet-card-step))] shrink-0",
       "transition-[height] duration-(--bevel-duration-move) ease-(--bevel-ease-out) motion-reduce:transition-none",
       // Picking needs a strip per card that stays tappable while one is pulled.
-      selectable ? "[--wallet-card-step:2rem]" : "pointer-events-none [--wallet-card-step:1.25rem]",
+      selectable ? "[--wallet-card-step:var(--wallet-card-step-pick)]" : "pointer-events-none",
       className
     ),
     style: { ...cssVars({ "--wallet-card-count": items.length }), ...style },
@@ -167,7 +169,7 @@ function WalletCard({ className, style, value, disabled, tone, children, ...prop
       className={cn(
         // Only the top strip shows above the pocket, so the card is shorter than a real one.
         "absolute inset-x-0 top-0 aspect-auto h-32",
-        "[--wallet-card-lift:0px] [translate:0_calc(var(--wallet-card-index)*var(--wallet-card-step)+var(--wallet-card-lift))] rotate-(--wallet-card-tilt)",
+        "[translate:0_calc(var(--wallet-card-index)*var(--wallet-card-step)+var(--wallet-card-lift))] rotate-(--wallet-card-tilt)",
         "transition-[translate,rotate,opacity,filter] duration-(--bevel-duration-move) ease-(--bevel-ease-out) motion-reduce:transition-none",
         "group-hover/wallet:not-data-checked:[--wallet-card-lift:calc(var(--bevel-lift)*-1)] group-hover/wallet:not-data-checked:delay-[calc(var(--wallet-card-index)*var(--bevel-stagger))]",
         // Pulled out with a spring; it straightens as it comes up.
@@ -259,30 +261,6 @@ function WalletStatusLight({ className, children, ...props }: React.ComponentPro
   )
 }
 
-type AmountFormat = {
-  value: number
-  /** ISO 4217 code. Omit for a plain number (credits, tokens…). */
-  currency?: string
-  /** Fixed by default so server and client render the same string. */
-  locale?: Intl.LocalesArgument
-  /** Merged over the currency defaults. */
-  format?: Intl.NumberFormatOptions
-}
-
-function useAmountParts({ value, currency, locale = "en-US", format }: AmountFormat) {
-  return React.useMemo(
-    () =>
-      new Intl.NumberFormat(locale, {
-        ...(currency ? { style: "currency", currency } : { maximumFractionDigits: 0 }),
-        ...format,
-      }).formatToParts(value),
-    [value, currency, locale, format]
-  )
-}
-
-// Tabular figures keep digits from shifting as amounts change, but some
-// fonts make separators tabular too, so apply them to digit groups only.
-const isDigits = (type: Intl.NumberFormatPartTypes) => type === "integer" || type === "fraction"
 const isMinor = (type: Intl.NumberFormatPartTypes) =>
   type === "currency" || type === "decimal" || type === "fraction" || type === "literal"
 const isMuted = (type: Intl.NumberFormatPartTypes) =>
@@ -309,7 +287,7 @@ function WalletBalance({
           data-part={part.type}
           className={cn(
             "text-(length:--bevel-amount) leading-none",
-            isDigits(part.type) && "tabular-nums",
+            isDigitPart(part.type) && "tabular-nums",
             isMinor(part.type) && "text-(length:--bevel-amount-minor)",
             isMuted(part.type) && "text-(--wallet-muted-foreground)",
             part.type === "currency" && "mr-0.5 self-start pt-1",
@@ -324,24 +302,8 @@ function WalletBalance({
 }
 
 /** Inline amount for detail rows; same formatting as the balance. */
-function WalletAmount({
-  value,
-  currency,
-  locale,
-  format,
-  className,
-  ...props
-}: AmountFormat & Omit<React.ComponentProps<"span">, "children">) {
-  const parts = useAmountParts({ value, currency, locale, format })
-  return (
-    <span data-slot="wallet-amount" className={cn("whitespace-nowrap", className)} {...props}>
-      {parts.map((part, i) => (
-        <span key={i} className={isDigits(part.type) ? "tabular-nums" : undefined}>
-          {part.value}
-        </span>
-      ))}
-    </span>
-  )
+function WalletAmount(props: React.ComponentProps<typeof Amount>) {
+  return <Amount data-wallet-amount="" {...props} />
 }
 
 function WalletDetails({ className, ...props }: React.ComponentProps<"dl">) {

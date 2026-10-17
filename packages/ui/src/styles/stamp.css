@@ -1,0 +1,30 @@
+/*
+ * Stamp: a rubber-stamp impression in ink. Seal: an embossed notary seal
+ * raised out of the paper. Build on bevel.css (bevel-ink, light tokens).
+ */
+
+:root {
+  --stamp-border: 3px;
+  --stamp-tilt: -4deg;
+  --stamp-land-scale: 1.4; /* how big the stamp looks just before it lands */
+  --seal-relief: oklch(0.9 0.01 85); /* the raised paper of a seal */
+}
+
+[data-slot="stamp"] {
+  --bevel-ink: var(--bevel-ink-red);
+}
+[data-slot="stamp"][data-tone="blue"] {
+  --bevel-ink: var(--bevel-ink-blue);
+}
+[data-slot="stamp"][data-tone="green"] {
+  --bevel-ink: var(--bevel-ink-green);
+}
+[data-slot="stamp"][data-tone="black"] {
+  --bevel-ink: var(--bevel-ink-black);
+}
+
+/* Raised relief: lit on the upper edge, shadow falling below. */
+@utility seal-relief {
+  color: var(--seal-relief);
+  filter: drop-shadow(0 -1px 0 var(--bevel-highlight-strong)) drop-shadow(0 1px 1px var(--bevel-shade));
+}

@@ -52,6 +52,8 @@
     0 1px 1px var(--bevel-cast),
     0 6px 12px -2px var(--bevel-cast),
     0 18px 32px -8px var(--bevel-cast);
+  /* The shadow under a loose object, for filter: drop-shadow(). */
+  --bevel-depth-cast-sm: 0 4px 6px var(--bevel-cast);
   /* A thin object (a card) lying on another surface. */
   --bevel-depth-sheet:
     inset 0 1px 0 var(--bevel-highlight-strong),
@@ -87,10 +89,34 @@
   --bevel-fine: 0.6875rem;
   --bevel-tracking-label: 0.08em; /* stamped labels */
   --bevel-tracking-print: 0.06em; /* printed marks on cards */
+
+  /* Paper and ink */
+  --bevel-paper: oklch(0.975 0.008 85);
+  --bevel-paper-foreground: oklch(0.28 0.02 260);
+  --bevel-paper-muted: oklch(0.48 0.015 260);
+  --bevel-paper-rule: oklch(0.78 0.04 240 / 0.45);
+  --bevel-paper-margin: oklch(0.68 0.14 25 / 0.45);
+  --bevel-fibre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9 .35' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  /* Ink soaks unevenly: mostly solid with pale specks. Used as a mask. */
+  --bevel-ink-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='i'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.4 0 0 0 2.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23i)'/%3E%3C/svg%3E");
+  --bevel-ink-red: oklch(0.52 0.19 27);
+  --bevel-ink-blue: oklch(0.44 0.14 262);
+  --bevel-ink-green: oklch(0.5 0.12 155);
+  --bevel-ink-black: oklch(0.3 0.01 260);
+
+  /* Brass and ivory: instrument hardware and dial faces */
+  --bevel-brass: oklch(0.76 0.11 82);
+  --bevel-brass-edge: oklch(0.52 0.08 70);
+  --bevel-ivory: oklch(0.95 0.025 90);
+  --bevel-ivory-foreground: oklch(0.25 0.015 60);
+  --bevel-needle: oklch(0.55 0.2 27);
 }
 
 .dark {
   --bevel-highlight: oklch(1 0 0 / 0.14);
+  /* Paper under dim light, not inverted: it's still paper. */
+  --bevel-paper: oklch(0.88 0.008 85);
+  --bevel-ivory: oklch(0.86 0.022 90);
   --bevel-cast: oklch(0 0 0 / 0.55);
 }
 
@@ -166,4 +192,39 @@
     0 0 6px var(--bevel-led),
     inset 0 -1px 1px oklch(0 0 0 / 0.35),
     0 1px 0 var(--bevel-highlight);
+}
+
+/* Paper: a sheet resting on the surface, with fibre in it. */
+@utility bevel-paper {
+  background-color: var(--bevel-paper);
+  background-image: var(--bevel-fibre);
+  background-size: 240px 240px;
+  color: var(--bevel-paper-foreground);
+  box-shadow:
+    0 1px 1px var(--bevel-cast),
+    0 6px 14px -4px var(--bevel-cast);
+}
+/* Ink on paper: multiplies into the surface and soaks unevenly. Colour from --bevel-ink. */
+@utility bevel-ink {
+  color: var(--bevel-ink, var(--bevel-ink-red));
+  border-color: currentColor;
+  mix-blend-mode: multiply;
+  mask-image: var(--bevel-ink-texture);
+  mask-size: 160px 160px;
+}
+/* Glass over an instrument window: one reflection from the light above. Put on an overlay element. */
+@utility bevel-glass {
+  pointer-events: none;
+  background-image: linear-gradient(165deg, var(--bevel-highlight-strong) 0%, transparent 38%, transparent 70%, var(--bevel-shade) 100%);
+}
+
+/* Material families: one per screen. Set on the screen's container. */
+[data-bevel-family="leather"] {
+  --bevel-cast: oklch(0.25 0.03 50 / 0.22);
+}
+[data-bevel-family="paper"] {
+  --bevel-cast: oklch(0.3 0.01 250 / 0.16);
+}
+.dark :is([data-bevel-family="leather"], [data-bevel-family="paper"]) {
+  --bevel-cast: oklch(0 0 0 / 0.55);
 }

@@ -4,6 +4,15 @@
 @import "./bevel.css";
 @import "./payment-card.css";
 @import "./wallet.css";
+@import "./number-wheel.css";
+@import "./meter.css";
+@import "./stamp.css";
+@import "./receipt.css";
+@import "./ticket-sheet.css";
+@import "./dial.css";
+@import "./breaker.css";
+@import "./ledger.css";
+@import "./keycard.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));

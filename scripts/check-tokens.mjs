@@ -15,6 +15,8 @@ const tsxRules = [
   [/cubic-bezier|\b\d+ms\b/, "raw easing or duration (use --bevel-ease-* / --bevel-duration-*)"],
   // Arbitrary Tailwind values that start with a number, except proportions (%, aspect ratios).
   [/(?<!aspect|grid-cols|grid-rows)-\[-?\d[^\]%]*\]/, "arbitrary value (add a token)"],
+  // Arbitrary properties ([prop:value]) with raw lengths, times or angles.
+  [/\[[\w-]+:[^\]]*\b\d*\.?\d+(px|rem|em|ms|deg)\b[^\]]*\]/, "raw length in an arbitrary property (add a token)"],
 ]
 const cssRules = [
   [/#[0-9a-fA-F]{3,8}\b/, "hex colour"],

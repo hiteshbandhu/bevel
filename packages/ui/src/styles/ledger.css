@@ -1,0 +1,30 @@
+/*
+ * Ledger: a ruled page of numbered entries, like a passbook or docket book.
+ * Builds on bevel.css (paper, rules, margin, ink).
+ */
+
+:root {
+  --ledger-rule: 2.25rem; /* line spacing; every row is exactly one rule tall */
+  --ledger-margin: 3.5rem; /* the red margin line, from the left edge */
+  --ledger-indent: calc(var(--ledger-margin) + 0.75rem); /* where text starts, past the margin */
+  --ledger-credit: oklch(0.45 0.12 155);
+  --ledger-debit: var(--bevel-paper-foreground);
+}
+
+/* Blue rules every --ledger-rule, a red margin line, on paper. */
+@utility ledger-ruling {
+  background-image:
+    linear-gradient(
+      to right,
+      transparent calc(var(--ledger-margin) - 1px),
+      var(--bevel-paper-margin) calc(var(--ledger-margin) - 1px) calc(var(--ledger-margin) + 1px),
+      transparent calc(var(--ledger-margin) + 1px)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 calc(var(--ledger-rule) - 1px),
+      var(--bevel-paper-rule) calc(var(--ledger-rule) - 1px) var(--ledger-rule)
+    ),
+    var(--bevel-fibre);
+  background-size: 100% 100%, 100% 100%, 240px 240px;
+}

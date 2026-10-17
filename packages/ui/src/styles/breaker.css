@@ -1,0 +1,40 @@
+/*
+ * Breaker: a circuit breaker in a panel. On, off, or tripped (lever stuck
+ * in the middle, red flag showing) until someone resets it.
+ * Builds on bevel.css (metal, depth, led, motion).
+ */
+
+:root {
+  --breaker-panel: oklch(0.36 0.008 260);
+  --breaker-panel-edge: oklch(0.22 0.008 260);
+  --breaker-body: oklch(0.2 0.006 260);
+  --breaker-lever: oklch(0.93 0.008 90);
+  --breaker-lever-edge: oklch(0.7 0.01 90);
+  --breaker-tripped: oklch(0.6 0.21 27);
+  --breaker-on: oklch(0.8 0.17 150);
+  --breaker-off: oklch(0.4 0.01 260);
+
+  --breaker-throw: 1.25rem; /* lever travel from centre to either end */
+  --breaker-slot-height: 4.5rem;
+}
+
+[data-slot="breaker-panel"] {
+  --bevel-material: var(--breaker-panel);
+  --bevel-material-edge: var(--breaker-panel-edge);
+}
+[data-slot="breaker-switch"] {
+  --bevel-material-recess: var(--breaker-body);
+}
+[data-slot="breaker-lever"] {
+  --bevel-material: var(--breaker-lever);
+  --bevel-material-edge: var(--breaker-lever-edge);
+}
+[data-slot="breaker"] {
+  --bevel-led: var(--breaker-off);
+}
+[data-slot="breaker"][data-state="on"] {
+  --bevel-led: var(--breaker-on);
+}
+[data-slot="breaker"][data-state="tripped"] {
+  --bevel-led: var(--breaker-tripped);
+}

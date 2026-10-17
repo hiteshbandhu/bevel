@@ -123,7 +123,7 @@ export const Checkout: Story = {
   play: async ({ args, canvas, canvasElement, userEvent }) => {
     await userEvent.click(canvas.getByRole("button", { name: "Pay $86.40" }))
     await expect(args.onClick).toHaveBeenCalledOnce()
-    const amounts = [...canvasElement.querySelectorAll("[data-slot=wallet-amount]")]
+    const amounts = [...canvasElement.querySelectorAll("[data-slot=amount]")]
     await expect(amounts.map((a) => a.textContent)).toContain("-$86.40")
   },
 }

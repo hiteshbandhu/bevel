@@ -1,0 +1,53 @@
+/*
+ * Ticket sheet: a sheet of perforated stamps or tickets, one per option.
+ * Builds on bevel.css (paper, ink, depth, motion).
+ */
+
+:root {
+  --ticket-hole: 0.25rem; /* perforation radius */
+  --ticket-tear-tilt: -2deg; /* a torn-off ticket sits slightly askew */
+  --ticket-tear-lift: 0.375rem;
+
+  /* Each tone keeps 4.5:1 with its foreground at small print sizes. */
+  --ticket-vermilion: oklch(0.5 0.17 32);
+  --ticket-ultramarine: oklch(0.45 0.15 265);
+  --ticket-emerald: oklch(0.44 0.1 160);
+  --ticket-ochre: oklch(0.78 0.13 80);
+  --ticket-light-foreground: oklch(0.98 0.01 90);
+  --ticket-dark-foreground: oklch(0.24 0.04 60);
+}
+
+[data-slot="ticket"] {
+  --ticket-tone: var(--ticket-vermilion);
+  --ticket-foreground: var(--ticket-light-foreground);
+}
+[data-slot="ticket"][data-tone="ultramarine"] {
+  --ticket-tone: var(--ticket-ultramarine);
+}
+[data-slot="ticket"][data-tone="emerald"] {
+  --ticket-tone: var(--ticket-emerald);
+}
+[data-slot="ticket"][data-tone="ochre"] {
+  --ticket-tone: var(--ticket-ochre);
+  --ticket-foreground: var(--ticket-dark-foreground);
+}
+
+/*
+ * Perforated edge: a grid of holes, with the content box held solid so only
+ * the margin (one hole deep) shows them. Half-holes land on the edge.
+ */
+@utility ticket-perforated {
+  padding: calc(var(--ticket-hole) * 2);
+  mask-image:
+    radial-gradient(circle, transparent var(--ticket-hole), black calc(var(--ticket-hole) + 0.5px)),
+    linear-gradient(black, black);
+  mask-size:
+    calc(var(--ticket-hole) * 3) calc(var(--ticket-hole) * 3),
+    100% 100%;
+  mask-position:
+    calc(var(--ticket-hole) * -1.5) calc(var(--ticket-hole) * -1.5),
+    center;
+  mask-repeat: round, no-repeat;
+  mask-clip: border-box, content-box;
+  mask-origin: border-box, content-box;
+}

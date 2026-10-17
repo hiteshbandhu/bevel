@@ -1,0 +1,35 @@
+/*
+ * Meter: a brass-bezelled instrument with a number-wheel window, like a
+ * taxi or postage meter. Builds on bevel.css and number-wheel.css.
+ */
+
+:root {
+  --meter-face: oklch(0.24 0.012 260);
+  --meter-foreground: oklch(0.93 0.02 90);
+  --meter-muted-foreground: oklch(0.74 0.02 90);
+  --meter-running: oklch(0.82 0.17 75);
+  --meter-stopped: oklch(0.45 0.01 260);
+}
+
+[data-slot="meter"] {
+  --bevel-material: var(--bevel-brass);
+  --bevel-material-edge: var(--bevel-brass-edge);
+  --bevel-led: var(--meter-stopped);
+}
+[data-slot="meter"][data-variant="graphite"] {
+  --bevel-material: oklch(0.42 0.01 260);
+  --bevel-material-edge: oklch(0.28 0.01 260);
+}
+[data-slot="meter"][data-state="running"] {
+  --bevel-led: var(--meter-running);
+}
+/* The face sits inside the bezel. */
+[data-slot="meter-face"] {
+  --bevel-material: var(--meter-face);
+  --bevel-material-recess: oklch(0.17 0.01 260);
+}
+/* Buttons on the bezel are brass. */
+[data-slot="meter-button"] {
+  --bevel-material: var(--bevel-brass);
+  --bevel-material-edge: var(--bevel-brass-edge);
+}

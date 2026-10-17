@@ -1,0 +1,29 @@
+/*
+ * Keycard: an access key on a plastic card (a PaymentCard with a magnetic
+ * stripe) and the brass reader slot it goes into. Builds on bevel.css and
+ * payment-card.css.
+ */
+
+:root {
+  --keycard-stripe: oklch(0.18 0.01 260);
+  --keycard-plate-height: 3.75rem;
+  --keycard-insert: 62%; /* how far the card sinks into the reader */
+  --keycard-slot-ok: oklch(0.8 0.17 150);
+  --keycard-slot-idle: oklch(0.45 0.01 260);
+}
+
+[data-slot="keycard-slot"] {
+  --bevel-led: var(--keycard-slot-idle);
+}
+[data-slot="keycard-slot"][data-inserted] {
+  --bevel-led: var(--keycard-slot-ok);
+}
+[data-slot="keycard-reader"] {
+  --bevel-material: var(--bevel-brass);
+  --bevel-material-edge: var(--bevel-brass-edge);
+}
+
+/* Clip the card at the bottom of the reader plate; let its shadow show on the other sides. */
+@utility keycard-mouth {
+  clip-path: inset(-2rem -2rem calc(var(--keycard-plate-height) * -1) -2rem);
+}

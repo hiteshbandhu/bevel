@@ -8,7 +8,6 @@ import {
   componentHref,
   foundation,
   getComponent,
-  subcomponentsOf,
   type ComponentDoc,
 } from "@/lib/catalog"
 import { readDemo, readLibraryFile } from "@/lib/source"
@@ -29,7 +28,6 @@ export async function ComponentDocPage({ component }: { component: ComponentDoc 
   ])
   const builtFrom = (component.registryDependencies ?? []).map((slug) => getComponent(slug)!)
   const parent = component.parent ? getComponent(component.parent) : undefined
-  const subcomponents = subcomponentsOf(component.slug)
   const fileName = (file: string) => file.split("/").pop()!
   const stylesheets = [foundation.file, ...component.files].filter((file) => file.endsWith(".css"))
 
@@ -73,6 +71,7 @@ export async function ComponentDocPage({ component }: { component: ComponentDoc 
               id={example.slug}
               title={example.title}
               description={example.description}
+              wide={example.wide}
               code={<CodeBlock code={exampleSources[i]!} title={example.file} />}
             >
               <Demo />
@@ -81,14 +80,14 @@ export async function ComponentDocPage({ component }: { component: ComponentDoc 
         })}
       </div>
 
-      {subcomponents.length > 0 && (
+      {builtFrom.length > 0 && (
         <section className="mt-20">
           <h2 className="text-2xl font-semibold tracking-tight">Built from</h2>
           <p className="mt-2 max-w-prose text-muted-foreground">
             {component.name} is made of components that also work on their own.
           </p>
           <ul className="mt-8 grid gap-x-8 gap-y-10 sm:grid-cols-2">
-            {subcomponents.map((sub) => (
+            {builtFrom.map((sub) => (
               <li key={sub.slug}>
                 <ComponentTile component={sub} />
               </li>

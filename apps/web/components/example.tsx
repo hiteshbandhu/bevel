@@ -12,8 +12,10 @@ export function Example({
   title,
   description,
   code,
+  wide,
   children,
 }: {
+  wide?: boolean
   id: string
   title: string
   description: string
@@ -36,7 +38,7 @@ export function Example({
         </Tabs.List>
         <Tabs.Panel value="preview" className="mt-4 outline-none" keepMounted>
           <div className="tray flex min-h-96 items-center justify-center rounded-(--bevel-radius-xl) px-4 py-12 sm:px-10">
-            <div className="w-full max-w-sm">{children}</div>
+            <div className={wide ? "flex w-full justify-center" : "w-full max-w-sm"}>{children}</div>
           </div>
         </Tabs.Panel>
         <Tabs.Panel value="code" className="mt-4 outline-none">

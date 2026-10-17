@@ -15,6 +15,8 @@ export type Example = {
   description: string
   /** Demo file under components/demos, shown as the example's code. */
   file: string
+  /** Give the preview the full width of the page instead of a wallet's width. */
+  wide?: boolean
 }
 
 export type Part = {
@@ -55,6 +57,16 @@ export const categories: Category[] = [
     slug: "money",
     name: "Money",
     description: "Balances, payment methods and credits for checkout, billing and usage-based products.",
+  },
+  {
+    slug: "instruments",
+    name: "Instruments",
+    description: "Readouts and controls from a panel: rolling counters, gauges, dials and breakers.",
+  },
+  {
+    slug: "marks",
+    name: "Marks",
+    description: "Ink and relief pressed into paper: status stamps and embossed seals.",
   },
 ]
 
@@ -113,7 +125,7 @@ export const components: ComponentDoc[] = [
     description:
       "A customer's stored balance, shown as a leather wallet. Saved cards sit in it, and picking one pulls it out of the pocket.",
     files: ["components/wallet.tsx", "styles/wallet.css"],
-    registryDependencies: ["payment-card"],
+    registryDependencies: ["payment-card", "amount"],
     dependencies: ["@base-ui/react", "cn"],
     anatomy: `<Wallet>
   <WalletCards>
@@ -221,6 +233,400 @@ export const components: ComponentDoc[] = [
         title: "Usage",
         description: "Prepaid credits running down over a billing cycle. Low balance turns the light and meter amber.",
         file: "wallet-usage.tsx",
+      },
+    ],
+  },
+  {
+    slug: "amount",
+    name: "Amount",
+    category: "money",
+    description:
+      "A formatted figure with steady digits, in any currency and locale. Every amount in Bevel is one of these.",
+    files: ["lib/amount.ts", "components/amount.tsx"],
+    dependencies: ["cn"],
+    anatomy: `<Amount value={1240.5} currency="USD" />`,
+    parts: [
+      {
+        name: "Amount",
+        renders: "span",
+        description:
+          "value, currency (ISO 4217; omit for plain numbers), locale (fixed to en-US by default so server and client match), format, and signed for a leading +. Exposes data-sign.",
+      },
+    ],
+    examples: [
+      {
+        slug: "formats",
+        title: "Currencies and locales",
+        description: "Digits are tabular so columns line up; separators keep their natural width in any font.",
+        file: "amount-formats.tsx",
+      },
+    ],
+  },
+  {
+    slug: "number-wheel",
+    name: "Number wheel",
+    category: "instruments",
+    description:
+      "Mechanical rolling digits. Each digit is a printed drum that turns to its figure, lowest digit first.",
+    files: ["components/number-wheel.tsx", "styles/number-wheel.css"],
+    registryDependencies: ["amount"],
+    dependencies: ["cn"],
+    anatomy: `<NumberWheel value={1240} />`,
+    parts: [
+      {
+        name: "NumberWheel",
+        renders: "span",
+        description:
+          "value with the same formatting options as Amount. tone is ivory or black. live sets whether screen readers hear changes: leave it off while a value ticks.",
+      },
+    ],
+    examples: [
+      {
+        slug: "counter",
+        title: "Counter",
+        description: "Change the value and the drums roll to it. Sized by font size.",
+        file: "number-wheel-counter.tsx",
+      },
+    ],
+  },
+  {
+    slug: "meter",
+    name: "Meter",
+    category: "money",
+    description:
+      "A brass metering instrument with a rolling reading: live spend that ticks up, or a prepaid balance that counts down.",
+    files: ["components/meter.tsx", "styles/meter.css"],
+    registryDependencies: ["number-wheel"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Meter state="running">
+  <MeterHeader>
+    <MeterLabel />
+    <MeterFlag />
+  </MeterHeader>
+  <MeterReading />
+  <MeterUnit />
+  <MeterFooter>
+    <MeterButton />
+  </MeterFooter>
+</Meter>`,
+    parts: [
+      {
+        name: "Meter",
+        renders: "div (group)",
+        description: "The bezel and face. state is idle, running or stopped; variant is brass or graphite.",
+      },
+      { name: "MeterLabel", renders: "p", description: "An engraved label." },
+      {
+        name: "MeterFlag",
+        renders: "span",
+        description: "A lamp that lights while running, with Ready, Running or Stopped. Children replace the text.",
+      },
+      {
+        name: "MeterReading",
+        renders: "NumberWheel",
+        description: "The reading. Silent to screen readers while running; announced once it stops.",
+      },
+      { name: "MeterUnit", renders: "span", description: "What the reading counts." },
+      { name: "MeterButton", renders: "Button", description: "A brass push-button that sinks when pressed." },
+    ],
+    examples: [
+      {
+        slug: "live-usage",
+        title: "Live usage",
+        description: "The cost of a chat turn, ticking while the model writes. Run it, stop it, clear it.",
+        file: "meter-live-usage.tsx",
+      },
+      {
+        slug: "prepaid",
+        title: "Prepaid balance",
+        description: "Like a postage meter: each call stamps a little off; add credit to refill.",
+        file: "meter-postage.tsx",
+      },
+    ],
+  },
+  {
+    slug: "stamp",
+    name: "Stamp and seal",
+    category: "marks",
+    description:
+      "A rubber-stamp impression in ink for statuses, and an embossed seal for the moment something becomes official.",
+    files: ["components/stamp.tsx", "styles/stamp.css"],
+    dependencies: ["cn"],
+    anatomy: `<Stamp tone="red">
+  Received
+  <StampDetail>17 Oct</StampDetail>
+</Stamp>
+
+<Seal text="Credits verified">Paid</Seal>`,
+    parts: [
+      {
+        name: "Stamp",
+        renders: "span",
+        description:
+          "Inked text that soaks into the surface. tone (red, blue, green, black), shape (rect, round), animate to land with a press.",
+      },
+      { name: "StampDetail", renders: "span", description: "A smaller second line: a date or reference." },
+      {
+        name: "Seal",
+        renders: "span (img)",
+        description: "Raised relief with text round the rim and a short centre mark. Has an accessible name.",
+      },
+    ],
+    examples: [
+      {
+        slug: "marks",
+        title: "Statuses",
+        description: "Stamps replace badges: Received, Refunded, Held, Auto. The seal marks something verified.",
+        file: "stamp-marks.tsx",
+        wide: true,
+      },
+    ],
+  },
+  {
+    slug: "receipt",
+    name: "Receipt",
+    category: "money",
+    description:
+      "Thermal paper with torn edges. Lines print in as they're added; a stamp or seal lands when it's paid.",
+    files: ["components/receipt.tsx", "styles/receipt.css"],
+    registryDependencies: ["amount", "stamp"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Receipt>
+  <ReceiptHeader>
+    <ReceiptTitle />
+    <ReceiptMeta />
+  </ReceiptHeader>
+  <ReceiptSeparator />
+  <ReceiptItems>
+    <ReceiptItem>
+      <ReceiptLabel />
+      <ReceiptValue />
+    </ReceiptItem>
+  </ReceiptItems>
+  <ReceiptTotal>
+    <ReceiptLabel />
+    <ReceiptValue />
+  </ReceiptTotal>
+  <ReceiptFooter />
+  <ReceiptMark>
+    <Stamp />
+  </ReceiptMark>
+</Receipt>`,
+    parts: [
+      { name: "Receipt", renders: "div", description: "The paper. variant thermal, or carbon for a yellow copy behind." },
+      { name: "ReceiptItems", renders: "dl", description: "The lines." },
+      {
+        name: "ReceiptItem",
+        renders: "div",
+        description: "One line: ReceiptLabel (dt, with a dotted leader) and ReceiptValue (dd). Lines added later print in.",
+      },
+      { name: "ReceiptTotal", renders: "div", description: "The total line, printed bold." },
+      { name: "ReceiptMark", renders: "div", description: "Holds a Stamp or Seal where an attendant would press it." },
+    ],
+    examples: [
+      {
+        slug: "credits-checkout",
+        title: "Buying credits",
+        description:
+          "Pick a pack and the receipt reprints; pay and it's stamped. Ticket sheet, receipt and stamp together.",
+        file: "credits-checkout.tsx",
+      },
+    ],
+  },
+  {
+    slug: "ticket-sheet",
+    name: "Ticket sheet",
+    category: "money",
+    description:
+      "A sheet of perforated tickets, one per option. Picking one tears it off. A radio group underneath.",
+    files: ["components/ticket-sheet.tsx", "styles/ticket-sheet.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<TicketSheet>
+  <Ticket value="team" tone="vermilion">
+    <TicketLabel />
+    <TicketValue />
+    <TicketNote />
+  </Ticket>
+</TicketSheet>`,
+    parts: [
+      { name: "TicketSheet", renders: "RadioGroup", description: "The sheet. value, defaultValue, onValueChange." },
+      {
+        name: "Ticket",
+        renders: "Radio",
+        description: "One perforated ticket. tone: vermilion, ultramarine, emerald, ochre. Lifts and tilts when chosen.",
+      },
+      { name: "TicketValue", renders: "span", description: "The big figure." },
+      { name: "TicketLabel", renders: "span", description: "What it is." },
+      { name: "TicketNote", renders: "span", description: "Small print: a fee, a limit." },
+    ],
+    examples: [
+      {
+        slug: "plans",
+        title: "Plans",
+        description: "Plans as tickets. Arrow keys move between them; a sold-out one is disabled.",
+        file: "ticket-sheet-plans.tsx",
+      },
+      {
+        slug: "credits-checkout",
+        title: "Credit packs with a receipt",
+        description: "The sheet driving a receipt.",
+        file: "credits-checkout.tsx",
+      },
+    ],
+  },
+  {
+    slug: "dial",
+    name: "Gauge and dial",
+    category: "instruments",
+    description:
+      "A needle on a brass-bezelled scale. Gauge reads a value; Dial sets one, turned by drag or keyboard.",
+    files: ["components/dial.tsx", "styles/dial.css"],
+    registryDependencies: ["amount"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Gauge value={12} max={30} marks={<DialMark value={5} />}>
+  <GaugeLabel />
+  <GaugeValue />
+</Gauge>
+
+<Dial label="Keep above" value={30} onValueChange={setValue} />`,
+    parts: [
+      {
+        name: "Gauge",
+        renders: "Meter",
+        description: "Read-only. value, min, max, ticks, marks. Announced as a meter; pass getAriaValueText to describe marks.",
+      },
+      { name: "GaugeLabel / GaugeValue", renders: "Meter parts", description: "The name and the formatted value." },
+      {
+        name: "Dial",
+        renders: "div (slider)",
+        description:
+          "Adjustable. value, defaultValue, onValueChange, min, max, step, label, and Amount formatting for the readout. Arrows, Page Up/Down, Home, End.",
+      },
+      { name: "DialMark", renders: "span", description: "A painted mark on the scale: red, amber or green. Decorative." },
+    ],
+    examples: [
+      {
+        slug: "runway",
+        title: "Runway",
+        description: "Days of credit left, with the auto top-up level marked.",
+        file: "dial-runway.tsx",
+      },
+      {
+        slug: "auto-top-up",
+        title: "Auto top-up",
+        description: "Set like a thermostat: the level to keep above, and how much to add.",
+        file: "dial-auto-top-up.tsx",
+        wide: true,
+      },
+    ],
+  },
+  {
+    slug: "breaker",
+    name: "Breaker",
+    category: "instruments",
+    description:
+      "A circuit breaker: on, off, or tripped until someone resets it. For spending caps, kill switches and feature flags.",
+    files: ["components/breaker.tsx", "styles/breaker.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<BreakerPanel>
+  <BreakerPanelTitle />
+  <BreakerRow>
+    <Breaker label="Workspace" description="$500 a month" tripped />
+  </BreakerRow>
+</BreakerPanel>`,
+    parts: [
+      { name: "BreakerPanel", renders: "div (group)", description: "The panel. Give it an aria-label." },
+      {
+        name: "Breaker",
+        renders: "Switch",
+        description:
+          "checked, defaultChecked, onCheckedChange, disabled, plus tripped: the lever drops to the middle and a red flag shows. Switching a tripped breaker resets it; clear tripped in onCheckedChange.",
+      },
+    ],
+    examples: [
+      {
+        slug: "caps",
+        title: "Spending caps",
+        description: "The per-person cap has tripped; switch it to reset. Overage is locked to owners.",
+        file: "breaker-caps.tsx",
+        wide: true,
+      },
+    ],
+  },
+  {
+    slug: "ledger",
+    name: "Ledger",
+    category: "money",
+    description:
+      "A ruled page of numbered entries with a red margin. History and audit logs that read like a passbook.",
+    files: ["components/ledger.tsx", "styles/ledger.css"],
+    registryDependencies: ["amount", "stamp"],
+    dependencies: ["cn"],
+    anatomy: `<Ledger>
+  <LedgerTitle />
+  <LedgerTable>
+    <LedgerHeader>
+      <LedgerRow><LedgerHead /></LedgerRow>
+    </LedgerHeader>
+    <LedgerBody>
+      <LedgerRow>
+        <LedgerCell><LedgerNumber value={42} /></LedgerCell>
+        <LedgerCell><LedgerAmount value={10} /></LedgerCell>
+      </LedgerRow>
+    </LedgerBody>
+  </LedgerTable>
+</Ledger>`,
+    parts: [
+      { name: "Ledger", renders: "div", description: "The ruled page. Every row sits exactly on one rule." },
+      { name: "LedgerTable", renders: "table", description: "A real table, with LedgerHeader, LedgerBody, LedgerRow, LedgerHead, LedgerCell." },
+      { name: "LedgerNumber", renders: "span", description: "The entry number, “No. 0042”, read as “Entry 0042”." },
+      { name: "LedgerAmount", renders: "Amount", description: "Signed: credits in green ink, debits in black." },
+    ],
+    examples: [
+      {
+        slug: "history",
+        title: "Credit history",
+        description: "Numbered entries with the balance after each, and stamped statuses.",
+        file: "ledger-history.tsx",
+        wide: true,
+      },
+    ],
+  },
+  {
+    slug: "keycard",
+    name: "Keycard",
+    category: "money",
+    description:
+      "An API key on a plastic card that slides into a brass reader. For bring-your-own-key and credential screens.",
+    files: ["components/keycard.tsx", "styles/keycard.css"],
+    registryDependencies: ["payment-card"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<KeycardSlot inserted>
+  <Keycard>
+    <KeycardLabel />
+    <KeycardKey value="sk-…" />
+  </Keycard>
+</KeycardSlot>`,
+    parts: [
+      { name: "Keycard", renders: "PaymentCard", description: "The card, with a magnetic stripe. Takes PaymentCard's tone." },
+      { name: "KeycardLabel", renders: "span", description: "Whose key it is." },
+      {
+        name: "KeycardKey",
+        renders: "span",
+        description: "The key, masked to its prefix and last four (read as “ending in”). revealed shows it all.",
+      },
+      {
+        name: "KeycardSlot",
+        renders: "div",
+        description: "A brass reader. inserted slides the card in; status text on the plate is announced politely.",
+      },
+    ],
+    examples: [
+      {
+        slug: "byok",
+        title: "Bring your own key",
+        description: "Switch the breaker and the key goes into the reader: usage bills to it instead of credits.",
+        file: "keycard-byok.tsx",
       },
     ],
   },

@@ -1,0 +1,29 @@
+/*
+ * Receipt: a strip of thermal paper with torn edges. Builds on bevel.css
+ * (bevel-paper, ink, light).
+ */
+
+:root {
+  --receipt-tooth: 0.625rem; /* width of one torn tooth */
+  --receipt-carbon: oklch(0.93 0.07 95); /* the yellow copy behind */
+  --receipt-carbon-offset: 0.375rem;
+  --receipt-print-in: 0.5em; /* how far a new line slides as it prints */
+}
+
+/* Torn top and bottom edges. Shadow comes from a filter on the parent, so it follows the teeth. */
+@utility receipt-edges {
+  mask-image:
+    conic-gradient(from 135deg at top, transparent, black 1deg 89deg, transparent 90deg),
+    conic-gradient(from -45deg at bottom, transparent, black 1deg 89deg, transparent 90deg),
+    linear-gradient(black, black);
+  mask-size:
+    var(--receipt-tooth) var(--receipt-tooth),
+    var(--receipt-tooth) var(--receipt-tooth),
+    100% calc(100% - var(--receipt-tooth));
+  mask-position: top, bottom, center;
+  mask-repeat: repeat-x, repeat-x, no-repeat;
+}
+
+@utility receipt-shadow {
+  filter: drop-shadow(0 1px 1px var(--bevel-cast)) drop-shadow(0 6px 10px var(--bevel-cast));
+}
