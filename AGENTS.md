@@ -8,7 +8,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-# Skeuomorphic component library
+# Bevel — skeuomorphic component library
 
 shadcn-style registry of tactile, skeuomorphic components built on Base UI (`@base-ui/react`) + Tailwind v4.
 
