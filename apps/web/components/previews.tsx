@@ -1,4 +1,9 @@
 import type * as React from "react"
+import {
+  ActivityLog,
+  ActivityLogEntries,
+  ActivityLogEntry,
+} from "@workspace/ui/components/activity-log"
 import { Amount } from "@workspace/ui/components/amount"
 import { Breaker, BreakerPanel, BreakerRow } from "@workspace/ui/components/breaker"
 import { Citation, CitationTrigger } from "@workspace/ui/components/citation"
@@ -48,6 +53,15 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "activity-log": () => (
+    <ActivityLog aria-label="Activity">
+      <ActivityLogEntries>
+        <ActivityLogEntry kind="action" time="14:02">Opened lease.pdf</ActivityLogEntry>
+        <ActivityLogEntry kind="question" time="14:03">Email as notice?</ActivityLogEntry>
+        <ActivityLogEntry kind="response" time="14:05">Redline ready</ActivityLogEntry>
+      </ActivityLogEntries>
+    </ActivityLog>
+  ),
   "task-plan": () => (
     <TaskPlan>
       <TaskPlanSteps>

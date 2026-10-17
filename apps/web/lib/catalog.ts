@@ -782,6 +782,45 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "activity-log",
+    name: "Activity log",
+    category: "agents",
+    description:
+      "A docket of what an agent did: thoughts, actions, questions, responses and errors, each timed. Questions waiting on you are highlighted.",
+    files: ["components/activity-log.tsx", "styles/activity-log.css"],
+    dependencies: ["cn"],
+    anatomy: `<ActivityLog aria-label="Agent activity">
+  <ActivityLogTitle />
+  <ActivityLogEntries>
+    <ActivityLogEntry kind="action" time="14:02" />
+  </ActivityLogEntries>
+</ActivityLog>`,
+    parts: [
+      { name: "ActivityLog", renders: "section", description: "The docket page. Give it an aria-label." },
+      {
+        name: "ActivityLogEntries",
+        renders: "div (log)",
+        description:
+          "A live log: new entries are announced politely. Scrolls past --activity-log-height and follows new entries only while you're at the bottom.",
+      },
+      {
+        name: "ActivityLogEntry",
+        renders: "div",
+        description:
+          "kind: thought, action, question, response or error (shown in words), time and dateTime. Entries added later print in.",
+      },
+    ],
+    examples: [
+      {
+        slug: "agent",
+        title: "Two agents on a matter",
+        description: "Entries arrive as the agents work. Who acted is a plain Name tag.",
+        file: "activity-log-agent.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

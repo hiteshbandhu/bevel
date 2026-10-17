@@ -1,0 +1,28 @@
+/*
+ * Activity log: a docket of what an agent did, entry by entry. Builds on
+ * bevel.css (paper, pens, pencil, ink, motion).
+ */
+
+:root {
+  --activity-log-height: 22rem; /* the page scrolls past this */
+  --activity-log-time: 3.25rem; /* time column */
+  --activity-log-kind: 5.5rem; /* kind column */
+  --activity-log-print-in: 0.5em;
+  --activity-log-question: oklch(0.93 0.1 95 / 0.55); /* a question for you is highlighted */
+}
+
+[data-slot="activity-log-entry"] {
+  --activity-log-ink: var(--bevel-paper-foreground);
+}
+[data-slot="activity-log-entry"][data-kind="thought"] {
+  --activity-log-ink: var(--bevel-pencil);
+}
+[data-slot="activity-log-entry"][data-kind="action"] {
+  --activity-log-ink: var(--bevel-pen-blue);
+}
+[data-slot="activity-log-entry"][data-kind="question"] {
+  --activity-log-ink: var(--bevel-ink-amber);
+}
+[data-slot="activity-log-entry"][data-kind="error"] {
+  --activity-log-ink: var(--bevel-pen-red);
+}

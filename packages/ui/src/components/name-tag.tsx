@@ -31,7 +31,7 @@ function NameTag({
       data-slot="name-tag"
       data-variant={variant}
       className={cn(
-        "relative select-none",
+        "relative not-italic select-none",
         variant === "sticker" &&
           "name-tag-sticker flex w-56 flex-col overflow-hidden rounded-(--bevel-radius-md) pb-2",
         variant === "visitor" &&

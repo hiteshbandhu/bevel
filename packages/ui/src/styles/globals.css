@@ -16,6 +16,7 @@
 @import "./name-tag.css";
 @import "./citation.css";
 @import "./task-plan.css";
+@import "./activity-log.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));

@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { ActivityLogAgent } from "./activity-log-agent"
 import { AmountFormats } from "./amount-formats"
 import { BreakerCaps } from "./breaker-caps"
 import { CitationAnswer } from "./citation-answer"
@@ -22,6 +23,7 @@ import { WalletUsage } from "./wallet-usage"
 
 /** Demo components by file name, matching `Example.file` in the catalog. */
 export const demos: Record<string, React.ComponentType> = {
+  "activity-log-agent.tsx": ActivityLogAgent,
   "amount-formats.tsx": AmountFormats,
   "breaker-caps.tsx": BreakerCaps,
   "citation-answer.tsx": CitationAnswer,
