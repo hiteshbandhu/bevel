@@ -5,6 +5,7 @@ import { CreditsCheckout } from "./credits-checkout"
 import { DialAutoTopUp } from "./dial-auto-top-up"
 import { DialRunway } from "./dial-runway"
 import { KeycardByok } from "./keycard-byok"
+import { KeycardSwipeDemo } from "./keycard-swipe"
 import { LedgerHistory } from "./ledger-history"
 import { MeterLiveUsage } from "./meter-live-usage"
 import { MeterPostage } from "./meter-postage"
@@ -24,6 +25,7 @@ export const demos: Record<string, React.ComponentType> = {
   "dial-auto-top-up.tsx": DialAutoTopUp,
   "dial-runway.tsx": DialRunway,
   "keycard-byok.tsx": KeycardByok,
+  "keycard-swipe.tsx": KeycardSwipeDemo,
   "ledger-history.tsx": LedgerHistory,
   "meter-live-usage.tsx": MeterLiveUsage,
   "meter-postage.tsx": MeterPostage,

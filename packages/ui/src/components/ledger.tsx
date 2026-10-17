@@ -64,7 +64,10 @@ function LedgerHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="ledger-head"
       scope="col"
-      className={cn("px-3 align-bottom font-semibold whitespace-nowrap first:w-(--ledger-margin) first:px-2", className)}
+      className={cn(
+        "px-3 align-bottom font-semibold whitespace-nowrap first:w-(--ledger-margin) first:pr-3 first:pl-2 first:text-right",
+        className
+      )}
       {...props}
     />
   )
@@ -74,7 +77,10 @@ function LedgerCell({ className, ...props }: React.ComponentProps<"td">) {
   return (
     <td
       data-slot="ledger-cell"
-      className={cn("px-3 align-middle whitespace-nowrap first:w-(--ledger-margin) first:px-2", className)}
+      className={cn(
+        "px-3 align-middle whitespace-nowrap first:w-(--ledger-margin) first:pr-3 first:pl-2 first:text-right",
+        className
+      )}
       {...props}
     />
   )

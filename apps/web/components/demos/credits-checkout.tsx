@@ -88,23 +88,23 @@ export function CreditsCheckout() {
             <Amount value={pack.credits + fee} currency="USD" />
           </ReceiptValue>
         </ReceiptTotal>
-        <button
-          type="button"
-          disabled={paid}
-          onClick={() => setPaid(true)}
-          className="mt-2 h-9 rounded-sm border border-current/40 text-sm font-semibold hover:bg-black/5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none disabled:opacity-50"
-        >
-          {paid ? "Paid" : "Pay"}
-        </button>
-        <ReceiptFooter>Credits never expire.</ReceiptFooter>
-        {paid && (
-          <ReceiptMark className="top-24 right-4 bottom-auto">
+        {paid ? (
+          <ReceiptMark>
             <Stamp animate role="status">
               Paid
               <StampDetail>17 Oct</StampDetail>
             </Stamp>
           </ReceiptMark>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setPaid(true)}
+            className="mt-2 h-9 rounded-sm border border-current/40 text-sm font-semibold hover:bg-black/5 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          >
+            Pay
+          </button>
         )}
+        <ReceiptFooter>Credits never expire.</ReceiptFooter>
       </Receipt>
     </div>
   )

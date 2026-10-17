@@ -157,12 +157,25 @@ function ReceiptFooter({ className, ...props }: React.ComponentProps<"p">) {
   )
 }
 
-/** Holds a Stamp or Seal over the receipt, where an attendant would press it. */
-function ReceiptMark({ className, ...props }: React.ComponentProps<"div">) {
+type ReceiptMarkProps = React.ComponentProps<"div"> & {
+  /**
+   * Press the mark over the printed lines instead of in its own space. Only
+   * use it where it can't cover anything that must stay readable.
+   */
+  overlay?: boolean
+}
+
+/** Holds a Stamp or Seal. By default it prints in its own space on the receipt, so it never covers a figure. */
+function ReceiptMark({ className, overlay = false, ...props }: ReceiptMarkProps) {
   return (
     <div
       data-slot="receipt-mark"
-      className={cn("pointer-events-none absolute right-6 bottom-12 z-10", className)}
+      data-overlay={overlay ? "" : undefined}
+      className={cn(
+        "pointer-events-none flex min-h-14 items-center justify-center",
+        "data-overlay:absolute data-overlay:right-6 data-overlay:bottom-12 data-overlay:z-10 data-overlay:min-h-0",
+        className
+      )}
       {...props}
     />
   )
@@ -182,4 +195,4 @@ export {
   ReceiptFooter,
   ReceiptMark,
 }
-export type { ReceiptProps }
+export type { ReceiptProps, ReceiptMarkProps }

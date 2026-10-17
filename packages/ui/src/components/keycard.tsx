@@ -107,5 +107,167 @@ function KeycardSlot({ className, inserted = false, status, children, ...props }
   )
 }
 
-export { Keycard, KeycardLabel, KeycardKey, KeycardSlot }
-export type { KeycardKeyProps, KeycardSlotProps }
+// A swipe counts once the card has travelled this share of the channel,
+// or if it's flicked faster than this (px/ms), however short the drag.
+const SWIPE_DISTANCE = 0.6
+const SWIPE_VELOCITY = 0.11
+// Resistance past either end of the channel.
+const FRICTION = 0.2
+
+/**
+ * Run `then` when the element's transition ends. Falls back to a timer so a
+ * hidden tab (where transitions don't run) can't leave the reader stuck.
+ */
+function afterTransition(element: HTMLElement, animated: boolean, then: () => void) {
+  if (!animated) return then()
+  let done = false
+  const finish = () => {
+    if (done) return
+    done = true
+    then()
+  }
+  element.addEventListener("transitionend", finish, { once: true })
+  const seconds = parseFloat(getComputedStyle(element).transitionDuration) || 0
+  window.setTimeout(finish, seconds * 1000 + 50)
+}
+
+type KeycardSwipeProps = Omit<React.ComponentProps<"div">, "children"> & {
+  /** Called when a swipe completes, by drag, flick or keyboard. */
+  onSwipe?: () => void
+  /** Lights the reader lamp, e.g. once a key is accepted. */
+  accepted?: boolean
+  /** Text on the reader plate, announced politely. */
+  status?: React.ReactNode
+  /** The action, read before the card's own text: "Swipe key: Your OpenAI key…". */
+  label?: string
+  /** A Keycard. */
+  children: React.ReactNode
+}
+
+/**
+ * A swipe reader: drag the card left to right through the channel. A long
+ * enough drag or a quick flick completes the swipe; a short one springs
+ * back. Enter or Space swipes from the keyboard.
+ */
+function KeycardSwipe({
+  className,
+  onSwipe,
+  accepted = false,
+  status,
+  label = "Swipe key",
+  children,
+  ...props
+}: KeycardSwipeProps) {
+  const trackRef = React.useRef<HTMLDivElement>(null)
+  const cardRef = React.useRef<HTMLDivElement>(null)
+  const drag = React.useRef<{ pointerId: number; startX: number; startTime: number; x: number } | null>(null)
+  const busy = React.useRef(false)
+  const position = React.useRef(0)
+  const statusId = React.useId()
+
+  const travel = () => (trackRef.current?.clientWidth ?? 0) - (cardRef.current?.offsetWidth ?? 0)
+  const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+  // Position is written straight to the element so dragging never re-renders.
+  const moveTo = (x: number, transition: "none" | "through" | "back" | "spring", then?: () => void) => {
+    const card = cardRef.current
+    if (!card) return
+    const animated = transition !== "none" && !reducedMotion() && position.current !== x
+    position.current = x
+    card.style.transition = animated
+      ? {
+          through: "translate var(--bevel-duration-move) var(--bevel-ease-out)",
+          back: "translate var(--bevel-duration-ambient) var(--bevel-ease-in-out)",
+          spring: "translate var(--bevel-duration-move) var(--bevel-ease-spring)",
+          none: "none",
+        }[transition]
+      : "none"
+    card.style.translate = `${x}px 0`
+    if (then) afterTransition(card, animated, then)
+  }
+
+  const swipe = () => {
+    if (busy.current) return
+    busy.current = true
+    // The swipe is decided now; state doesn't wait for the animation.
+    onSwipe?.()
+    moveTo(travel(), "through", () =>
+      // Then the card comes back out of the reader, slower than it went through.
+      moveTo(0, "back", () => {
+        busy.current = false
+      })
+    )
+  }
+
+  return (
+    <div
+      ref={trackRef}
+      data-slot="keycard-swipe"
+      data-accepted={accepted ? "" : undefined}
+      className={cn("relative w-full max-w-sm pb-[calc(var(--keycard-plate-height)-var(--keycard-swipe-overlap))]", className)}
+      {...props}
+    >
+      <div
+        ref={cardRef}
+        role="button"
+        tabIndex={0}
+        aria-describedby={statusId}
+        data-slot="keycard-swipe-card"
+        className="relative w-[72%] cursor-grab touch-pan-y rounded-(--bevel-radius-md) outline-none select-none focus-visible:ring-3 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:cursor-grabbing"
+        onKeyDown={(event) => {
+          if (event.key !== "Enter" && event.key !== " ") return
+          event.preventDefault()
+          swipe()
+        }}
+        onPointerDown={(event) => {
+          // One finger at a time; a second touch mid-drag is ignored.
+          if (drag.current || busy.current || event.button !== 0) return
+          event.currentTarget.setPointerCapture(event.pointerId)
+          drag.current = { pointerId: event.pointerId, startX: event.clientX, startTime: event.timeStamp, x: 0 }
+        }}
+        onPointerMove={(event) => {
+          const d = drag.current
+          if (!d || d.pointerId !== event.pointerId) return
+          const raw = event.clientX - d.startX
+          const max = travel()
+          // Friction past either end instead of a hard stop.
+          d.x = raw < 0 ? raw * FRICTION : raw > max ? max + (raw - max) * FRICTION : raw
+          moveTo(d.x, "none")
+        }}
+        onPointerUp={(event) => {
+          const d = drag.current
+          if (!d || d.pointerId !== event.pointerId) return
+          drag.current = null
+          const velocity = d.x / Math.max(1, event.timeStamp - d.startTime)
+          if (d.x >= travel() * SWIPE_DISTANCE || velocity > SWIPE_VELOCITY) swipe()
+          else moveTo(0, "spring")
+        }}
+        onPointerCancel={() => {
+          drag.current = null
+          moveTo(0, "spring")
+        }}
+      >
+        {/* The action leads the name; the card's visible text follows, so voice users can say what they see. */}
+        <span className="sr-only">{label}: </span>
+        {children}
+      </div>
+      <div
+        data-slot="keycard-reader"
+        className="bevel-metal bevel-object absolute inset-x-0 bottom-0 z-10 flex h-(--keycard-plate-height) flex-col justify-end rounded-(--bevel-radius-sm) px-4 pb-3"
+      >
+        <span aria-hidden className="bevel-recessed absolute inset-x-0 top-0 h-2 rounded-t-(--bevel-radius-sm)" />
+        <span
+          id={statusId}
+          aria-live="polite"
+          className="bevel-deboss flex items-center gap-1.5 text-(length:--bevel-fine) font-semibold tracking-(--bevel-tracking-print) text-(--bevel-ivory-foreground) uppercase"
+        >
+          <span aria-hidden className="bevel-led size-1.5 rounded-full" />
+          {status ?? (accepted ? "Key accepted" : "Swipe the card to the right")}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+export { Keycard, KeycardLabel, KeycardKey, KeycardSlot, KeycardSwipe }
+export type { KeycardKeyProps, KeycardSlotProps, KeycardSwipeProps }

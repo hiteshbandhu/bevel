@@ -5,7 +5,8 @@
 
 :root {
   --ledger-rule: 2.25rem; /* line spacing; every row is exactly one rule tall */
-  --ledger-margin: 3.5rem; /* the red margin line, from the left edge */
+  /* The red margin line, from the left edge. Wide enough for "No. 0000" plus a gap before the line. */
+  --ledger-margin: 5.5rem;
   --ledger-indent: calc(var(--ledger-margin) + 0.75rem); /* where text starts, past the margin */
   --ledger-credit: oklch(0.45 0.12 155);
   --ledger-debit: var(--bevel-paper-foreground);

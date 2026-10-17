@@ -606,7 +606,11 @@ export const components: ComponentDoc[] = [
     <KeycardLabel />
     <KeycardKey value="sk-…" />
   </Keycard>
-</KeycardSlot>`,
+</KeycardSlot>
+
+<KeycardSwipe onSwipe={useKey}>
+  <Keycard>…</Keycard>
+</KeycardSwipe>`,
     parts: [
       { name: "Keycard", renders: "PaymentCard", description: "The card, with a magnetic stripe. Takes PaymentCard's tone." },
       { name: "KeycardLabel", renders: "span", description: "Whose key it is." },
@@ -620,6 +624,12 @@ export const components: ComponentDoc[] = [
         renders: "div",
         description: "A brass reader. inserted slides the card in; status text on the plate is announced politely.",
       },
+      {
+        name: "KeycardSwipe",
+        renders: "div, card as button",
+        description:
+          "A swipe reader: drag the card left to right, or flick it. onSwipe fires when it completes; accepted lights the lamp. Enter or Space swipes from the keyboard.",
+      },
     ],
     examples: [
       {
@@ -627,6 +637,13 @@ export const components: ComponentDoc[] = [
         title: "Bring your own key",
         description: "Switch the breaker and the key goes into the reader: usage bills to it instead of credits.",
         file: "keycard-byok.tsx",
+      },
+      {
+        slug: "swipe",
+        title: "Swipe to use",
+        description:
+          "Drag the card through the reader, or flick it. A short drag springs back. Keyboard: focus the card, press Enter.",
+        file: "keycard-swipe.tsx",
       },
     ],
   },

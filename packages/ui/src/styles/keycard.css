@@ -8,6 +8,7 @@
   --keycard-stripe: oklch(0.18 0.01 260);
   --keycard-plate-height: 3.75rem;
   --keycard-insert: 62%; /* how far the card sinks into the reader */
+  --keycard-swipe-overlap: 1.25rem; /* how much of the card rides inside the swipe channel */
   --keycard-slot-ok: oklch(0.8 0.17 150);
   --keycard-slot-idle: oklch(0.45 0.01 260);
 }
@@ -15,8 +16,12 @@
 [data-slot="keycard-slot"] {
   --bevel-led: var(--keycard-slot-idle);
 }
-[data-slot="keycard-slot"][data-inserted] {
+[data-slot="keycard-slot"][data-inserted],
+[data-slot="keycard-swipe"][data-accepted] {
   --bevel-led: var(--keycard-slot-ok);
+}
+[data-slot="keycard-swipe"] {
+  --bevel-led: var(--keycard-slot-idle);
 }
 [data-slot="keycard-reader"] {
   --bevel-material: var(--bevel-brass);

@@ -97,7 +97,7 @@ export const previews: Record<string, React.ComponentType> = {
         <ReceiptLabel>Total</ReceiptLabel>
         <ReceiptValue>$51.75</ReceiptValue>
       </ReceiptTotal>
-      <ReceiptMark className="right-3 bottom-6">
+      <ReceiptMark>
         <Stamp>Paid</Stamp>
       </ReceiptMark>
     </Receipt>
