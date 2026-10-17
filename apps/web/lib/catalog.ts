@@ -1693,6 +1693,43 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "contact-sheet",
+    name: "Contact sheet",
+    category: "records",
+    description:
+      "A photographer's contact sheet: every frame at once on a strip of film, marked with a grease pencil. Circle the keepers, cross out the rest. For reviewing generated images, design variants and screenshots.",
+    files: ["components/contact-sheet.tsx", "styles/contact-sheet.css"],
+    dependencies: ["cn"],
+    anatomy: `<ContactSheet aria-label="Generated variants" value={marks} onValueChange={setMarks} columns={4}>
+  <ContactSheetFrame id="v1" label="Dusk, low sun">
+    <img src="/v1.png" alt="" />
+  </ContactSheetFrame>
+</ContactSheet>`,
+    parts: [
+      {
+        name: "ContactSheet",
+        renders: "div (group)",
+        description:
+          "value, defaultValue, onValueChange: marks by frame id, “pick” or “reject”. columns. Counts the picks. Give it an aria-label.",
+      },
+      {
+        name: "ContactSheetFrame",
+        renders: "button",
+        description:
+          "id, label; the picture is its children. Named “3. Dusk, low sun, picked”. Click cycles; arrow keys move by frame and row, P picks, X rejects, Backspace clears.",
+      },
+    ],
+    examples: [
+      {
+        slug: "variants",
+        title: "Generated variants",
+        description: "Eight variants of one prompt. Circle the keepers, cross out the rest.",
+        file: "contact-sheet-variants.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

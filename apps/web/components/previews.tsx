@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { ContactSheet, ContactSheetFrame } from "@workspace/ui/components/contact-sheet"
 import { VisibleFile, VisibleFileRow, VisibleFileSignal } from "@workspace/ui/components/visible-file"
 import { KeysortFilter, KeysortFilterCard, KeysortFilterDeck, KeysortFilterNeedle } from "@workspace/ui/components/keysort-filter"
 import { Mixer, MixerStrip, MixerStripFader, MixerStripMute, MixerStripName, MixerStripSolo } from "@workspace/ui/components/mixer-strip"
@@ -85,6 +86,15 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "contact-sheet": () => (
+    <ContactSheet aria-label="Frames" columns={3} defaultValue={{ b: "pick", c: "reject" }} className="pointer-events-none max-w-60 p-2">
+      {[["a", 40], ["b", 230], ["c", 350]].map(([id, h]) => (
+        <ContactSheetFrame key={id} id={id as string} label={id as string} tabIndex={-1}>
+          <span className="block size-full" style={{ background: `oklch(0.65 0.1 ${h})` }} />
+        </ContactSheetFrame>
+      ))}
+    </ContactSheet>
+  ),
   "visible-file": () => (
     <VisibleFile aria-label="Tasks" scale={["Q", "P", "B", "T", "D"]} className="pointer-events-none max-w-64 grid-cols-[4.5rem_1fr]">
       <VisibleFileRow title="Login">
