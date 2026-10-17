@@ -6,13 +6,13 @@ const meta: Meta<typeof DetentKnob> = {
   title: "Instruments/Detent Knob",
   component: DetentKnob,
   parameters: { layout: "centered" },
-  args: { "aria-label": "Agent mode", defaultValue: "ask", onValueChange: fn() },
+  args: { "aria-label": "Reasoning effort", defaultValue: "medium", onValueChange: fn() },
   render: (args) => (
     <DetentKnob {...args}>
-      <DetentKnobStop value="off">Off</DetentKnobStop>
-      <DetentKnobStop value="ask">Ask</DetentKnobStop>
-      <DetentKnobStop value="edit">Auto-edit</DetentKnobStop>
-      <DetentKnobStop value="full">Full auto</DetentKnobStop>
+      <DetentKnobStop value="low">Low</DetentKnobStop>
+      <DetentKnobStop value="medium">Medium</DetentKnobStop>
+      <DetentKnobStop value="high">High</DetentKnobStop>
+      <DetentKnobStop value="max">Max</DetentKnobStop>
     </DetentKnob>
   ),
 }
@@ -27,17 +27,17 @@ export const Dark: Story = { globals: { theme: "dark" } }
 /** Arrow keys click from position to position and stop at the ends. */
 export const Keyboard: Story = {
   play: async ({ args, canvas, userEvent }) => {
-    const knob = canvas.getByRole("slider", { name: "Agent mode" })
-    await expect(knob).toHaveAttribute("aria-valuetext", "Ask, 2 of 4")
+    const knob = canvas.getByRole("slider", { name: "Reasoning effort" })
+    await expect(knob).toHaveAttribute("aria-valuetext", "Medium, 2 of 4")
     await userEvent.tab()
     await expect(knob).toHaveFocus()
     await userEvent.keyboard("{ArrowRight}")
-    await expect(knob).toHaveAttribute("aria-valuetext", "Auto-edit, 3 of 4")
-    await expect(args.onValueChange).toHaveBeenLastCalledWith("edit")
+    await expect(knob).toHaveAttribute("aria-valuetext", "High, 3 of 4")
+    await expect(args.onValueChange).toHaveBeenLastCalledWith("high")
     await userEvent.keyboard("{End}{ArrowRight}")
-    await expect(knob).toHaveAttribute("aria-valuetext", "Full auto, 4 of 4")
+    await expect(knob).toHaveAttribute("aria-valuetext", "Max, 4 of 4")
     await expect(args.onValueChange).toHaveBeenCalledTimes(2)
     await userEvent.keyboard("{Home}")
-    await expect(knob).toHaveAttribute("aria-valuetext", "Off, 1 of 4")
+    await expect(knob).toHaveAttribute("aria-valuetext", "Low, 1 of 4")
   },
 }

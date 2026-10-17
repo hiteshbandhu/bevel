@@ -154,11 +154,11 @@ export const previews: Record<string, React.ComponentType> = {
     </PushToTalk>
   ),
   "detent-knob": () => (
-    <DetentKnob aria-label="Mode" defaultValue="edit" className="pointer-events-none scale-75">
-      <DetentKnobStop value="off">Off</DetentKnobStop>
-      <DetentKnobStop value="ask">Ask</DetentKnobStop>
-      <DetentKnobStop value="edit">Auto-edit</DetentKnobStop>
-      <DetentKnobStop value="full">Full auto</DetentKnobStop>
+    <DetentKnob aria-label="Effort" defaultValue="high" className="pointer-events-none scale-75">
+      <DetentKnobStop value="low">Low</DetentKnobStop>
+      <DetentKnobStop value="medium">Medium</DetentKnobStop>
+      <DetentKnobStop value="high">High</DetentKnobStop>
+      <DetentKnobStop value="max">Max</DetentKnobStop>
     </DetentKnob>
   ),
   annunciator: () => (

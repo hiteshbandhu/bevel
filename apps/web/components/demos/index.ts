@@ -7,7 +7,7 @@ import { KeysortFilterContracts } from "./keysort-filter-contracts"
 import { MixerStripAgents } from "./mixer-strip-agents"
 import { MotorizedFaderTemperature } from "./motorized-fader-temperature"
 import { PushToTalkAgent } from "./push-to-talk-agent"
-import { DetentKnobMode } from "./detent-knob-mode"
+import { DetentKnobEffort } from "./detent-knob-effort"
 import { AnnunciatorAgent } from "./annunciator-agent"
 import { EngineTelegraphAutonomy } from "./engine-telegraph-autonomy"
 import { TakeANumberSupport } from "./take-a-number-support"
@@ -50,7 +50,7 @@ export const demos: Record<string, React.ComponentType> = {
   "mixer-strip-agents.tsx": MixerStripAgents,
   "motorized-fader-temperature.tsx": MotorizedFaderTemperature,
   "push-to-talk-agent.tsx": PushToTalkAgent,
-  "detent-knob-mode.tsx": DetentKnobMode,
+  "detent-knob-effort.tsx": DetentKnobEffort,
   "annunciator-agent.tsx": AnnunciatorAgent,
   "engine-telegraph-autonomy.tsx": EngineTelegraphAutonomy,
   "take-a-number-support.tsx": TakeANumberSupport,
