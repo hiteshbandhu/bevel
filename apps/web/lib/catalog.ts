@@ -64,9 +64,20 @@ export const categories: Category[] = [
     description: "Readouts and controls from a panel: rolling counters, gauges, dials and breakers.",
   },
   {
+    slug: "agents",
+    name: "Agents",
+    description:
+      "Plans, logs, delegation and approvals for AI agents at work. Who's doing what, how far along, and what needs you.",
+  },
+  {
+    slug: "documents",
+    name: "Documents",
+    description: "Sources and edits: citations that open their passage, and redlines you accept or reject.",
+  },
+  {
     slug: "marks",
     name: "Marks",
-    description: "Ink and relief pressed into paper: status stamps and embossed seals.",
+    description: "Ink and relief on paper: status stamps, embossed seals and redactions.",
   },
 ]
 
