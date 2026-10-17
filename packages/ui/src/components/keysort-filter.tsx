@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Checkbox } from "@base-ui/react/checkbox"
+import { Toggle } from "@base-ui/react/toggle"
 import { cn } from "cn"
 
 type Needle = { value: string; label: string }
@@ -28,24 +28,25 @@ function matches(notches: string[], selected: string[]) {
 }
 
 type KeysortFilterProps = Omit<React.ComponentProps<"div">, "defaultValue"> & {
-  /** The needles pushed through, by value. */
+  /** The needles pushed in, by value. */
   value?: string[]
   defaultValue?: string[]
   onValueChange?: (value: string[]) => void
 }
 
 /**
- * Edge-notched cards: each needle is an attribute, and the cards notched
- * for every needle you push through drop out of the deck. AND filtering
- * you can see. Give it an aria-label.
+ * Edge-notched cards. Each column of holes is an attribute; push needles
+ * down the columns and the cards notched for all of them fall free. AND
+ * filtering you can see. Give it an aria-label.
  */
-function KeysortFilter({ className, value, defaultValue = [], onValueChange, children, ...props }: KeysortFilterProps) {
+function KeysortFilter({ className, value, defaultValue = [], onValueChange, style, children, ...props }: KeysortFilterProps) {
   const [needles, setNeedles] = React.useState<Needle[]>([])
   const [cards, setCards] = React.useState<Record<string, string[]>>({})
   const [uncontrolled, setUncontrolled] = React.useState(defaultValue)
   const selected = value ?? uncontrolled
 
   const registerNeedle = React.useCallback((needle: Needle) => {
+    // Needles keep the order they mounted in, which is their column order.
     setNeedles((all) =>
       all.some((n) => n.value === needle.value)
         ? all.map((n) => (n.value === needle.value ? needle : n))
@@ -81,7 +82,11 @@ function KeysortFilter({ className, value, defaultValue = [], onValueChange, chi
         role="group"
         data-slot="keysort-filter"
         data-sorting={selected.length ? "" : undefined}
-        className={cn("flex w-full flex-col gap-4", className)}
+        className={cn(
+          "grid w-full grid-cols-[minmax(6rem,1fr)_repeat(var(--keysort-filter-needles),var(--keysort-filter-column))] gap-y-3",
+          className
+        )}
+        style={{ "--keysort-filter-needles": Math.max(needles.length, 1), ...style } as React.CSSProperties}
         {...props}
       >
         {children}
@@ -90,60 +95,74 @@ function KeysortFilter({ className, value, defaultValue = [], onValueChange, chi
   )
 }
 
-/** The needle rack: one checkbox per attribute. */
-function KeysortFilterNeedles({ className, children, ...props }: React.ComponentProps<"fieldset">) {
+/** The needle handles, one above each column of holes. */
+function KeysortFilterNeedles({ className, children, ...props }: React.ComponentProps<"div">) {
   return (
-    <fieldset data-slot="keysort-filter-needles" className={cn("flex flex-wrap gap-2", className)} {...props}>
-      <legend className="sr-only">Needles</legend>
+    <div
+      role="group"
+      aria-label="Needles"
+      data-slot="keysort-filter-needles"
+      className={cn("col-span-full grid grid-cols-subgrid items-end", className)}
+      {...props}
+    >
+      <span aria-hidden />
       {children}
-    </fieldset>
+    </div>
   )
 }
 
-type KeysortFilterNeedleProps = Omit<Checkbox.Root.Props, "value" | "children" | "checked"> & {
+type KeysortFilterNeedleProps = Omit<Toggle.Props, "value" | "children" | "pressed"> & {
   value: string
-  /** The attribute's name. Keep it short. */
+  /** The attribute's name. Keep it to a word or two. */
   children: string
 }
 
-/** One needle. Pushed through, it holds back every card not notched for it. */
+/** One needle: a toggle. Pushed in, it catches every card not notched for it. */
 function KeysortFilterNeedle({ className, value, children, ...props }: KeysortFilterNeedleProps) {
   const { registerNeedle, selected, toggle } = useKeysortFilter()
   React.useEffect(() => registerNeedle({ value, label: children }), [value, children, registerNeedle])
-  const checked = selected.includes(value)
   return (
-    <label className="group/needle flex cursor-pointer items-center gap-2 rounded-(--bevel-radius-sm) py-1 pr-3 pl-1 text-sm font-medium has-data-checked:font-semibold">
-      <Checkbox.Root
-        data-slot="keysort-filter-needle"
-        checked={checked}
-        onCheckedChange={(on) => toggle(value, on)}
-        className={cn(
-          "relative flex h-5 w-10 items-center rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/60",
-          className
-        )}
-        {...props}
-      >
-        {/* The needle: slides in through the deck when checked. */}
-        <span aria-hidden className="absolute inset-y-1.5 inset-x-0 rounded-full bg-(--bevel-material-recess) shadow-(--bevel-depth-recessed)" />
-        <span
-          aria-hidden
-          className="bevel-metal relative h-1.5 w-7 -translate-x-2 rounded-full opacity-60 transition-[translate,opacity] duration-(--bevel-duration-small) ease-(--bevel-ease-out) group-has-data-checked/needle:translate-x-3 group-has-data-checked/needle:opacity-100 motion-reduce:transition-none"
-        />
-        <span aria-hidden className="bevel-metal relative -ml-1 size-2.5 rounded-full" />
-      </Checkbox.Root>
+    <Toggle
+      data-slot="keysort-filter-needle"
+      pressed={selected.includes(value)}
+      onPressedChange={(on) => toggle(value, on)}
+      className={cn(
+        "group/needle flex flex-col items-center gap-1 rounded-(--bevel-radius-sm) px-0.5 pb-1 text-center text-(length:--bevel-fine) leading-tight sm:text-xs font-medium outline-none",
+        "focus-visible:ring-3 focus-visible:ring-ring/60 data-pressed:font-semibold",
+        className
+      )}
+      {...props}
+    >
       {children}
-    </label>
+      {/* The ring handle: it sinks as the needle goes in. */}
+      <span
+        aria-hidden
+        className="bevel-metal size-4 rounded-full border-3 border-(--keysort-filter-needle-edge) bg-transparent transition-[translate] duration-(--bevel-duration-small) ease-(--bevel-ease-spring) group-data-pressed/needle:translate-y-1.5 motion-reduce:transition-none"
+      />
+    </Toggle>
   )
 }
 
-/** The deck. */
-function KeysortFilterDeck({ className, ...props }: React.ComponentProps<"ul">) {
+/** The deck. The needles run down it, behind the cards. */
+function KeysortFilterDeck({ className, children, ...props }: React.ComponentProps<"ul">) {
+  const { needles, selected } = useKeysortFilter()
   return (
     <ul
       data-slot="keysort-filter-deck"
-      className={cn("grid grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] gap-3 pb-(--keysort-filter-drop)", className)}
+      className={cn("relative col-span-full grid grid-cols-subgrid gap-y-1.5", className)}
       {...props}
-    />
+    >
+      {needles.map((n, i) => (
+        <span
+          key={n.value}
+          aria-hidden
+          data-in={selected.includes(n.value) ? "" : undefined}
+          className="bevel-metal pointer-events-none absolute -top-2 bottom-0 w-1 origin-top scale-y-0 rounded-full transition-[scale] duration-(--bevel-duration-move) ease-(--bevel-ease-out) data-in:scale-y-100 motion-reduce:transition-none"
+          style={{ right: `calc(var(--keysort-filter-column) * ${needles.length - 1 - i} + var(--keysort-filter-column) / 2 - var(--spacing) / 2)` }}
+        />
+      ))}
+      {children}
+    </ul>
   )
 }
 
@@ -152,7 +171,7 @@ type KeysortFilterCardProps = React.ComponentProps<"li"> & {
   notches: string[]
 }
 
-/** One card. It drops when it's notched for every needle pushed through. */
+/** One card. It falls free when it's notched for every needle in, and says so. */
 function KeysortFilterCard({ className, notches, children, ...props }: KeysortFilterCardProps) {
   const { needles, selected, registerCard } = useKeysortFilter()
   const id = React.useId()
@@ -162,37 +181,37 @@ function KeysortFilterCard({ className, notches, children, ...props }: KeysortFi
   return (
     <li
       data-slot="keysort-filter-card"
-      data-card={selected.length === 0 ? undefined : match ? "dropped" : "held"}
-      className={cn("relative", className)}
+      data-card={selected.length === 0 ? undefined : match ? "match" : "held"}
+      className={cn(
+        "bevel-paper relative col-span-full grid grid-cols-subgrid items-center rounded-(--bevel-radius-xs) bg-(--keysort-filter-card) py-2 text-(--keysort-filter-card-foreground)",
+        "data-[card=held]:bg-(--keysort-filter-card-held) data-[card=held]:shadow-none",
+        className
+      )}
       {...props}
     >
-      <div
-        className={cn(
-          "bevel-paper flex min-h-24 flex-col gap-1 rounded-(--bevel-radius-xs) bg-(--keysort-filter-card) px-2 pt-1 pb-2 text-(--keysort-filter-card-foreground)",
-          "transition-[translate,opacity] duration-(--bevel-duration-move) ease-(--bevel-ease-spring) motion-reduce:transition-none",
-          "in-data-[card=held]:opacity-55 in-data-[card=dropped]:translate-y-(--keysort-filter-drop)"
-        )}
-      >
-        {/* Holes along the top edge, one per needle; notched ones are cut open to the edge. */}
-        <span aria-hidden className="flex gap-1.5">
-          {needles.map((n) => (
-            <span
-              key={n.value}
-              className={cn(
-                "size-2 rounded-full bg-(--keysort-filter-hole)",
-                notches.includes(n.value) && "-mt-1 h-3 rounded-t-none"
-              )}
-            />
-          ))}
-        </span>
-        <span className="text-sm leading-snug font-semibold">{children}</span>
+      <span className="flex min-w-0 items-center gap-2 pl-3">
+        {/* A tab marks the cards that fell free. */}
+        <span
+          aria-hidden
+          className="h-4 w-1 shrink-0 scale-y-0 rounded-full bg-(--keysort-filter-match) transition-[scale] duration-(--bevel-duration-small) ease-(--bevel-ease-spring) in-data-[card=match]:scale-y-100 motion-reduce:transition-none"
+        />
+        <span className="line-clamp-2 text-sm leading-tight font-semibold">{children}</span>
         <span className="sr-only">{match ? "Matches." : ""}</span>
-      </div>
-      {/* The needles, through the holes of cards that stay behind. */}
-      <span
-        aria-hidden
-        className="bevel-metal pointer-events-none absolute inset-x-0 top-1.5 h-1 rounded-full opacity-0 transition-opacity duration-(--bevel-duration-small) in-data-card:opacity-100 motion-reduce:transition-none"
-      />
+      </span>
+      {needles.map((n) => {
+        const notched = notches.includes(n.value)
+        const caught = selected.includes(n.value) && !notched
+        return (
+          <span key={n.value} aria-hidden className="relative flex h-full justify-center">
+            {/* A notched hole is cut open to the top edge; a caught card has the needle through its hole. */}
+            {notched ? (
+              <span className="absolute -top-2 h-4 w-2.5 rounded-b-full bg-(--keysort-filter-hole)" />
+            ) : (
+              <span className={cn("size-2.5 rounded-full", caught ? "bevel-metal" : "bg-(--keysort-filter-hole)")} />
+            )}
+          </span>
+        )
+      })}
     </li>
   )
 }
@@ -205,9 +224,14 @@ function KeysortFilterCount({ className, ...props }: React.ComponentProps<"p">) 
   const names = selected.map((s) => needles.find((n) => n.value === s)?.label ?? s)
   const list = names.length > 1 ? `${names.slice(0, -1).join(", ")} and ${names.at(-1)}` : names[0]
   return (
-    <p role="status" data-slot="keysort-filter-count" className={cn("text-sm text-muted-foreground", className)} {...props}>
+    <p
+      role="status"
+      data-slot="keysort-filter-count"
+      className={cn("col-span-full text-sm text-muted-foreground", className)}
+      {...props}
+    >
       {selected.length === 0
-        ? `${all.length} cards. Push a needle through to sort.`
+        ? `${all.length} cards. Push a needle in to sort.`
         : `${count} of ${all.length} cards match ${list}.`}
     </p>
   )

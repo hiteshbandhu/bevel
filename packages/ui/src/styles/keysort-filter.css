@@ -1,21 +1,28 @@
 /*
- * Keysort filter: edge-notched cards. Each hole along the top edge is an
- * attribute; a card with that attribute has the hole notched open. Push
- * needles through the deck and lift: the notched cards drop out.
- * Builds on bevel.css (paper, metal, motion).
+ * Keysort filter: edge-notched cards. Each column of holes is an
+ * attribute; a card with that attribute has its hole notched open. Push a
+ * needle down a column and lift: notched cards fall free, the rest are
+ * caught on the needle. Builds on bevel.css (paper, metal, motion).
  */
 
 :root {
   --keysort-filter-card: oklch(0.93 0.04 85); /* manila */
+  --keysort-filter-card-held: oklch(0.86 0.02 85); /* a card left on the needle */
   --keysort-filter-card-foreground: oklch(0.3 0.04 70);
-  --keysort-filter-hole: oklch(0.32 0.02 70);
-  --keysort-filter-needle: oklch(0.78 0.01 260);
+  --keysort-filter-hole: oklch(0.3 0.02 70);
+  --keysort-filter-match: oklch(0.58 0.15 150);
+  --keysort-filter-needle: oklch(0.8 0.01 260);
   --keysort-filter-needle-edge: oklch(0.5 0.01 260);
-  --keysort-filter-match: oklch(0.6 0.15 150);
-  --keysort-filter-drop: 1.25rem; /* how far a matching card falls */
+  --keysort-filter-column: 2.5rem; /* one attribute's column */
 }
 
-[data-slot="keysort-filter-needle"] {
+@media (width >= 40rem) {
+  :root {
+    --keysort-filter-column: 3.5rem;
+  }
+}
+
+[data-slot="keysort-filter"] {
   --bevel-material: var(--keysort-filter-needle);
   --bevel-material-edge: var(--keysort-filter-needle-edge);
 }

@@ -3,7 +3,7 @@ import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
 import { SplitFlap, SplitFlapRow, SplitFlapText } from "@workspace/ui/components/split-flap"
 import { ContactSheet, ContactSheetFrame } from "@workspace/ui/components/contact-sheet"
 import { VisibleFile, VisibleFileRow, VisibleFileSignal } from "@workspace/ui/components/visible-file"
-import { KeysortFilter, KeysortFilterCard, KeysortFilterDeck, KeysortFilterNeedle } from "@workspace/ui/components/keysort-filter"
+import { KeysortFilter, KeysortFilterCard, KeysortFilterDeck, KeysortFilterNeedle, KeysortFilterNeedles } from "@workspace/ui/components/keysort-filter"
 import { Mixer, MixerStrip, MixerStripFader, MixerStripMute, MixerStripName, MixerStripSolo } from "@workspace/ui/components/mixer-strip"
 import { MotorizedFader } from "@workspace/ui/components/motorized-fader"
 import { PushToTalk, PushToTalkKey } from "@workspace/ui/components/push-to-talk"
@@ -122,14 +122,14 @@ export const previews: Record<string, React.ComponentType> = {
   ),
   "keysort-filter": () => (
     <KeysortFilter aria-label="Contracts" defaultValue={["a"]} className="pointer-events-none max-w-64">
-      <div className="hidden">
-        <KeysortFilterNeedle value="a">A</KeysortFilterNeedle>
-        <KeysortFilterNeedle value="b">B</KeysortFilterNeedle>
-        <KeysortFilterNeedle value="c">C</KeysortFilterNeedle>
-      </div>
-      <KeysortFilterDeck className="grid-cols-2">
-        <KeysortFilterCard notches={["a", "c"]}>Acme NDA</KeysortFilterCard>
+      <KeysortFilterNeedles>
+        <KeysortFilterNeedle value="a">NDA</KeysortFilterNeedle>
+        <KeysortFilterNeedle value="b">EU</KeysortFilterNeedle>
+      </KeysortFilterNeedles>
+      <KeysortFilterDeck>
+        <KeysortFilterCard notches={["a", "b"]}>Acme NDA</KeysortFilterCard>
         <KeysortFilterCard notches={["b"]}>Globex SOW</KeysortFilterCard>
+        <KeysortFilterCard notches={["a"]}>Wayne NDA</KeysortFilterCard>
       </KeysortFilterDeck>
     </KeysortFilter>
   ),

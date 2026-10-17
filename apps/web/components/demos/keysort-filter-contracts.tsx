@@ -20,16 +20,16 @@ const contracts = [
   { title: "Tyrell DPA, draft", tags: ["eu", "dpa"] },
 ]
 
-/** A drawer of contracts. Push needles through to find the ones with every attribute. */
+/** A drawer of contracts. Push needles in to find the ones with every attribute. */
 export function KeysortFilterContracts() {
   return (
     <KeysortFilter aria-label="Contracts" className="max-w-2xl">
       <KeysortFilterNeedles>
         <KeysortFilterNeedle value="nda">NDA</KeysortFilterNeedle>
         <KeysortFilterNeedle value="signed">Signed</KeysortFilterNeedle>
-        <KeysortFilterNeedle value="eu">EU law</KeysortFilterNeedle>
-        <KeysortFilterNeedle value="auto">Auto-renews</KeysortFilterNeedle>
-        <KeysortFilterNeedle value="dpa">Data processing</KeysortFilterNeedle>
+        <KeysortFilterNeedle value="eu">EU</KeysortFilterNeedle>
+        <KeysortFilterNeedle value="auto">Renews</KeysortFilterNeedle>
+        <KeysortFilterNeedle value="dpa">DPA</KeysortFilterNeedle>
       </KeysortFilterNeedles>
       <KeysortFilterDeck>
         {contracts.map((c) => (

@@ -1411,7 +1411,7 @@ export const components: ComponentDoc[] = [
     name: "Keysort filter",
     category: "records",
     description:
-      "Edge-notched cards from the 1950s office: each hole along the top is an attribute, notched open if the card has it. Push needles through and the cards notched for all of them drop out. AND filtering you can see. For documents, tickets and records with tags.",
+      "Edge-notched cards from the 1950s office: each hole along the top is an attribute, notched open if the card has it. Push needles down the columns and the cards notched for all of them fall free. AND filtering you can see. For documents, tickets and records with tags.",
     files: ["components/keysort-filter.tsx", "styles/keysort-filter.css"],
     dependencies: ["@base-ui/react", "cn"],
     anatomy: `<KeysortFilter aria-label="Contracts">
@@ -1430,17 +1430,17 @@ export const components: ComponentDoc[] = [
         renders: "div (group)",
         description: "value, defaultValue and onValueChange: the needles pushed through. Give it an aria-label.",
       },
-      { name: "KeysortFilterNeedles", renders: "fieldset", description: "The needle rack." },
+      { name: "KeysortFilterNeedles", renders: "div (group)", description: "The needle handles, one above each column of holes." },
       {
         name: "KeysortFilterNeedle",
-        renders: "Checkbox",
-        description: "One attribute. Its hole appears on every card, in the order the needles are listed.",
+        renders: "Toggle",
+        description: "One attribute, and the column of holes under it, in the order listed. Pushed in, a rod runs down the column.",
       },
-      { name: "KeysortFilterDeck", renders: "ul", description: "The cards, in a grid." },
+      { name: "KeysortFilterDeck", renders: "ul", description: "The cards, one per row, with the needles running down behind them." },
       {
         name: "KeysortFilterCard",
         renders: "li",
-        description: "notches: the attributes it has. Drops, and says “Matches”, when notched for every needle in.",
+        description: "notches: the attributes it has. Caught cards show the needle through their hole; free ones get a tab and say “Matches”.",
       },
       {
         name: "KeysortFilterCount",

@@ -43,15 +43,15 @@ export const Dark: Story = { args: { defaultValue: ["signed"] }, globals: { them
 export const NeedlesByKeyboard: Story = {
   play: async ({ args, canvas, userEvent }) => {
     const count = canvas.getByRole("status")
-    await expect(count).toHaveTextContent("4 cards. Push a needle through to sort.")
+    await expect(count).toHaveTextContent("4 cards. Push a needle in to sort.")
     await userEvent.tab()
-    await expect(canvas.getByRole("checkbox", { name: "NDA" })).toHaveFocus()
+    await expect(canvas.getByRole("button", { name: "NDA" })).toHaveFocus()
     await userEvent.keyboard(" ")
     await expect(count).toHaveTextContent("2 of 4 cards match NDA.")
     await userEvent.tab()
     await userEvent.keyboard(" ")
     await expect(count).toHaveTextContent("1 of 4 cards match NDA and Signed.")
     await expect(args.onValueChange).toHaveBeenLastCalledWith(["nda", "signed"])
-    await expect(canvas.getByText("Acme mutual NDA").closest("li")).toHaveAttribute("data-card", "dropped")
+    await expect(canvas.getByText("Acme mutual NDA").closest("li")).toHaveAttribute("data-card", "match")
   },
 }
