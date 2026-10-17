@@ -20,6 +20,7 @@
 @import "./approval.css";
 @import "./delegation-board.css";
 @import "./redline.css";
+@import "./redaction.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));

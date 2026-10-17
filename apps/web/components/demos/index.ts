@@ -16,6 +16,7 @@ import { NameTagAgents } from "./name-tag-agents"
 import { MeterPostage } from "./meter-postage"
 import { NumberWheelCounter } from "./number-wheel-counter"
 import { PaymentCardPicker } from "./payment-card-picker"
+import { PrivilegeMarks } from "./privilege-marks"
 import { RedlineClause } from "./redline-clause"
 import { StampMarks } from "./stamp-marks"
 import { TaskPlanAgent } from "./task-plan-agent"
@@ -43,6 +44,7 @@ export const demos: Record<string, React.ComponentType> = {
   "name-tag-agents.tsx": NameTagAgents,
   "number-wheel-counter.tsx": NumberWheelCounter,
   "payment-card-picker.tsx": PaymentCardPicker,
+  "privilege-marks.tsx": PrivilegeMarks,
   "redline-clause.tsx": RedlineClause,
   "stamp-marks.tsx": StampMarks,
   "task-plan-agent.tsx": TaskPlanAgent,

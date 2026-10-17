@@ -44,6 +44,7 @@ import {
   ReceiptTotal,
   ReceiptValue,
 } from "@workspace/ui/components/receipt"
+import { Redaction } from "@workspace/ui/components/redaction"
 import { Redline, RedlineChange, RedlineDocument } from "@workspace/ui/components/redline"
 import { Seal, Stamp, StampDetail } from "@workspace/ui/components/stamp"
 import { TaskPlan, TaskPlanStep, TaskPlanSteps } from "@workspace/ui/components/task-plan"
@@ -67,6 +68,16 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  redaction: () => (
+    <div className="bevel-paper flex flex-col gap-3 rounded-(--bevel-radius-xs) p-5 text-sm leading-relaxed">
+      <Stamp tone="red" className="self-start">
+        Privileged
+      </Stamp>
+      <p>
+        Notice was sent by <Redaction length={14} /> on 3 March, so <Redaction length={20} />.
+      </p>
+    </div>
+  ),
   redline: () => (
     <Redline>
       <RedlineDocument className="text-sm">

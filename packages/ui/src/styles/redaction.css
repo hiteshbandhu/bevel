@@ -1,0 +1,18 @@
+/*
+ * Redaction: a black marker bar over withheld text. Builds on bevel.css
+ * (ink texture, black ink).
+ */
+
+:root {
+  --redaction-ink: oklch(0.16 0.005 260);
+  --redaction-revealed: oklch(0.16 0.005 260 / 0.08); /* revealed text keeps a trace of the marker */
+  --redaction-height: 1.1em; /* a marker stroke, a little taller than the text */
+  --redaction-drop: 0.15em; /* sits over the x-height, not above it */
+}
+
+/* A marker stroke: solid ink that soaks unevenly at the edges. */
+@utility redaction-bar {
+  background-color: var(--redaction-ink);
+  mask-image: var(--bevel-ink-texture);
+  mask-size: 160px 160px;
+}

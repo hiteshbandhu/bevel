@@ -952,6 +952,37 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "redaction",
+    name: "Redaction",
+    category: "marks",
+    description:
+      "A black marker bar over withheld text, read as \u201cRedacted\u201d with the reason. Hidden text is never rendered; revealed text keeps a trace of the marker.",
+    files: ["components/redaction.tsx", "styles/redaction.css"],
+    dependencies: ["cn"],
+    anatomy: `{canSee ? (
+  <Redaction revealed>the withheld text</Redaction>
+) : (
+  <Redaction length={22} reason="privileged" />
+)}`,
+    parts: [
+      {
+        name: "Redaction",
+        renders: "span",
+        description:
+          "length (in characters) sizes the bar; reason is read to screen readers; revealed shows children. Only pass children to viewers allowed to read them: anything sent to the browser can be read there.",
+      },
+    ],
+    examples: [
+      {
+        slug: "privilege",
+        title: "Privilege marks",
+        description: "A privileged memo, stamped. Switch who's reading: opposing counsel sees the redactions.",
+        file: "privilege-marks.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {
