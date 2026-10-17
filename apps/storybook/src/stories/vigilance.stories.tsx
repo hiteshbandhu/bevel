@@ -3,7 +3,7 @@ import { expect, fn, waitFor } from "storybook/test"
 import { Vigilance, VigilanceButton, VigilanceLamps, VigilanceTimer } from "@workspace/ui/components/vigilance"
 
 const meta: Meta<typeof Vigilance> = {
-  title: "Safety/Dead man's switch",
+  title: "Coordination/Dead man's switch",
   component: Vigilance,
   parameters: { layout: "centered" },
   args: { interval: 1600, onTrip: fn(), onCheckIn: fn(), onResume: fn() },

@@ -22,13 +22,8 @@
 @import "./redline.css";
 @import "./redaction.css";
 @import "./guarded-switch.css";
-@import "./interlock.css";
 @import "./vigilance.css";
-@import "./ballot-board.css";
-@import "./token-instrument.css";
 @import "./lockout.css";
-@import "./chess-clock.css";
-@import "./kanban-rack.css";
 @import "./take-a-number.css";
 @import "./engine-telegraph.css";
 @import "./annunciator.css";

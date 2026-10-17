@@ -64,16 +64,10 @@ export const categories: Category[] = [
     description: "Readouts and controls from a panel: rolling counters, gauges, dials and breakers.",
   },
   {
-    slug: "safety",
-    name: "Safety",
-    description:
-      "Guards for consequential actions: covers over critical switches, levers that won't move until their dependencies are set, a check-in that keeps an agent running, and choices committed in one pull.",
-  },
-  {
     slug: "coordination",
     name: "Coordination",
     description:
-      "Locks, holds, turns and caps for people and agents sharing work: a single edit token, a lockout everyone must release, a chess clock, a kanban rack and a take-a-number queue.",
+      "Guards and holds for consequential work shared by people and agents: a cover over a critical switch, a check-in that keeps a run alive, a lockout everyone must release, and a take-a-number queue.",
   },
   {
     slug: "records",
@@ -1004,7 +998,7 @@ export const components: ComponentDoc[] = [
   {
     slug: "guarded-switch",
     name: "Guarded switch",
-    category: "safety",
+    category: "coordination",
     description:
       "A critical switch under a flip-up cover, as in a cockpit. Lift the cover, then flip it; closing the cover returns it to safe, and the cover closes itself if left.",
     files: ["components/guarded-switch.tsx", "styles/guarded-switch.css"],
@@ -1041,44 +1035,9 @@ export const components: ComponentDoc[] = [
     ],
   },
   {
-    slug: "interlock",
-    name: "Interlock",
-    category: "safety",
-    description:
-      "A railway lever frame. A lever stays locked until the levers it depends on are pulled, and says so; once pulled it holds them in place.",
-    files: ["components/interlock.tsx", "styles/interlock.css"],
-    dependencies: ["@base-ui/react", "cn"],
-    anatomy: `<Interlock aria-label="Release levers">
-  <InterlockLever id="migrations" label="Migrations applied" />
-  <InterlockLever id="promote" label="Promote" requires={["migrations"]} />
-</Interlock>`,
-    parts: [
-      {
-        name: "Interlock",
-        renders: "div (group)",
-        description: "values, defaultValues, onValuesChange ({ id: pulled }). Give it an aria-label.",
-      },
-      {
-        name: "InterlockLever",
-        renders: "Switch",
-        description:
-          "id, label, requires (ids), tone (red, black, blue, yellow), number. Locked levers are aria-disabled and described: “Locked until: …” or “Held by: …”.",
-      },
-    ],
-    examples: [
-      {
-        slug: "deploy",
-        title: "Release levers",
-        description: "Promote is locked until three levers are pulled. Once it's pulled, they can't go back.",
-        file: "interlock-deploy.tsx",
-        wide: true,
-      },
-    ],
-  },
-  {
     slug: "vigilance",
     name: "Dead man's switch",
-    category: "safety",
+    category: "coordination",
     description:
       "A train cab's vigilance control for supervised agent runs: the run keeps going only while someone checks in. Miss the window and it warns, then pauses.",
     files: ["components/vigilance.tsx", "styles/vigilance.css"],
@@ -1110,77 +1069,6 @@ export const components: ComponentDoc[] = [
         title: "A supervised agent run",
         description: "Check in every 12 seconds to keep it going. Stop checking in and watch it warn, then pause.",
         file: "vigilance-agent.tsx",
-      },
-    ],
-  },
-  {
-    slug: "ballot-board",
-    name: "Ballot board",
-    category: "safety",
-    description:
-      "A lever voting machine: set many choices, then pull one lever to commit them all and reset. Races refuse choices past their limit, so an invalid ballot can't be built.",
-    files: ["components/ballot-board.tsx", "styles/ballot-board.css"],
-    dependencies: ["@base-ui/react", "cn"],
-    anatomy: `<BallotBoard onCommit={send}>
-  <BallotRace name="email" label="Email the client">
-    <BallotLever value="approve">Approve</BallotLever>
-    <BallotLever value="deny">Deny</BallotLever>
-  </BallotRace>
-  <BallotCommit />
-</BallotBoard>`,
-    parts: [
-      { name: "BallotBoard", renders: "div", description: "onCommit receives { race: values[] } and the board resets." },
-      {
-        name: "BallotRace",
-        renders: "fieldset (radiogroup or group)",
-        description: "name, label, max. With max 1 it's a radio group; above that, levers past the limit lock.",
-      },
-      {
-        name: "BallotLever",
-        renders: "button (radio or checkbox)",
-        description: "value. Flips down to point at its choice. Arrow keys move between levers.",
-      },
-      { name: "BallotCommit", renders: "Button", description: "Commits every choice and says what was cast." },
-    ],
-    examples: [
-      {
-        slug: "tools",
-        title: "Approving an agent's proposals",
-        description: "Decide each proposed action and pick two reviewers, then send every decision with one lever.",
-        file: "ballot-board-tools.tsx",
-        wide: true,
-      },
-    ],
-  },
-  {
-    slug: "token-instrument",
-    name: "Token instrument",
-    category: "coordination",
-    description:
-      "A railway single-line token: only one exists, and whoever holds it may proceed. An empty slot shows who has it. For edit locks, deploy lanes and who's driving.",
-    files: ["components/token-instrument.tsx", "styles/token-instrument.css"],
-    dependencies: ["@base-ui/react", "cn"],
-    anatomy: `<TokenInstrument section="Lease draft" holder={holder} you="You" onTake={take} onReturn={give}>
-  <TokenInstrumentSlot />
-  <TokenInstrumentStatus />
-  <TokenInstrumentAction />
-</TokenInstrument>`,
-    parts: [
-      {
-        name: "TokenInstrument",
-        renders: "div (group)",
-        description: "section, holder (null when free), you, onTake, onReturn, onRequest. Named “<section> token”.",
-      },
-      { name: "TokenInstrumentSlot", renders: "div", description: "The token in its slot, or an Out plate naming the holder." },
-      { name: "TokenInstrumentStatus", renders: "p (status)", description: "Who holds it, in words." },
-      { name: "TokenInstrumentAction", renders: "Button", description: "Take token, Return token, or Ask <holder>." },
-    ],
-    examples: [
-      {
-        slug: "edit",
-        title: "An edit token",
-        description: "Take the token to edit. Let Priya take it, then ask for it back.",
-        file: "token-instrument-edit.tsx",
       },
     ],
   },
@@ -1220,89 +1108,6 @@ export const components: ComponentDoc[] = [
         description: "Three locks hold the migration. Remove yours; the others come off as their work finishes.",
         file: "lockout-migration.tsx",
         wide: true,
-      },
-    ],
-  },
-  {
-    slug: "chess-clock",
-    name: "Chess clock",
-    category: "coordination",
-    description:
-      "Two clocks on one rocker: ending your turn stops your clock and starts the other, so exactly one runs. When a side runs out, its flag falls. For turn-taking with time budgets.",
-    files: ["components/chess-clock.tsx", "styles/chess-clock.css"],
-    dependencies: ["cn"],
-    anatomy: `<ChessClock aria-label="Review turns" names={["You", "Agent"]} time={120_000}>
-  <ChessClockFaces>
-    <ChessClockFace side={0} />
-    <ChessClockFace side={1} />
-  </ChessClockFaces>
-  <ChessClockRocker />
-</ChessClock>`,
-    parts: [
-      {
-        name: "ChessClock",
-        renders: "div (group)",
-        description:
-          "names, time (ms each), defaultActive, onTurn(active), onFlag(side). Announces turns and fallen flags, not seconds.",
-      },
-      { name: "ChessClockFaces", renders: "div", description: "Lays the two faces side by side." },
-      {
-        name: "ChessClockFace",
-        renders: "div",
-        description: "side 0 or 1. The hand climbs to twelve as time runs out; a timer below reads the time left.",
-      },
-      {
-        name: "ChessClockRocker",
-        renders: "div",
-        description: "Two buttons. Before play, a side's button starts its clock; then the waiting side's is down and disabled, and the running side's ends its turn.",
-      },
-    ],
-    examples: [
-      {
-        slug: "review",
-        title: "Taking turns with an agent",
-        description: "You and the agent have two minutes each. End your turn; the agent answers and hands back.",
-        file: "chess-clock-review.tsx",
-      },
-    ],
-  },
-  {
-    slug: "kanban-rack",
-    name: "Kanban rack",
-    category: "coordination",
-    description:
-      "A rack of kanban cards that caps work in progress: starting something takes a card, finishing puts it back, and when the rack is empty nothing new starts. For limiting concurrent agent runs, jobs or reviews.",
-    files: ["components/kanban-rack.tsx", "styles/kanban-rack.css"],
-    dependencies: ["@base-ui/react", "cn"],
-    anatomy: `<KanbanRack aria-label="Agent runs" capacity={3} inUse={running}>
-  <KanbanRackPockets />
-  <KanbanRackTake onClick={start}>Start a run</KanbanRackTake>
-  <KanbanRackStatus />
-</KanbanRack>`,
-    parts: [
-      {
-        name: "KanbanRack",
-        renders: "div (group)",
-        description: "capacity, and inUse: what each card that's out is doing. Give it an aria-label.",
-      },
-      {
-        name: "KanbanRackPockets",
-        renders: "ul",
-        description: "One pocket per card. A free card stands in its pocket; an empty pocket names the work its card is on.",
-      },
-      {
-        name: "KanbanRackTake",
-        renders: "Button",
-        description: "Starts work. Disabled, but still focusable, when no card is free.",
-      },
-      { name: "KanbanRackStatus", renders: "p (status)", description: "“1 of 3 free”, and describes the button." },
-    ],
-    examples: [
-      {
-        slug: "runs",
-        title: "Three agent runs at a time",
-        description: "Start runs from the backlog until the cards run out; finish one to start the next.",
-        file: "kanban-rack-runs.tsx",
       },
     ],
   },

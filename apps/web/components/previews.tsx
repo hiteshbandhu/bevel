@@ -11,13 +11,8 @@ import { DetentKnob, DetentKnobStop } from "@workspace/ui/components/detent-knob
 import { Annunciator, AnnunciatorPanel, AnnunciatorTile } from "@workspace/ui/components/annunciator"
 import { EngineTelegraph, EngineTelegraphDial, EngineTelegraphOrder } from "@workspace/ui/components/engine-telegraph"
 import { TakeANumber, TakeANumberSign } from "@workspace/ui/components/take-a-number"
-import { KanbanRack, KanbanRackPockets } from "@workspace/ui/components/kanban-rack"
-import { ChessClock, ChessClockFace, ChessClockFaces } from "@workspace/ui/components/chess-clock"
 import { Lockout, LockoutAction, LockoutHasp, LockoutLock } from "@workspace/ui/components/lockout"
-import { TokenInstrument, TokenInstrumentAction, TokenInstrumentSlot } from "@workspace/ui/components/token-instrument"
-import { BallotBoard, BallotCommit, BallotLever, BallotRace } from "@workspace/ui/components/ballot-board"
 import { Vigilance, VigilanceButton, VigilanceLamps } from "@workspace/ui/components/vigilance"
-import { Interlock, InterlockLever } from "@workspace/ui/components/interlock"
 import { GuardedSwitch, GuardedSwitchControl, GuardedSwitchLabel } from "@workspace/ui/components/guarded-switch"
 import {
   ActivityLog,
@@ -192,19 +187,6 @@ export const previews: Record<string, React.ComponentType> = {
       <TakeANumberSign />
     </TakeANumber>
   ),
-  "kanban-rack": () => (
-    <KanbanRack aria-label="Runs" capacity={3} inUse={["Fix login"]} className="pointer-events-none max-w-56">
-      <KanbanRackPockets />
-    </KanbanRack>
-  ),
-  "chess-clock": () => (
-    <ChessClock aria-label="Turns" names={["You", "Agent"]} time={120_000} className="pointer-events-none max-w-56 p-3">
-      <ChessClockFaces className="gap-2">
-        <ChessClockFace side={0} />
-        <ChessClockFace side={1} />
-      </ChessClockFaces>
-    </ChessClock>
-  ),
   lockout: () => (
     <Lockout aria-label="Migration">
       <LockoutHasp>
@@ -213,37 +195,12 @@ export const previews: Record<string, React.ComponentType> = {
       </LockoutHasp>
     </Lockout>
   ),
-  "token-instrument": () => (
-    <div className="flex justify-center">
-      <TokenInstrument section="Lease" holder={null} you="You">
-        <TokenInstrumentSlot />
-        <TokenInstrumentAction />
-      </TokenInstrument>
-    </div>
-  ),
-  "ballot-board": () => (
-    <BallotBoard>
-      <BallotRace name="a" label="Email the client">
-        <BallotLever value="y">Approve</BallotLever>
-        <BallotLever value="n">Deny</BallotLever>
-      </BallotRace>
-      <BallotCommit />
-    </BallotBoard>
-  ),
   vigilance: () => (
     <div className="flex justify-center">
       <Vigilance aria-label="Supervision" interval={600000} running={false}>
         <VigilanceLamps />
         <VigilanceButton />
       </Vigilance>
-    </div>
-  ),
-  interlock: () => (
-    <div className="flex justify-center">
-      <Interlock aria-label="Levers" defaultValues={{ a: true }}>
-        <InterlockLever id="a" label="Migrations" />
-        <InterlockLever id="b" label="Promote" tone="red" requires={["a", "c"]} />
-      </Interlock>
     </div>
   ),
   "guarded-switch": () => (

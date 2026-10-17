@@ -11,13 +11,8 @@ import { DetentKnobMode } from "./detent-knob-mode"
 import { AnnunciatorAgent } from "./annunciator-agent"
 import { EngineTelegraphAutonomy } from "./engine-telegraph-autonomy"
 import { TakeANumberSupport } from "./take-a-number-support"
-import { KanbanRackRuns } from "./kanban-rack-runs"
-import { ChessClockReview } from "./chess-clock-review"
 import { LockoutMigration } from "./lockout-migration"
-import { TokenInstrumentEdit } from "./token-instrument-edit"
-import { BallotBoardTools } from "./ballot-board-tools"
 import { VigilanceAgent } from "./vigilance-agent"
-import { InterlockDeploy } from "./interlock-deploy"
 import { GuardedSwitchDeploy } from "./guarded-switch-deploy"
 import { ActivityLogAgent } from "./activity-log-agent"
 import { AmountFormats } from "./amount-formats"
@@ -59,13 +54,8 @@ export const demos: Record<string, React.ComponentType> = {
   "annunciator-agent.tsx": AnnunciatorAgent,
   "engine-telegraph-autonomy.tsx": EngineTelegraphAutonomy,
   "take-a-number-support.tsx": TakeANumberSupport,
-  "kanban-rack-runs.tsx": KanbanRackRuns,
-  "chess-clock-review.tsx": ChessClockReview,
   "lockout-migration.tsx": LockoutMigration,
-  "token-instrument-edit.tsx": TokenInstrumentEdit,
-  "ballot-board-tools.tsx": BallotBoardTools,
   "vigilance-agent.tsx": VigilanceAgent,
-  "interlock-deploy.tsx": InterlockDeploy,
   "guarded-switch-deploy.tsx": GuardedSwitchDeploy,
   "activity-log-agent.tsx": ActivityLogAgent,
   "amount-formats.tsx": AmountFormats,

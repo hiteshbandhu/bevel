@@ -8,7 +8,7 @@ import {
 } from "@workspace/ui/components/guarded-switch"
 
 const meta: Meta<typeof GuardedSwitch> = {
-  title: "Safety/Guarded switch",
+  title: "Coordination/Guarded switch",
   component: GuardedSwitch,
   parameters: { layout: "centered" },
   args: { onCheckedChange: fn() },
