@@ -10,6 +10,7 @@ import {
   subcomponentsOf,
   type ComponentDoc,
 } from "@/lib/catalog"
+import { guideHref, guides } from "@/lib/docs"
 
 function NavLink({ component, nested }: { component: ComponentDoc; nested?: boolean }) {
   const pathname = usePathname()
@@ -33,7 +34,30 @@ function NavLink({ component, nested }: { component: ComponentDoc; nested?: bool
 export function DocsNav() {
   const pathname = usePathname()
   return (
-    <nav aria-label="Components" className="flex flex-col gap-6 text-sm">
+    <nav aria-label="Docs" className="flex flex-col gap-6 text-sm">
+      <div>
+        <p className="font-semibold">Get started</p>
+        <ul className="mt-2 flex flex-col gap-1 border-l">
+          {guides.map((guide) => {
+            const href = guideHref(guide.slug)
+            const active = pathname === href
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "-ml-px block border-l border-transparent py-1 pl-3 text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
+                    active && "border-foreground font-medium text-foreground"
+                  )}
+                >
+                  {guide.title}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
       <Link
         href="/components"
         className={cn(

@@ -18,6 +18,15 @@ const root = path.resolve(import.meta.dirname, "..")
 const uiSrc = path.join(root, "packages/ui/src")
 const outDir = path.join(root, "registry/bevel")
 const namespace = "@bevel"
+const vercelDomain = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL
+const site = (process.env.NEXT_PUBLIC_SITE_URL ?? (vercelDomain ? `https://${vercelDomain}` : undefined))?.replace(/\/$/, "")
+
+/**
+ * How an item points at another Bevel item. With the site URL known, a full
+ * URL, so `shadcn add <url>` works without the @bevel namespace configured;
+ * locally, the namespace.
+ */
+const dep = (slug: string) => (site ? `${site}/r/${slug}.json` : `${namespace}/${slug}`)
 
 type CssObject = { [key: string]: string | CssObject }
 
@@ -81,7 +90,7 @@ async function main() {
     title: "Theme transition",
     description:
       "Switch light and dark as a change in lighting: the room dims, or the lights come up. Uses View Transitions.",
-    registryDependencies: [`${namespace}/bevel`],
+    registryDependencies: [dep("bevel")],
     files: [await emitFile("lib/theme-transition.ts")],
     css: await cssFor("styles/theme-transition.css"),
   }
@@ -100,8 +109,8 @@ async function main() {
         categories: [component.category],
         dependencies: component.dependencies,
         registryDependencies: [
-          `${namespace}/bevel`,
-          ...(component.registryDependencies ?? []).map((slug) => `${namespace}/${slug}`),
+          dep("bevel"),
+          ...(component.registryDependencies ?? []).map(dep),
         ],
         files: await Promise.all(code.map(emitFile)),
         ...(styles.length ? { css } : {}),

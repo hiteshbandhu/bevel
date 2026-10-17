@@ -7,8 +7,13 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { cn } from "@workspace/ui/lib/utils"
 import { transitionTheme } from "@workspace/ui/lib/theme-transition"
+import { repoUrl } from "@/lib/docs"
 
-const links = [{ href: "/components", label: "Components" }]
+const links = [
+  { href: "/docs", label: "Docs" },
+  { href: "/components", label: "Components" },
+  { href: "/demo", label: "Demos" },
+]
 
 export function SiteHeader() {
   const pathname = usePathname()
@@ -17,14 +22,14 @@ export function SiteHeader() {
 
   return (
     <header className="border-b">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-8 px-4 sm:px-6">
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-5 px-4 sm:gap-8 sm:px-6">
         <Link
           href="/"
           className="wordmark rounded-sm text-xl font-extrabold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           Bevel
         </Link>
-        <nav className="flex gap-6 text-sm">
+        <nav className="flex gap-4 text-sm sm:gap-6">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -38,13 +43,19 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
+        <a
+          href={repoUrl}
+          className="ml-auto hidden rounded-sm text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring sm:inline"
+        >
+          GitHub
+        </a>
         <button
           type="button"
           onClick={() => {
             const next = isDark ? "light" : "dark"
             transitionTheme(next, () => setTheme(next))
           }}
-          className="ml-auto inline-flex size-9 items-center justify-center rounded-md text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          className="ml-auto inline-flex size-9 items-center sm:ml-0 justify-center rounded-md text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
         >
           {/* The server can't know the theme, so render both states and let CSS pick. */}
           <Sun className="size-4 dark:hidden" aria-hidden />
