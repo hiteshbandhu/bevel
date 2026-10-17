@@ -64,6 +64,8 @@ async function emitFile(file: string) {
 
 async function main() {
   await rm(outDir, { recursive: true, force: true })
+  // shadcn build only adds files, so clear its output too: removed components must stop installing.
+  await rm(path.join(root, "apps/web/public/r"), { recursive: true, force: true })
 
   const foundationItem = {
     name: "bevel",
