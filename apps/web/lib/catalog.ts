@@ -1266,6 +1266,46 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "kanban-rack",
+    name: "Kanban rack",
+    category: "coordination",
+    description:
+      "A rack of kanban cards that caps work in progress: starting something takes a card, finishing puts it back, and when the rack is empty nothing new starts. For limiting concurrent agent runs, jobs or reviews.",
+    files: ["components/kanban-rack.tsx", "styles/kanban-rack.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<KanbanRack aria-label="Agent runs" capacity={3} inUse={running}>
+  <KanbanRackPockets />
+  <KanbanRackTake onClick={start}>Start a run</KanbanRackTake>
+  <KanbanRackStatus />
+</KanbanRack>`,
+    parts: [
+      {
+        name: "KanbanRack",
+        renders: "div (group)",
+        description: "capacity, and inUse: what each card that's out is doing. Give it an aria-label.",
+      },
+      {
+        name: "KanbanRackPockets",
+        renders: "ul",
+        description: "One pocket per card. A free card stands in its pocket; an empty pocket names the work its card is on.",
+      },
+      {
+        name: "KanbanRackTake",
+        renders: "Button",
+        description: "Starts work. Disabled, but still focusable, when no card is free.",
+      },
+      { name: "KanbanRackStatus", renders: "p (status)", description: "“1 of 3 free”, and describes the button." },
+    ],
+    examples: [
+      {
+        slug: "runs",
+        title: "Three agent runs at a time",
+        description: "Start runs from the backlog until the cards run out; finish one to start the next.",
+        file: "kanban-rack-runs.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

@@ -28,6 +28,7 @@
 @import "./token-instrument.css";
 @import "./lockout.css";
 @import "./chess-clock.css";
+@import "./kanban-rack.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));

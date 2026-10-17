@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { KanbanRack, KanbanRackPockets } from "@workspace/ui/components/kanban-rack"
 import { ChessClock, ChessClockFace, ChessClockFaces } from "@workspace/ui/components/chess-clock"
 import { Lockout, LockoutAction, LockoutHasp, LockoutLock } from "@workspace/ui/components/lockout"
 import { TokenInstrument, TokenInstrumentAction, TokenInstrumentSlot } from "@workspace/ui/components/token-instrument"
@@ -75,6 +76,11 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "kanban-rack": () => (
+    <KanbanRack aria-label="Runs" capacity={3} inUse={["Fix login"]} className="pointer-events-none max-w-56">
+      <KanbanRackPockets />
+    </KanbanRack>
+  ),
   "chess-clock": () => (
     <ChessClock aria-label="Turns" names={["You", "Agent"]} time={120_000} className="pointer-events-none max-w-56 p-3">
       <ChessClockFaces className="gap-2">
