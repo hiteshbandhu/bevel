@@ -1,0 +1,31 @@
+name: Component proposal
+description: Suggest a new component. Please read CONTRIBUTING.md first.
+labels: [proposal]
+body:
+  - type: input
+    id: object
+    attributes:
+      label: The object
+      placeholder: A ship's engine order telegraph
+    validations:
+      required: true
+  - type: textarea
+    id: job
+    attributes:
+      label: What job does it do in a real product?
+      description: Name the screen it belongs on.
+    validations:
+      required: true
+  - type: textarea
+    id: closest
+    attributes:
+      label: Which existing component is closest, and why isn't it enough?
+    validations:
+      required: true
+  - type: textarea
+    id: words
+    attributes:
+      label: What does it say in words?
+      description: How a screen-reader user, or anyone, learns its state.
+    validations:
+      required: true

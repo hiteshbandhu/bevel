@@ -7,6 +7,7 @@ import { cn } from "cn"
 type GuardedSwitchContextValue = {
   open: boolean
   setOpen: (open: boolean) => void
+  disabled: boolean
   checked: boolean
   setChecked: (checked: boolean) => void
   touch: () => void
@@ -36,6 +37,8 @@ type GuardedSwitchProps = Omit<React.ComponentProps<"div">, "onChange"> & {
   safeOnClose?: boolean
   /** Close the cover after --guarded-switch-close-after of no interaction. */
   autoClose?: boolean
+  /** Locks the cover shut. Say why with aria-describedby on the root. */
+  disabled?: boolean
 }
 
 /**
@@ -49,6 +52,7 @@ function GuardedSwitch({
   onCheckedChange,
   safeOnClose = true,
   autoClose = true,
+  disabled = false,
   children,
   ...props
 }: GuardedSwitchProps) {
@@ -93,8 +97,8 @@ function GuardedSwitch({
   }, [open, touch])
 
   const context = React.useMemo(
-    () => ({ open, setOpen, checked, setChecked, touch, ids: { control, label } }),
-    [open, setOpen, checked, setChecked, touch, control, label]
+    () => ({ open, setOpen, disabled, checked, setChecked, touch, ids: { control, label } }),
+    [open, setOpen, disabled, checked, setChecked, touch, control, label]
   )
 
   return (
@@ -106,6 +110,7 @@ function GuardedSwitch({
         data-slot="guarded-switch"
         data-open={open ? "" : undefined}
         data-checked={checked ? "" : undefined}
+        data-disabled={disabled ? "" : undefined}
         className={cn(
           "bevel-metal bevel-object inline-flex w-44 flex-col items-center gap-3 rounded-(--bevel-radius-md) p-4 text-(--guarded-switch-lever)",
           className
@@ -135,7 +140,7 @@ function GuardedSwitchLabel({ className, ...props }: React.ComponentProps<"span"
 
 /** The cover and the switch beneath it. */
 function GuardedSwitchControl({ className }: { className?: string }) {
-  const { open, setOpen, checked, setChecked, touch, ids } = useGuardedSwitch()
+  const { open, setOpen, disabled, checked, setChecked, touch, ids } = useGuardedSwitch()
   return (
     <div
       data-slot="guarded-switch-housing"
@@ -147,11 +152,12 @@ function GuardedSwitchControl({ className }: { className?: string }) {
         data-slot="guarded-switch-cover"
         aria-expanded={open}
         aria-controls={ids.control}
+        disabled={disabled && !open}
         onClick={() => setOpen(!open)}
         className={cn(
           "guarded-switch-cover absolute inset-x-0 top-0 z-10 h-24 origin-top cursor-pointer rounded-(--bevel-radius-sm) outline-none",
           "transition-[rotate] duration-(--bevel-duration-move) ease-(--bevel-ease-out) motion-reduce:transition-none",
-          "focus-visible:ring-3 focus-visible:ring-(--guarded-switch-on)/60",
+          "focus-visible:ring-3 focus-visible:ring-(--guarded-switch-on)/60 disabled:cursor-not-allowed",
           open ? "[rotate:x_var(--guarded-switch-open-angle)]" : "[rotate:x_0deg]"
         )}
       >
@@ -161,7 +167,7 @@ function GuardedSwitchControl({ className }: { className?: string }) {
         id={ids.control}
         data-slot="guarded-switch-switch"
         checked={checked}
-        disabled={!open}
+        disabled={!open || disabled}
         aria-labelledby={ids.label}
         onCheckedChange={(next) => {
           setChecked(next)
@@ -180,7 +186,7 @@ function GuardedSwitchControl({ className }: { className?: string }) {
 
 /** Lamp and words: Off, Armed (cover up), On. */
 function GuardedSwitchStatus({ className, ...props }: React.ComponentProps<"span">) {
-  const { open, checked } = useGuardedSwitch()
+  const { open, checked, disabled } = useGuardedSwitch()
   return (
     <span
       role="status"
@@ -192,7 +198,7 @@ function GuardedSwitchStatus({ className, ...props }: React.ComponentProps<"span
       {...props}
     >
       <span aria-hidden className="bevel-led size-1.5 rounded-full" />
-      {checked ? "On" : open ? "Cover open" : "Off, guarded"}
+      {checked ? "On" : disabled ? "Locked" : open ? "Cover open" : "Off, guarded"}
     </span>
   )
 }

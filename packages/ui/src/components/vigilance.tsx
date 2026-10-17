@@ -59,6 +59,22 @@ function Vigilance({
   const [paused, setPaused] = React.useState(false)
   const tripped = React.useRef(false)
 
+  // Stopping holds the time left; starting again carries it over, so time
+  // spent stopped doesn't count against the window.
+  const held = React.useRef<number | null>(null)
+  React.useEffect(() => {
+    const t = Date.now()
+    if (!running) {
+      held.current = Math.max(0, deadline - t)
+    } else if (held.current !== null) {
+      setDeadline(t + held.current)
+      setNow(t)
+      held.current = null
+    }
+    // Only a change of `running` moves the deadline.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [running])
+
   React.useEffect(() => {
     if (!running || paused) return
     const timer = window.setInterval(() => setNow(Date.now()), 250)

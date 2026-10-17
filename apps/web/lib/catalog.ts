@@ -1013,7 +1013,7 @@ export const components: ComponentDoc[] = [
         name: "GuardedSwitch",
         renders: "div (group)",
         description:
-          "checked, defaultChecked, onCheckedChange. safeOnClose (default true) turns it off when the cover closes; autoClose closes the cover after --guarded-switch-close-after.",
+          "checked, defaultChecked, onCheckedChange. safeOnClose (default true) turns it off when the cover closes; autoClose closes the cover after --guarded-switch-close-after. disabled locks the cover shut; say why with aria-describedby."
       },
       { name: "GuardedSwitchLabel", renders: "span", description: "Names the group and the switch." },
       {

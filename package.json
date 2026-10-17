@@ -26,5 +26,11 @@
   "packageManager": "pnpm@11.25.0",
   "engines": {
     "node": ">=20.9.0"
-  }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hiteshbandhu/bevel"
+  },
+  "homepage": "https://bevel-ui.vercel.app"
 }

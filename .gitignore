@@ -54,3 +54,11 @@ storybook-static
 /registry.json
 /registry/
 apps/web/public/r/
+
+# Third-party agent skills: restore with `pnpm dlx skills experimental_install` (reads skills-lock.json).
+# Only this repo's own skills are tracked.
+.claude/skills/*
+!.claude/skills/new-component/
+
+# Rendered video
+apps/video/out
