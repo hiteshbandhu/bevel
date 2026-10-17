@@ -1730,6 +1730,44 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "split-flap",
+    name: "Split-flap board",
+    category: "records",
+    description:
+      "A station departure board: each character is a pair of flaps that falls to the next value, column by column. The text is the truth and changes are announced once per row. For deploy boards, queues and live status.",
+    files: ["components/split-flap.tsx", "styles/split-flap.css"],
+    dependencies: ["cn"],
+    anatomy: `<SplitFlap aria-label="Deploys">
+  <SplitFlapRow name="US East">
+    <SplitFlapText value="US-EAST" length={8} />
+    <SplitFlapText value={status} length={8} tone="amber" />
+  </SplitFlapRow>
+</SplitFlap>`,
+    parts: [
+      {
+        name: "SplitFlap",
+        renders: "div (group) + ul",
+        description: "Gathers changes and announces them together: “Updated: US East, EU West.” Give it an aria-label.",
+      },
+      { name: "SplitFlapRow", renders: "li", description: "name: how the row is announced when it changes." },
+      {
+        name: "SplitFlapText",
+        renders: "span",
+        description:
+          "value, length (padded or cut), tone white or amber. Reads as its text; the flaps are decoration. With reduced motion, characters crossfade.",
+      },
+    ],
+    examples: [
+      {
+        slug: "deploys",
+        title: "A deploy board",
+        description: "Each region's status flips over as its rollout moves on.",
+        file: "split-flap-deploys.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

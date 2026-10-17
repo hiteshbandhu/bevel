@@ -39,6 +39,7 @@
 @import "./keysort-filter.css";
 @import "./visible-file.css";
 @import "./contact-sheet.css";
+@import "./split-flap.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));

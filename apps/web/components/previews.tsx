@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { SplitFlap, SplitFlapRow, SplitFlapText } from "@workspace/ui/components/split-flap"
 import { ContactSheet, ContactSheetFrame } from "@workspace/ui/components/contact-sheet"
 import { VisibleFile, VisibleFileRow, VisibleFileSignal } from "@workspace/ui/components/visible-file"
 import { KeysortFilter, KeysortFilterCard, KeysortFilterDeck, KeysortFilterNeedle } from "@workspace/ui/components/keysort-filter"
@@ -86,6 +87,18 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "split-flap": () => (
+    <SplitFlap aria-label="Board" className="pointer-events-none text-sm">
+      <SplitFlapRow name="a">
+        <SplitFlapText value="EU-WEST" length={7} />
+        <SplitFlapText value="LIVE" length={4} tone="amber" />
+      </SplitFlapRow>
+      <SplitFlapRow name="b">
+        <SplitFlapText value="US-EAST" length={7} />
+        <SplitFlapText value="TEST" length={4} tone="amber" />
+      </SplitFlapRow>
+    </SplitFlap>
+  ),
   "contact-sheet": () => (
     <ContactSheet aria-label="Frames" columns={3} defaultValue={{ b: "pick", c: "reject" }} className="pointer-events-none max-w-60 p-2">
       {[["a", 40], ["b", 230], ["c", 350]].map(([id, h]) => (
