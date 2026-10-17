@@ -4,7 +4,7 @@ import * as React from "react"
 import { cn } from "cn"
 
 type StampProps = React.ComponentProps<"span"> & {
-  tone?: "red" | "blue" | "green" | "black"
+  tone?: "red" | "blue" | "green" | "amber" | "black"
   shape?: "rect" | "round"
   /** Land with a press when it appears. Use for the moment something happens, not for lists. */
   animate?: boolean

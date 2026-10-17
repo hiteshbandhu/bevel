@@ -19,6 +19,9 @@
 [data-slot="stamp"][data-tone="green"] {
   --bevel-ink: var(--bevel-ink-green);
 }
+[data-slot="stamp"][data-tone="amber"] {
+  --bevel-ink: var(--bevel-ink-amber);
+}
 [data-slot="stamp"][data-tone="black"] {
   --bevel-ink: var(--bevel-ink-black);
 }

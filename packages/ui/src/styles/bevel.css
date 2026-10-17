@@ -103,6 +103,7 @@
   --bevel-ink-blue: oklch(0.44 0.14 262);
   --bevel-ink-green: oklch(0.5 0.12 155);
   --bevel-ink-black: oklch(0.3 0.01 260);
+  --bevel-ink-amber: oklch(0.55 0.13 65);
 
   /* Brass and ivory: instrument hardware and dial faces */
   --bevel-brass: oklch(0.76 0.11 82);
