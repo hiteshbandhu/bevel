@@ -1477,6 +1477,45 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "push-to-talk",
+    name: "Push to talk",
+    category: "instruments",
+    description:
+      "A radio's push-to-talk key: it listens only while held, and letting go stops it. Nothing records by accident. For voice input to agents, walkie-talkie chat and dictation.",
+    files: ["components/push-to-talk.tsx", "styles/push-to-talk.css"],
+    dependencies: ["cn"],
+    anatomy: `<PushToTalk talking={talking} onTalkingChange={setTalking}>
+  <PushToTalkKey />
+  <PushToTalkStatus />
+</PushToTalk>`,
+    parts: [
+      {
+        name: "PushToTalk",
+        renders: "div",
+        description: "talking, onTalkingChange(talking), disabled. The radio body and speaker grille.",
+      },
+      {
+        name: "PushToTalkKey",
+        renders: "button (aria-pressed)",
+        description:
+          "Pressed only while held, with the pointer or Space. Releasing, leaving the window or losing focus stops it; Enter does nothing, since it can't be held.",
+      },
+      {
+        name: "PushToTalkStatus",
+        renders: "p + status",
+        description: "The on-air lamp and its words: idle and live, “Not listening” and “Listening” by default.",
+      },
+    ],
+    examples: [
+      {
+        slug: "agent",
+        title: "Voice notes to an agent",
+        description: "Hold the key, or Space, to record a note. Let go to send it.",
+        file: "push-to-talk-agent.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

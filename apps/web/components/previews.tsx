@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { PushToTalk, PushToTalkKey } from "@workspace/ui/components/push-to-talk"
 import { DetentKnob, DetentKnobStop } from "@workspace/ui/components/detent-knob"
 import { Annunciator, AnnunciatorPanel, AnnunciatorTile } from "@workspace/ui/components/annunciator"
 import { EngineTelegraph, EngineTelegraphDial, EngineTelegraphOrder } from "@workspace/ui/components/engine-telegraph"
@@ -80,6 +81,11 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "push-to-talk": () => (
+    <PushToTalk talking={false} onTalkingChange={() => {}} className="pointer-events-none w-40 gap-3 p-3">
+      <PushToTalkKey tabIndex={-1} className="h-16" />
+    </PushToTalk>
+  ),
   "detent-knob": () => (
     <DetentKnob aria-label="Mode" defaultValue="edit" className="pointer-events-none scale-75">
       <DetentKnobStop value="off">Off</DetentKnobStop>

@@ -33,6 +33,7 @@
 @import "./engine-telegraph.css";
 @import "./annunciator.css";
 @import "./detent-knob.css";
+@import "./push-to-talk.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));
