@@ -46,3 +46,6 @@ next-env.d.ts
 
 # storybook
 storybook-static
+
+# playwright mcp logs
+.playwright-mcp

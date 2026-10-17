@@ -35,7 +35,7 @@ Three layers; each only reads from the one below it:
 2. **Component stylesheet** (`wallet.css`, `payment-card.css`): the component's palette and geometry only, mapped onto foundation variables (`--bevel-material`, `--bevel-fill`, `--bevel-led`…) by `data-slot`, `data-variant`, `data-status`.
 3. **Component** (`.tsx`): Tailwind classes that read tokens, e.g. `rounded-(--bevel-radius-md)`, `duration-(--bevel-duration-move) ease-(--bevel-ease-out)`, `text-(length:--bevel-amount)`.
 
-Enforced by `pnpm check:tokens` (scripts/check-tokens.mjs): fails on raw colours, durations, easings or arbitrary lengths in Bevel components and component stylesheets.
+Enforced by `pnpm check:tokens` (scripts/check-tokens.mjs): fails on raw colours, durations, easings or arbitrary lengths in Bevel components and component stylesheets, and on any transition of a layout property (`height`, `width`, `top`/`left`, `margin`, `padding`, `transition-all`). Animating layout relays out and repaints the whole page every frame: adding a card to the wallet cost 678ms of main-thread work with a height transition and 94ms without it. Objects keep a fixed size and their contents move with `translate`.
 
 Rules: one light source, from the top. Nested radii are concentric (`inner = outer - inset`). Don't add `--text-*` theme keys (`cn` treats unknown `text-*` as colours). Motion is CSS transitions on `transform`/`translate`/`opacity`/`filter` first; reach for JS only for gestures with velocity. Build on existing components (`WalletCard` is a `PaymentCard`) instead of re-styling.
 - Every component needs stories covering: default, every variant, disabled, keyboard interaction (play function), dark mode, and reduced motion.

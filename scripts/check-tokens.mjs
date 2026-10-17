@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Fails when a Bevel component or component stylesheet uses a raw value
-// instead of a design-system token. Raw values belong in bevel.css, or in a
+// instead of a design-system token, or animates a layout property. Raw values belong in bevel.css, or in a
 // component stylesheet's custom-property declarations (its palette).
 import { readdirSync, readFileSync } from "node:fs"
 import path from "node:path"
@@ -17,11 +17,14 @@ const tsxRules = [
   [/(?<!aspect|grid-cols|grid-rows)-\[-?\d[^\]%]*\]/, "arbitrary value (add a token)"],
   // Arbitrary properties ([prop:value]) with raw lengths, times or angles.
   [/\[[\w-]+:[^\]]*\b\d*\.?\d+(px|rem|em|ms|deg)\b[^\]]*\]/, "raw length in an arbitrary property (add a token)"],
+  // Animating layout relays out and repaints the whole page every frame.
+  [/transition-all\b|transition-\[[^\]]*\b(height|width|top|left|right|bottom|inset|margin|padding)\b/, "animates a layout property (animate transform/translate/opacity instead)"],
 ]
 const cssRules = [
   [/#[0-9a-fA-F]{3,8}\b/, "hex colour"],
   [/\b(rgba?|hsla?|oklch|lab)\(/, "raw colour outside a custom property"],
   [/cubic-bezier|\b\d+ms\b/, "raw easing or duration"],
+  [/transition(-property)?:\s*[^;]*\b(all|height|width|top|left|margin|padding)\b/, "animates a layout property"],
 ]
 
 const problems = []

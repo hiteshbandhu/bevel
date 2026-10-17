@@ -25,6 +25,7 @@
   --wallet-card-step: 1.25rem; /* gap between cards on display */
   --wallet-card-step-pick: 2rem; /* gap when picking: every card keeps a tappable strip */
   --wallet-card-lift: 0px; /* resting; hover and pull override it on the card */
+  --wallet-card-slots: 3; /* cards the slot shows spread out; more than this bunch together */
 }
 
 [data-slot="wallet"][data-variant="noir"] {
@@ -91,4 +92,26 @@
     inset 0 2px 0 var(--bevel-shade),
     inset 0 -2px 3px var(--bevel-shade);
   mask-image: radial-gradient(circle at 50% 0, transparent var(--wallet-notch), black calc(var(--wallet-notch) + 0.5px));
+}
+
+/*
+ * The card slot. On display it has a fixed height, like a real wallet:
+ * adding a card never moves the pocket or the page. Extra cards bunch up,
+ * which only changes each card's translate (compositor work, no layout).
+ * When picking, every card needs a tappable strip, so the slot grows, at
+ * once rather than animated, since animating height relays out the page.
+ * In a layer so className utilities can still override it.
+ */
+@layer components {
+  [data-slot="wallet-cards"] {
+    --wallet-card-gap: calc(
+      var(--wallet-card-step) * (var(--wallet-card-slots) - 1) /
+        max(var(--wallet-card-count) - 1, var(--wallet-card-slots) - 1)
+    );
+    height: calc(var(--wallet-card-peek) + (var(--wallet-card-slots) - 1) * var(--wallet-card-step));
+  }
+  [data-slot="wallet-cards"][data-selectable] {
+    --wallet-card-gap: var(--wallet-card-step-pick);
+    height: calc(var(--wallet-card-peek) + max(var(--wallet-card-count) - 1, 0) * var(--wallet-card-step-pick));
+  }
 }

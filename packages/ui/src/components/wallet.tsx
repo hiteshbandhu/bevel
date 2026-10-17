@@ -73,6 +73,8 @@ const WalletCardPositionContext = React.createContext({ index: 0, count: 1 })
 
 type WalletCardsProps = Omit<RadioGroup.Props<string>, "render" | "style"> & {
   style?: React.CSSProperties
+  /** Cards the slot shows spread out. More than this bunch together; the slot never grows. */
+  slots?: number
 }
 
 /**
@@ -87,6 +89,7 @@ function WalletCards({
   value,
   defaultValue,
   onValueChange,
+  slots = 3,
   ...props
 }: WalletCardsProps) {
   const selectable = value !== undefined || defaultValue !== undefined || onValueChange !== undefined
@@ -102,14 +105,12 @@ function WalletCards({
 
   const shared = {
     "data-slot": "wallet-cards",
-    className: cn(
-      "relative mx-5 mt-4 h-[calc(var(--wallet-card-peek)+max(var(--wallet-card-count)-1,0)*var(--wallet-card-step))] shrink-0",
-      "transition-[height] duration-(--bevel-duration-move) ease-(--bevel-ease-out) motion-reduce:transition-none",
-      // Picking needs a strip per card that stays tappable while one is pulled.
-      selectable ? "[--wallet-card-step:var(--wallet-card-step-pick)]" : "pointer-events-none",
-      className
-    ),
-    style: { ...cssVars({ "--wallet-card-count": items.length }), ...style },
+    "data-selectable": selectable ? "" : undefined,
+    // Crowded: cards behind the front one show only their edges, so their print hides.
+    "data-crowded": !selectable && items.length > slots ? "" : undefined,
+    // Height and card spacing live in wallet.css; the slot never animates its size.
+    className: cn("relative mx-5 mt-4 shrink-0", !selectable && "pointer-events-none", className),
+    style: { ...cssVars({ "--wallet-card-count": items.length, "--wallet-card-slots": slots }), ...style },
     children: items.map((child, index) => (
       <WalletCardPositionContext
         key={React.isValidElement(child) ? child.key : index}
@@ -169,13 +170,15 @@ function WalletCard({ className, style, value, disabled, tone, children, ...prop
       className={cn(
         // Only the top strip shows above the pocket, so the card is shorter than a real one.
         "absolute inset-x-0 top-0 aspect-auto h-32",
-        "[translate:0_calc(var(--wallet-card-index)*var(--wallet-card-step)+var(--wallet-card-lift))] rotate-(--wallet-card-tilt)",
+        "[translate:0_calc(var(--wallet-card-index)*var(--wallet-card-gap)+var(--wallet-card-lift))] rotate-(--wallet-card-tilt)",
         "transition-[translate,rotate,opacity,filter] duration-(--bevel-duration-move) ease-(--bevel-ease-out) motion-reduce:transition-none",
         "group-hover/wallet:not-data-checked:[--wallet-card-lift:calc(var(--bevel-lift)*-1)] group-hover/wallet:not-data-checked:delay-[calc(var(--wallet-card-index)*var(--bevel-stagger))]",
         // Pulled out with a spring; it straightens as it comes up.
         "data-checked:rotate-0 data-checked:ease-(--bevel-ease-spring) data-checked:[--wallet-card-lift:calc(var(--wallet-card-pull)*-1)]",
         "data-enter:starting:opacity-0 data-enter:starting:[--wallet-card-lift:calc(var(--wallet-card-enter)*-1)]",
         "[&[role=radio]]:cursor-pointer [&[role=radio]]:not-data-checked:brightness-(--bevel-dim)",
+        // In a crowded slot only the front card's print shows; the rest stay readable to screen readers.
+        "in-data-crowded:not-last:*:opacity-0",
         className
       )}
       style={{

@@ -386,10 +386,14 @@ export const CardCounts: Story = {
   play: async ({ canvasElement }) => {
     const stacks = [...canvasElement.querySelectorAll("[data-slot=wallet-cards]")]
     const heights = stacks.map((s) => s.getBoundingClientRect().height)
-    // Empty and single-card stacks share the base height; each extra card adds one step.
-    await expect(heights[0]).toBe(heights[1])
-    await expect(heights[2]).toBeGreaterThan(heights[1]!)
-    await expect(heights[3]).toBeGreaterThan(heights[2]!)
+    // A wallet doesn't grow when you add a card: the slot is the same height for any count.
+    await expect(new Set(heights.map(Math.round)).size).toBe(1)
+    // With more cards than slots, they bunch up instead.
+    const gap = (stack: Element) => {
+      const second = stack.querySelectorAll("[data-wallet-card]")[1]!
+      return parseFloat(getComputedStyle(second).translate.split(" ")[1] ?? "0")
+    }
+    await expect(gap(stacks[3]!)).toBeLessThan(gap(stacks[2]!))
   },
 }
 
@@ -425,14 +429,19 @@ export const AddCard: Story = {
   render: () => <AddCardDemo />,
   play: async ({ canvasElement, canvas, userEvent }) => {
     const first = canvasElement.querySelector("[data-wallet-card]")!
+    const pocketTop = canvasElement.querySelector("[data-slot=wallet-pocket]")!.getBoundingClientRect().top
     await userEvent.click(canvas.getByRole("button", { name: "Add card" }))
     await waitFor(() => expect(canvas.getByText("8210")).toBeInTheDocument())
     const added = [...canvasElement.querySelectorAll("[data-wallet-card]")].at(-1)!
     // Only the new card fades in. The original may still move (it now sits
     // behind and takes a tilt), but it must not re-enter.
+    // Adding a card must not move the pocket or animate any layout.
+    const pocket = canvasElement.querySelector("[data-slot=wallet-pocket]")!
+    await expect(getComputedStyle(canvasElement.querySelector("[data-slot=wallet-cards]")!).transitionProperty).not.toMatch(/height/)
     const fades = (el: Element) =>
       el.getAnimations().some((a) => (a as CSSTransition).transitionProperty === "opacity")
     await expect(fades(added)).toBe(true)
     await expect(fades(first)).toBe(false)
+    await expect(pocket.getBoundingClientRect().top).toBe(pocketTop)
   },
 }
