@@ -70,3 +70,13 @@ export const ClosesItself: Story = {
     await expect(canvas.getByRole("button", { name: "Lift the cover" })).toHaveAttribute("aria-expanded", "false")
   },
 }
+
+/** Locked: the cover won't lift, and the status says so. */
+export const Disabled: Story = {
+  args: { disabled: true },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole("button", { name: "Lift the cover" })).toBeDisabled()
+    await expect(canvas.getByRole("switch")).toHaveAttribute("aria-disabled", "true")
+    await expect(canvas.getByRole("status")).toHaveTextContent("Locked")
+  },
+}

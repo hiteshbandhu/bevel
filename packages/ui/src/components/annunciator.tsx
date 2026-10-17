@@ -144,7 +144,7 @@ function AnnunciatorTile({ className, id, active, tone = "amber", children, onCl
 }
 
 /** Acknowledges every unseen alarm at once. */
-function AnnunciatorAcknowledge({ className, children, ...props }: ButtonPrimitive.Props) {
+function AnnunciatorAcknowledge({ className, children, onClick, ...props }: ButtonPrimitive.Props) {
   const { unacked, acknowledge } = useAnnunciator()
   const count = Object.keys(unacked).length
   return (
@@ -152,7 +152,10 @@ function AnnunciatorAcknowledge({ className, children, ...props }: ButtonPrimiti
       data-slot="annunciator-acknowledge"
       disabled={count === 0}
       focusableWhenDisabled
-      onClick={() => acknowledge()}
+      onClick={(event) => {
+        onClick?.(event)
+        acknowledge()
+      }}
       className={cn(
         "bevel-raised h-10 self-end rounded-(--bevel-radius-sm) px-4 text-sm font-semibold text-(--annunciator-white) outline-none [--bevel-material:var(--annunciator-off)]",
         "transition-[translate,box-shadow] duration-(--bevel-duration-press) ease-(--bevel-ease-out) active:translate-y-0.5 active:bevel-pressed motion-reduce:transition-none",
