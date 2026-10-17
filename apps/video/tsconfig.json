@@ -1,0 +1,16 @@
+{
+  "extends": "@workspace/typescript-config/react-library.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "paths": {
+      "@workspace/ui/*": [
+        "../../packages/ui/src/*"
+      ]
+    },
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
+  },
+  "include": [
+    "src"
+  ]
+}
