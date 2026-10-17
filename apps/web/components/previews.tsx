@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { DetentKnob, DetentKnobStop } from "@workspace/ui/components/detent-knob"
 import { Annunciator, AnnunciatorPanel, AnnunciatorTile } from "@workspace/ui/components/annunciator"
 import { EngineTelegraph, EngineTelegraphDial, EngineTelegraphOrder } from "@workspace/ui/components/engine-telegraph"
 import { TakeANumber, TakeANumberSign } from "@workspace/ui/components/take-a-number"
@@ -79,6 +80,14 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "detent-knob": () => (
+    <DetentKnob aria-label="Mode" defaultValue="edit" className="pointer-events-none scale-75">
+      <DetentKnobStop value="off">Off</DetentKnobStop>
+      <DetentKnobStop value="ask">Ask</DetentKnobStop>
+      <DetentKnobStop value="edit">Auto-edit</DetentKnobStop>
+      <DetentKnobStop value="full">Full auto</DetentKnobStop>
+    </DetentKnob>
+  ),
   annunciator: () => (
     <Annunciator aria-label="Alerts" className="pointer-events-none max-w-60 p-2">
       <AnnunciatorPanel className="grid-cols-2 sm:grid-cols-2">

@@ -1442,6 +1442,41 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "detent-knob",
+    name: "Detent knob",
+    category: "instruments",
+    description:
+      "A rotary switch that clicks into fixed positions and stops hard at both ends. For a few ordered settings where the order matters: permission modes, quality presets, verbosity.",
+    files: ["components/detent-knob.tsx", "styles/detent-knob.css"],
+    dependencies: ["cn"],
+    anatomy: `<DetentKnob aria-label="Agent mode" value={mode} onValueChange={setMode}>
+  <DetentKnobStop value="ask">Ask</DetentKnobStop>
+  <DetentKnobStop value="edit">Auto-edit</DetentKnobStop>
+  <DetentKnobStop value="full">Full auto</DetentKnobStop>
+</DetentKnob>`,
+    parts: [
+      {
+        name: "DetentKnob",
+        renders: "div (slider)",
+        description:
+          "value, defaultValue, onValueChange, disabled. Arrow keys, Home and End, or drag round; it gives a little at the ends. Reads as “Auto-edit, 3 of 4”.",
+      },
+      {
+        name: "DetentKnobStop",
+        renders: "nothing",
+        description: "One position, in order. Its text is drawn round the dial.",
+      },
+    ],
+    examples: [
+      {
+        slug: "mode",
+        title: "Agent permission mode",
+        description: "Turn the knob to change what the agent may do without asking.",
+        file: "detent-knob-mode.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

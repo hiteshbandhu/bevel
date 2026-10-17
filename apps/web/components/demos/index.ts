@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { DetentKnobMode } from "./detent-knob-mode"
 import { AnnunciatorAgent } from "./annunciator-agent"
 import { EngineTelegraphAutonomy } from "./engine-telegraph-autonomy"
 import { TakeANumberSupport } from "./take-a-number-support"
@@ -38,6 +39,7 @@ import { WalletUsage } from "./wallet-usage"
 
 /** Demo components by file name, matching `Example.file` in the catalog. */
 export const demos: Record<string, React.ComponentType> = {
+  "detent-knob-mode.tsx": DetentKnobMode,
   "annunciator-agent.tsx": AnnunciatorAgent,
   "engine-telegraph-autonomy.tsx": EngineTelegraphAutonomy,
   "take-a-number-support.tsx": TakeANumberSupport,
