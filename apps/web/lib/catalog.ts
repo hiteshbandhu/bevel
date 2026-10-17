@@ -1152,6 +1152,38 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "token-instrument",
+    name: "Token instrument",
+    category: "coordination",
+    description:
+      "A railway single-line token: only one exists, and whoever holds it may proceed. An empty slot shows who has it. For edit locks, deploy lanes and who's driving.",
+    files: ["components/token-instrument.tsx", "styles/token-instrument.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<TokenInstrument section="Lease draft" holder={holder} you="You" onTake={take} onReturn={give}>
+  <TokenInstrumentSlot />
+  <TokenInstrumentStatus />
+  <TokenInstrumentAction />
+</TokenInstrument>`,
+    parts: [
+      {
+        name: "TokenInstrument",
+        renders: "div (group)",
+        description: "section, holder (null when free), you, onTake, onReturn, onRequest. Named “<section> token”.",
+      },
+      { name: "TokenInstrumentSlot", renders: "div", description: "The token in its slot, or an Out plate naming the holder." },
+      { name: "TokenInstrumentStatus", renders: "p (status)", description: "Who holds it, in words." },
+      { name: "TokenInstrumentAction", renders: "Button", description: "Take token, Return token, or Ask <holder>." },
+    ],
+    examples: [
+      {
+        slug: "edit",
+        title: "An edit token",
+        description: "Take the token to edit. Let Priya take it, then ask for it back.",
+        file: "token-instrument-edit.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

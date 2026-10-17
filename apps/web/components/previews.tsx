@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { TokenInstrument, TokenInstrumentAction, TokenInstrumentSlot } from "@workspace/ui/components/token-instrument"
 import { BallotBoard, BallotCommit, BallotLever, BallotRace } from "@workspace/ui/components/ballot-board"
 import { Vigilance, VigilanceButton, VigilanceLamps } from "@workspace/ui/components/vigilance"
 import { Interlock, InterlockLever } from "@workspace/ui/components/interlock"
@@ -72,6 +73,14 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "token-instrument": () => (
+    <div className="flex justify-center">
+      <TokenInstrument section="Lease" holder={null} you="You">
+        <TokenInstrumentSlot />
+        <TokenInstrumentAction />
+      </TokenInstrument>
+    </div>
+  ),
   "ballot-board": () => (
     <BallotBoard>
       <BallotRace name="a" label="Email the client">
