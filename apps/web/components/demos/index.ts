@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { GuardedSwitchDeploy } from "./guarded-switch-deploy"
 import { ActivityLogAgent } from "./activity-log-agent"
 import { AmountFormats } from "./amount-formats"
 import { ApprovalSend } from "./approval-send"
@@ -27,6 +28,7 @@ import { WalletUsage } from "./wallet-usage"
 
 /** Demo components by file name, matching `Example.file` in the catalog. */
 export const demos: Record<string, React.ComponentType> = {
+  "guarded-switch-deploy.tsx": GuardedSwitchDeploy,
   "activity-log-agent.tsx": ActivityLogAgent,
   "amount-formats.tsx": AmountFormats,
   "approval-send.tsx": ApprovalSend,

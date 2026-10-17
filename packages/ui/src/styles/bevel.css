@@ -71,6 +71,7 @@
   --bevel-duration-ambient: 520ms; /* whole-scene changes: lighting */
   --bevel-stagger: 30ms;
   --bevel-lift: 3px; /* how far an object rises on hover */
+  --bevel-perspective: 30rem; /* viewing distance for parts that turn in 3D (covers, flaps) */
   /* Unchosen items in a group sit back in shadow. */
   --bevel-dim: 0.82;
 

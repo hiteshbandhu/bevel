@@ -1001,6 +1001,45 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "guarded-switch",
+    name: "Guarded switch",
+    category: "safety",
+    description:
+      "A critical switch under a flip-up cover, as in a cockpit. Lift the cover, then flip it; closing the cover returns it to safe, and the cover closes itself if left.",
+    files: ["components/guarded-switch.tsx", "styles/guarded-switch.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<GuardedSwitch checked={on} onCheckedChange={setOn}>
+  <GuardedSwitchLabel />
+  <GuardedSwitchControl />
+  <GuardedSwitchStatus />
+</GuardedSwitch>`,
+    parts: [
+      {
+        name: "GuardedSwitch",
+        renders: "div (group)",
+        description:
+          "checked, defaultChecked, onCheckedChange. safeOnClose (default true) turns it off when the cover closes; autoClose closes the cover after --guarded-switch-close-after.",
+      },
+      { name: "GuardedSwitchLabel", renders: "span", description: "Names the group and the switch." },
+      {
+        name: "GuardedSwitchControl",
+        renders: "button + Switch",
+        description:
+          "The cover (a button with aria-expanded) over a Base UI Switch that's disabled while the cover is closed.",
+      },
+      { name: "GuardedSwitchStatus", renders: "span (status)", description: "Off, cover open, or on, in words." },
+    ],
+    examples: [
+      {
+        slug: "deploy",
+        title: "Agent permissions and deploys",
+        description: "Lift a cover, then flip the switch. Leave it and the cover closes, turning it off.",
+        file: "guarded-switch-deploy.tsx",
+        wide: true,
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

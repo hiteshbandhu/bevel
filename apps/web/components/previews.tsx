@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { GuardedSwitch, GuardedSwitchControl, GuardedSwitchLabel } from "@workspace/ui/components/guarded-switch"
 import {
   ActivityLog,
   ActivityLogEntries,
@@ -68,6 +69,14 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "guarded-switch": () => (
+    <div className="flex justify-center">
+      <GuardedSwitch autoClose={false}>
+        <GuardedSwitchLabel>Deploy</GuardedSwitchLabel>
+        <GuardedSwitchControl />
+      </GuardedSwitch>
+    </div>
+  ),
   redaction: () => (
     <div className="bevel-paper flex flex-col gap-3 rounded-(--bevel-radius-xs) p-5 text-sm leading-relaxed">
       <Stamp tone="red" className="self-start">
