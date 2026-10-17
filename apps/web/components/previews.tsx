@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { Mixer, MixerStrip, MixerStripFader, MixerStripMute, MixerStripName, MixerStripSolo } from "@workspace/ui/components/mixer-strip"
 import { MotorizedFader } from "@workspace/ui/components/motorized-fader"
 import { PushToTalk, PushToTalkKey } from "@workspace/ui/components/push-to-talk"
 import { DetentKnob, DetentKnobStop } from "@workspace/ui/components/detent-knob"
@@ -82,11 +83,23 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "mixer-strip": () => (
+    <Mixer aria-label="Agents" className="pointer-events-none scale-75">
+      {[["Plan", 70], ["Code", 40], ["Test", 55]].map(([name, v]) => (
+        <MixerStrip key={name} name={name as string}>
+          <MixerStripName />
+          <MixerStripMute tabIndex={-1} pressed={name === "Test"} />
+          <MixerStripSolo tabIndex={-1} />
+          <MixerStripFader tabIndex={-1} value={v as number} />
+        </MixerStrip>
+      ))}
+    </Mixer>
+  ),
   "motorized-fader": () => (
-    <MotorizedFader aria-label="Level" value={65} changedBy="Agent" onValueChange={() => {}} tabIndex={-1} className="pointer-events-none" />
+    <MotorizedFader aria-label="Level" value={65} changedBy="Agent" tabIndex={-1} className="pointer-events-none" />
   ),
   "push-to-talk": () => (
-    <PushToTalk talking={false} onTalkingChange={() => {}} className="pointer-events-none w-40 gap-3 p-3">
+    <PushToTalk talking={false} className="pointer-events-none w-40 gap-3 p-3">
       <PushToTalkKey tabIndex={-1} className="h-16" />
     </PushToTalk>
   ),
@@ -109,7 +122,7 @@ export const previews: Record<string, React.ComponentType> = {
     </Annunciator>
   ),
   "engine-telegraph": () => (
-    <EngineTelegraph aria-label="Autonomy" value="act" onValueChange={() => {}} confirmed="ask" className="pointer-events-none max-w-52">
+    <EngineTelegraph aria-label="Autonomy" value="act" confirmed="ask" className="pointer-events-none max-w-52">
       <EngineTelegraphDial />
       <div className="hidden">
         <EngineTelegraphOrder value="stop">Stop</EngineTelegraphOrder>

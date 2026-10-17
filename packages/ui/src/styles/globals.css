@@ -35,6 +35,7 @@
 @import "./detent-knob.css";
 @import "./push-to-talk.css";
 @import "./motorized-fader.css";
+@import "./mixer-strip.css";
 @import "./theme-transition.css";
 
 @custom-variant dark (&:is(.dark *));

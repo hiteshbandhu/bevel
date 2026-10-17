@@ -1520,6 +1520,7 @@ export const components: ComponentDoc[] = [
     slug: "motorized-fader",
     name: "Motorized fader",
     category: "instruments",
+    parent: "mixer-strip",
     description:
       "A console fader with a motor: when someone else sets it, the cap travels there on its own and says who moved it. Grab it and it's yours. For settings an agent, a teammate or an automation can change too.",
     files: ["components/motorized-fader.tsx", "styles/motorized-fader.css"],
@@ -1550,6 +1551,53 @@ export const components: ComponentDoc[] = [
         title: "Temperature the agent tunes",
         description: "The agent adjusts its own temperature; grab the fader to take over, then hand it back.",
         file: "motorized-fader-temperature.tsx",
+      },
+    ],
+  },
+  {
+    slug: "mixer-strip",
+    name: "Mixer strip",
+    category: "instruments",
+    description:
+      "One channel of a mixing console per agent or source: its name, mute and solo keys, and a motorized fader that an orchestrator can move and you can take. For balancing subagents, models or data sources.",
+    files: ["components/mixer-strip.tsx", "styles/mixer-strip.css"],
+    registryDependencies: ["motorized-fader"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Mixer aria-label="Subagents">
+  <MixerStrip name="Research" muted={muted}>
+    <MixerStripName />
+    <MixerStripMute pressed={muted} onPressedChange={setMuted} />
+    <MixerStripSolo pressed={solo} onPressedChange={setSolo} />
+    <MixerStripFader value={share} onValueChange={setShare} changedBy={by} />
+  </MixerStrip>
+</Mixer>`,
+    parts: [
+      { name: "Mixer", renders: "div (group)", description: "A row of strips; scrolls sideways when narrow. Give it an aria-label." },
+      {
+        name: "MixerStrip",
+        renders: "div (group)",
+        description: "name labels the group and every control in it. muted dims it.",
+      },
+      { name: "MixerStripName", renders: "p", description: "The lit scribble strip with the name." },
+      { name: "MixerStripMute", renders: "Toggle", description: "“Mute Research”. Lit red when pressed." },
+      {
+        name: "MixerStripSolo",
+        renders: "Toggle",
+        description: "“Solo Research”. Lit yellow when pressed. What solo silences is up to you.",
+      },
+      {
+        name: "MixerStripFader",
+        renders: "MotorizedFader",
+        description: "“Research level”. Takes every MotorizedFader prop.",
+      },
+    ],
+    examples: [
+      {
+        slug: "agents",
+        title: "Subagents on a console",
+        description:
+          "A lead agent rebalances effort as it goes. Take a fader to override it; mute pauses a subagent, solo runs one alone.",
+        file: "mixer-strip-agents.tsx",
       },
     ],
   },
