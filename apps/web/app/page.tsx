@@ -1,9 +1,13 @@
 import Link from "next/link"
 import { CategorySection } from "@/components/category-section"
 import { CodeBlock } from "@/components/code-block"
+import { ApprovalSend } from "@/components/demos/approval-send"
+import { CitationAnswer } from "@/components/demos/citation-answer"
 import { CreditsCheckout } from "@/components/demos/credits-checkout"
+import { DelegationBoardAgents } from "@/components/demos/delegation-board-agents"
 import { LedgerHistory } from "@/components/demos/ledger-history"
 import { MeterLiveUsage } from "@/components/demos/meter-live-usage"
+import { TaskPlanAgent } from "@/components/demos/task-plan-agent"
 import { WalletCheckout } from "@/components/demos/wallet-checkout"
 import { InstallCommand } from "@/components/install-command"
 import { categories, components } from "@/lib/catalog"
@@ -54,6 +58,26 @@ export default function Home() {
             </div>
             <LedgerHistory />
           </div>
+        </div>
+      </section>
+
+      <section className="border-t py-16" aria-labelledby="agents-assembled">
+        <h2 id="agents-assembled" className="text-2xl font-semibold tracking-tight">
+          An agent at work, assembled
+        </h2>
+        <p className="mt-2 max-w-prose text-muted-foreground">
+          The same idea for AI agents: a plan on a legal pad, subagents in their pigeonholes, an
+          answer with its sources pinned in, and a seal you hold before anything leaves the firm.
+        </p>
+        <div className="tray mt-8 flex flex-col gap-10 rounded-(--bevel-radius-xl) p-6 sm:p-10">
+          <div className="grid gap-10 lg:grid-cols-2">
+            <TaskPlanAgent />
+            <div className="flex flex-col gap-10">
+              <CitationAnswer />
+              <ApprovalSend />
+            </div>
+          </div>
+          <DelegationBoardAgents />
         </div>
       </section>
 
