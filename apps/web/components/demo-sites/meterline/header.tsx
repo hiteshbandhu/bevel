@@ -1,52 +1,41 @@
 "use client"
 
-const links = [
-  { href: "#overview", label: "Overview" },
-  { href: "#usage", label: "Usage" },
-  { href: "#billing", label: "Billing" },
-  { href: "#keys", label: "Keys" },
-]
+import { Pause, Play } from "lucide-react"
+import { PanelKey } from "../shared/environment"
 
-/** The product's own top bar: wordmark, section nav and the signed-in org. */
-export function MeterlineHeader() {
+/** The product's own line, printed along the top edge of the desk: name, account, the clock and the traffic key. */
+export function MeterlineHeader({
+  clock,
+  running,
+  canStart,
+  onTraffic,
+}: {
+  clock: string
+  running: boolean
+  canStart: boolean
+  onTraffic: () => void
+}) {
   return (
-    <header className="border-b bg-background">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
-        <a
-          href="#overview"
-          className="flex items-center gap-2 rounded-sm font-semibold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <span aria-hidden className="flex size-7 items-end gap-0.5 rounded-md bg-foreground p-1.5">
-            <span className="h-1.5 w-1 rounded-full bg-background" />
-            <span className="h-2.5 w-1 rounded-full bg-background" />
-            <span className="h-4 w-1 rounded-full bg-background" />
-          </span>
+    <header className="mx-auto font-[family-name:var(--font-ledger)] flex max-w-[1440px] flex-wrap items-center gap-x-6 gap-y-3 px-4 pt-6 pb-5 sm:px-8">
+      <div className="flex min-w-0 flex-wrap items-baseline gap-x-4 gap-y-1">
+        <p className="text-[26px] leading-none font-bold text-[#EADFC8] [text-shadow:0_1px_0_rgb(0_0_0/0.5)]">
           Meterline
-        </a>
-        <nav aria-label="Meterline" className="order-last -mx-2 w-full sm:order-none sm:mx-0 sm:w-auto">
-          <ul className="flex gap-1 text-sm">
-            {links.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="block rounded-md px-2 py-1.5 text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="ml-auto flex items-center gap-2 text-sm">
-          <span className="hidden text-muted-foreground sm:inline">Halvorsen Labs</span>
-          <span
-            aria-label="Signed in as Ines Varga, owner of Halvorsen Labs"
-            role="img"
-            className="flex size-8 items-center justify-center rounded-full bg-muted text-xs font-semibold"
-          >
-            IV
-          </span>
-        </div>
+        </p>
+        <p className="text-[17px] text-[#B8AA8E]">Halvorsen Labs, pay as you go</p>
+      </div>
+      <div className="ml-auto flex items-center gap-4">
+        <p className="text-[17px] text-[#B8AA8E]">
+          17 Oct, <span className="text-[#EADFC8] tabular-nums">{clock}</span>
+        </p>
+        <PanelKey
+          tone={running ? "plain" : "go"}
+          onClick={onTraffic}
+          disabled={!running && !canStart}
+          className="gap-2 [&_svg]:size-4"
+        >
+          {running ? <Pause aria-hidden /> : <Play aria-hidden />}
+          {running ? "Pause traffic" : "Start traffic"}
+        </PanelKey>
       </div>
     </header>
   )
