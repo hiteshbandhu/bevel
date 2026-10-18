@@ -54,8 +54,17 @@ function Vigilance({
   children,
   ...props
 }: VigilanceProps) {
-  const [deadline, setDeadline] = React.useState(() => Date.now() + interval)
-  const [now, setNow] = React.useState(() => Date.now())
+  // The clock starts on mount, not during render, so a prerendered page and
+  // the browser agree. Until then the full window shows.
+  const [deadline, setDeadline] = React.useState<number | null>(null)
+  const [now, setNow] = React.useState(0)
+  React.useEffect(() => {
+    const t = Date.now()
+    setNow(t)
+    setDeadline(t + interval)
+    // Only on mount: check-ins and resumes set the deadline after that.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const [paused, setPaused] = React.useState(false)
   const tripped = React.useRef(false)
 
@@ -64,6 +73,7 @@ function Vigilance({
   const held = React.useRef<number | null>(null)
   React.useEffect(() => {
     const t = Date.now()
+    if (deadline === null) return
     if (!running) {
       held.current = Math.max(0, deadline - t)
     } else if (held.current !== null) {
@@ -76,12 +86,12 @@ function Vigilance({
   }, [running])
 
   React.useEffect(() => {
-    if (!running || paused) return
+    if (!running || paused || deadline === null) return
     const timer = window.setInterval(() => setNow(Date.now()), 250)
     return () => window.clearInterval(timer)
-  }, [running, paused])
+  }, [running, paused, deadline === null])
 
-  const remaining = Math.max(0, deadline - now)
+  const remaining = deadline === null ? interval : Math.max(0, deadline - now)
   React.useEffect(() => {
     if (running && !paused && remaining === 0 && !tripped.current) {
       tripped.current = true
