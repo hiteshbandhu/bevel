@@ -33,6 +33,8 @@ import {
   type ApprovalState,
 } from "@workspace/ui/components/approval"
 import { Stamp, StampDetail } from "@workspace/ui/components/stamp"
+import { Legend } from "../shared/environment"
+import { documentFace } from "../shared/fonts"
 import { changeIds, contracts, needles, type Contract } from "./contracts"
 
 const TODAY = "17 Oct 2026"
@@ -58,6 +60,23 @@ function progressOf(contract: Contract, review: Review) {
     ready: decided === changes.length && redacted === contract.note.flags.length && opened === contract.sources.length,
   }
 }
+
+/* The desk. Oak, lit from the upper left, with a grain that runs across it. */
+const deskSurface: React.CSSProperties = {
+  backgroundColor: "#3A2A1F",
+  backgroundImage: [
+    "radial-gradient(ellipse 80% 60% at 12% 0%, rgb(255 226 180 / 0.11), transparent 70%)",
+    "radial-gradient(ellipse 90% 70% at 100% 100%, rgb(0 0 0 / 0.32), transparent 70%)",
+    "repeating-linear-gradient(178deg, rgb(255 255 255 / 0.022) 0 2px, transparent 2px 9px, rgb(0 0 0 / 0.05) 9px 11px, transparent 11px 23px)",
+    "repeating-linear-gradient(181deg, transparent 0 41px, rgb(0 0 0 / 0.07) 41px 44px, transparent 44px 97px)",
+  ].join(", "),
+}
+
+/* Paper lying on the desk: its shadow falls down and to the right, away from the light. */
+const onDesk = "shadow-[0_1px_1px_rgb(0_0_0/0.35),6px_14px_28px_-8px_rgb(0_0_0/0.6)]"
+
+/* Words printed on the desk itself. */
+const deskLegend = "font-normal italic tracking-normal text-[17px] [text-shadow:0_1px_0_rgb(0_0_0/0.5)]"
 
 /** Casefile: a legal review desk for one matter, with an AI assistant. */
 export function CasefileApp() {
@@ -86,50 +105,34 @@ export function CasefileApp() {
   }
 
   return (
-    <div className="min-h-svh bg-background text-foreground">
-      <div className="border-b bg-card">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
-          <span className="wordmark text-lg font-bold tracking-tight">Casefile</span>
-          <nav aria-label="Casefile" className="order-last flex w-full gap-4 overflow-x-auto text-sm sm:order-none sm:w-auto">
-            {[
-              ["#drawer", "Drawer"],
-              ["#desk", "Desk"],
-              ["#assistant", "Assistant"],
-              ["#outbox", "Outbox"],
-            ].map(([href, label]) => (
-              <a
-                key={href}
-                href={href}
-                className="shrink-0 rounded-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                {label}
-              </a>
-            ))}
-          </nav>
-          <span className="ml-auto text-sm text-muted-foreground">
-            Mira Castell · <span className="tabular-nums">{sentCount}</span> of {contracts.length} sent
-          </span>
-        </div>
-      </div>
+    <div
+      className={cn(
+        documentFace.variable,
+        "min-h-svh overflow-x-clip font-[family-name:var(--font-document)] text-[#E7DCCB]",
+        "[--foreground:#E7DCCB] [--muted-foreground:#B9A992] [--legend:#B9A992] [--ring:#C9B27A]"
+      )}
+      style={deskSurface}
+    >
+      <main className="mx-auto max-w-[1360px] px-4 pt-6 pb-20 sm:px-8 lg:pt-10">
+        <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+          <FolderTab />
+          <div className="flex items-end gap-8">
+            <p className="text-[17px] text-[#B9A992] [text-shadow:0_1px_0_rgb(0_0_0/0.5)]">
+              Mira Castell has sent <span className="text-[#E7DCCB] tabular-nums">{sentCount}</span> of {contracts.length}
+            </p>
+            <BankersLamp />
+          </div>
+        </header>
 
-      <main className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6">
-        <div className="flex flex-col gap-1">
-          <p className="text-sm text-muted-foreground">Matter 2026-0417 · Commercial litigation</p>
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Northwind v. Halberd — supply dispute</h1>
-        </div>
+        <div className="mt-8 grid gap-x-12 gap-y-12 lg:mt-10 lg:grid-cols-[minmax(0,29rem)_minmax(0,1fr)] [&>*]:min-w-0">
+          <Drawer pushed={pushed} onPushedChange={setPushed} openId={contract.id} onOpen={open} reviews={reviews} />
 
-        <div className="mt-6 grid gap-6 lg:grid-cols-[30rem_minmax(0,1fr)]">
-          <Drawer
-            pushed={pushed}
-            onPushedChange={setPushed}
-            openId={contract.id}
-            onOpen={open}
-            reviews={reviews}
-          />
-
-          <div className="flex min-w-0 flex-col gap-6">
+          <div className="flex min-w-0 flex-col gap-12">
             <Desk contract={contract} review={review} update={update} />
-            <Assistant contract={contract} review={review} update={update} />
+            <div className="grid gap-x-10 gap-y-12 md:grid-cols-2 [&>*]:min-w-0">
+              <CoverNote contract={contract} review={review} update={update} />
+              <Assistant contract={contract} review={review} update={update} />
+            </div>
             <Outbox contract={contract} review={review} update={update} />
           </div>
         </div>
@@ -138,33 +141,38 @@ export function CasefileApp() {
   )
 }
 
-function Panel({
-  id,
-  title,
-  description,
-  className,
-  children,
-}: {
-  id: string
-  title: string
-  description?: React.ReactNode
-  className?: string
-  children: React.ReactNode
-}) {
+/** The banker's lamp, seen from above: green glass shade on a brass arm. Its light falls on the open contract. */
+function BankersLamp() {
   return (
-    <section
-      id={id}
-      aria-labelledby={`${id}-title`}
-      className={cn("tray flex min-w-0 scroll-mt-4 flex-col gap-4 rounded-(--bevel-radius-xl) p-3 sm:p-5", className)}
-    >
-      <div className="flex flex-col gap-0.5 px-1">
-        <h2 id={`${id}-title`} className="text-lg font-semibold tracking-tight">
-          {title}
-        </h2>
-        {description && <p className="text-sm text-muted-foreground">{description}</p>}
+    <div aria-hidden className="relative hidden h-24 w-56 lg:block">
+      {/* Brass base and stem. */}
+      <span className="absolute top-1 left-1/2 size-14 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_35%_30%,#E9CF8A,#9C7A35_60%,#5E4718)] shadow-[4px_10px_18px_-4px_rgb(0_0_0/0.7)]" />
+      {/* The shade: a long half-cylinder of cased green glass. */}
+      <span className="absolute top-9 left-0 h-14 w-56 rounded-[28px] bg-[linear-gradient(180deg,#5FA571_0%,#1F6237_38%,#0E3A20_100%)] shadow-[inset_0_2px_0_rgb(255_255_255/0.35),inset_0_-3px_6px_rgb(0_0_0/0.5),6px_16px_24px_-6px_rgb(0_0_0/0.75)]" />
+      <span className="absolute top-[42px] left-6 h-1.5 w-44 rounded-full bg-white/30 blur-[2px]" />
+      {/* Brass end caps. */}
+      <span className="absolute top-9 left-0 h-14 w-3 rounded-l-[28px] bg-[linear-gradient(180deg,#E3C67E,#7D5F24)]" />
+      <span className="absolute top-9 right-0 h-14 w-3 rounded-r-[28px] bg-[linear-gradient(180deg,#E3C67E,#7D5F24)]" />
+    </div>
+  )
+}
+
+/** The matter's file folder, its typed label on the tab. */
+function FolderTab() {
+  return (
+    <div className="relative min-w-0 max-w-full">
+      {/* The tab, rising from the folder's edge. */}
+      <div className={cn("relative z-10 inline-block max-w-full rounded-t-[10px] bg-[#D8BE8A] px-3 pt-3 pb-2", "shadow-[inset_0_1px_0_rgb(255_255_255/0.35)]")}>
+        <div className="rounded-[2px] bg-[#FBF7EE] px-4 py-2 shadow-[0_1px_1px_rgb(0_0_0/0.25)]">
+          <h1 className="text-[22px] leading-tight font-semibold text-[#2B2620] sm:text-[26px]">
+            Northwind v. Halberd, supply dispute
+          </h1>
+          <p className="mt-0.5 text-[15px] text-[#6B6152]">Matter 2026-0417, commercial litigation</p>
+        </div>
       </div>
-      {children}
-    </section>
+      {/* The folder's front edge, running on under the papers. */}
+      <div aria-hidden className={cn("-mt-px h-7 w-[calc(100%+4rem)] max-w-[calc(100vw-2rem)] rounded-r-[6px] bg-[#CFB37C]", onDesk)} />
+    </div>
   )
 }
 
@@ -182,51 +190,54 @@ function Drawer({
   reviews: Record<string, Review>
 }) {
   return (
-    <Panel
-      id="drawer"
-      title="Contract drawer"
-      description="Push needles in to pull every contract with those terms. Open one to put it on the desk."
-      className="lg:sticky lg:top-4 lg:self-start"
-    >
-      <KeysortFilter aria-label="Contracts in this matter" value={pushed} onValueChange={onPushedChange}>
-        <KeysortFilterNeedles>
-          {needles.map((n) => (
-            <KeysortFilterNeedle key={n.value} value={n.value}>
-              {n.label}
-            </KeysortFilterNeedle>
-          ))}
-        </KeysortFilterNeedles>
-        <KeysortFilterDeck>
-          {contracts.map((c) => {
-            const isOpen = c.id === openId
-            const state = reviews[c.id]?.approval
-            return (
-              <KeysortFilterCard
-                key={c.id}
-                notches={c.tags}
-                data-open={isOpen ? "" : undefined}
-                className="data-open:ring-2 data-open:ring-ring"
-              >
-                <button
-                  type="button"
-                  onClick={() => onOpen(c.id)}
-                  aria-current={isOpen ? "true" : undefined}
-                  className="cursor-pointer rounded-sm text-left outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  {c.title}
-                  <span className="block text-xs font-normal opacity-75">
-                    {c.ref}
-                    {state === "approved" && " · sent"}
-                    {state === "rejected" && " · sent back"}
-                  </span>
-                </button>
-              </KeysortFilterCard>
-            )
-          })}
-        </KeysortFilterDeck>
-        <KeysortFilterCount className="px-1" />
-      </KeysortFilter>
-    </Panel>
+    <section id="drawer" aria-labelledby="drawer-title" className="flex scroll-mt-4 flex-col gap-3 lg:sticky lg:top-6 lg:self-start">
+      <Legend id="drawer-title" className={deskLegend}>
+        Drawer
+      </Legend>
+      {/* A card file box: walnut sides, the cards standing in its well. */}
+      <div className="rounded-[14px] bg-[#4A3526] p-1.5 sm:p-2.5 shadow-[inset_0_1px_0_rgb(255_255_255/0.12),0_2px_2px_rgb(0_0_0/0.4),8px_18px_36px_-10px_rgb(0_0_0/0.7)]">
+        <div className="rounded-[8px] bg-[#241911] px-1.5 pt-4 pb-4 [--keysort-filter-column:2.3rem] sm:[--keysort-filter-column:3.5rem] shadow-[inset_0_6px_14px_rgb(0_0_0/0.65),inset_0_-1px_0_rgb(255_255_255/0.06)] sm:px-4 lg:[--keysort-filter-column:3.4rem]">
+          <KeysortFilter aria-label="Contracts in this matter" value={pushed} onValueChange={onPushedChange} className="text-[#E7DCCB]">
+            <KeysortFilterNeedles className="[&_[data-slot=keysort-filter-needle]]:text-[12px] sm:[&_[data-slot=keysort-filter-needle]]:text-[13px]">
+              {needles.map((n) => (
+                <KeysortFilterNeedle key={n.value} value={n.value}>
+                  {n.label}
+                </KeysortFilterNeedle>
+              ))}
+            </KeysortFilterNeedles>
+            <KeysortFilterDeck>
+              {contracts.map((c) => {
+                const isOpen = c.id === openId
+                const state = reviews[c.id]?.approval
+                return (
+                  <KeysortFilterCard
+                    key={c.id}
+                    notches={c.tags}
+                    data-open={isOpen ? "" : undefined}
+                    className="data-open:ring-2 data-open:ring-[#7FB08A] data-open:ring-offset-2 data-open:ring-offset-[#241911]"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => onOpen(c.id)}
+                      aria-current={isOpen ? "true" : undefined}
+                      className="cursor-pointer rounded-sm text-left text-[14px] outline-none sm:text-[15px] hover:underline focus-visible:ring-2 focus-visible:ring-[#7FB08A]"
+                    >
+                      {c.title}
+                      {state && (
+                        <span className="block text-[13px] font-normal italic opacity-80">
+                          {state === "approved" ? "Sent" : "Sent back"}
+                        </span>
+                      )}
+                    </button>
+                  </KeysortFilterCard>
+                )
+              })}
+            </KeysortFilterDeck>
+            <KeysortFilterCount className="px-1 text-[15px] text-[#B9A992]" />
+          </KeysortFilter>
+        </div>
+      </div>
+    </section>
   )
 }
 
@@ -245,28 +256,42 @@ function SentStamp({ className }: { className?: string }) {
   )
 }
 
+/** The hero: the open contract, under the lamp. */
 function Desk({ contract, review, update }: PanelProps) {
   const sent = review.approval === "approved"
   return (
-    <Panel
-      id="desk"
-      title="On the desk"
-      description={`${contract.title}, ${contract.ref}. The assistant's suggested edits are in red ink; nothing changes until you decide.`}
-    >
-      <div className="relative">
+    <section id="desk" aria-labelledby="desk-title" className="relative flex scroll-mt-4 flex-col gap-3">
+      <Legend id="desk-title" className={deskLegend}>
+        On the desk
+      </Legend>
+      {/* The banker's lamp: a warm pool on the page, a little green from its shade. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-16 -top-20 -bottom-24"
+        style={{
+          background:
+            "radial-gradient(ellipse 58% 52% at 50% 45%, rgb(255 238 200 / 0.34), rgb(170 215 160 / 0.12) 50%, transparent 74%)",
+        }}
+      />
+      <div className="relative z-10 [--bevel-paper:oklch(0.965_0.014_85)] sm:rotate-[-0.6deg]">
         <Redline
           key={contract.id}
-          className="max-w-none"
+          className={cn("max-w-none", onDesk)}
           decisions={review.decisions}
           onDecisionsChange={(decisions) => update(contract.id, () => ({ decisions }))}
         >
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-(--bevel-paper-rule) px-5 pt-4 pb-3">
-            <p className="text-xs font-medium tracking-wide text-(--bevel-paper-muted) uppercase">{contract.parties}</p>
-            <Stamp tone="red" className="ml-auto">
+          <div className="flex flex-wrap items-start gap-x-4 gap-y-2 px-6 pt-6 sm:px-10 sm:pt-9">
+            <div className="min-w-0 flex-1">
+              <p className="text-[24px] leading-tight font-semibold text-(--bevel-paper-foreground) sm:text-[28px]">
+                {contract.title}
+              </p>
+              <p className="mt-1 text-[15px] text-(--bevel-paper-muted)">{contract.parties}</p>
+            </div>
+            <Stamp tone="red" className="text-[15px]">
               Privileged
             </Stamp>
           </div>
-          <RedlineDocument className="text-[0.9375rem] sm:text-base">
+          <RedlineDocument className="px-6 pt-5 pb-7 text-[18px] leading-[2.1] sm:px-10 sm:text-[21px]">
             <strong>
               {contract.clause.number} {contract.clause.heading}.
             </strong>{" "}
@@ -279,101 +304,21 @@ function Desk({ contract, review, update }: PanelProps) {
             )}
           </RedlineDocument>
           {sent ? (
-            <p className="border-t border-(--bevel-paper-rule) px-5 py-3 text-sm text-(--bevel-paper-muted)">
-              Sent to {contract.note.to} with these decisions. The clause is locked.
+            <p className="border-t border-(--bevel-paper-rule) px-6 py-3 text-[15px] text-(--bevel-paper-muted) sm:px-10">
+              Sent to {contract.note.to}. The clause is locked.
             </p>
           ) : (
-            <RedlineToolbar className="flex-wrap" />
+            <RedlineToolbar className="flex-wrap px-6 text-[15px] sm:px-10" />
           )}
         </Redline>
-        {sent && <SentStamp className="right-4 bottom-14" />}
+        {sent && <SentStamp className="right-8 bottom-16" />}
       </div>
-    </Panel>
+    </section>
   )
 }
 
-function Assistant({ contract, review, update }: PanelProps) {
-  const opened = contract.sources.filter((s) => review.opened.includes(s.n)).length
-  return (
-    <Panel
-      id="assistant"
-      title="Assistant"
-      description={`Every claim is pinned to a source. You've opened ${opened} of ${contract.sources.length}.`}
-    >
-      <div className="flex flex-col gap-3 rounded-(--bevel-radius-lg) border bg-card p-4">
-        <div className="self-end rounded-(--bevel-radius-md) bg-muted px-3 py-2 text-sm sm:max-w-[80%]">
-          <span className="sr-only">You asked: </span>
-          {contract.question}
-        </div>
-        <div className="flex flex-col gap-2 text-[0.9375rem] leading-relaxed">
-          <p className="text-xs font-medium text-muted-foreground">Casefile assistant · drafted from this matter&apos;s documents</p>
-          {contract.answer.map((paragraph, i) => (
-            <p key={i}>
-              {paragraph.map((seg, j) => {
-                if (typeof seg === "string") return <React.Fragment key={j}>{seg}</React.Fragment>
-                const source = contract.sources.find((s) => s.n === seg.cite)!
-                return (
-                  <Citation
-                    key={j}
-                    onOpenChange={(isOpen) => {
-                      if (isOpen) update(contract.id, (r) => ({ opened: r.opened.includes(source.n) ? r.opened : [...r.opened, source.n] }))
-                    }}
-                  >
-                    <CitationTrigger tone={source.external ? "blue" : "yellow"} abbreviation="Src." label="Source">
-                      {source.n}
-                    </CitationTrigger>
-                    <CitationContent>
-                      <CitationSource>{source.source}</CitationSource>
-                      <CitationLocation>{source.location}</CitationLocation>
-                      <CitationQuote>{source.quote}</CitationQuote>
-                      <CitationStatus status={source.status}>{source.statusText}</CitationStatus>
-                    </CitationContent>
-                  </Citation>
-                )
-              })}
-            </p>
-          ))}
-        </div>
-        <ul aria-label="Sources" className="flex flex-col gap-1 border-t pt-3 text-sm">
-          {contract.sources.map((s) => (
-            <li key={s.n} className="flex flex-wrap gap-x-2">
-              <span className="tabular-nums text-muted-foreground">{s.n}.</span>
-              <span className="min-w-0 flex-1">
-                {s.source}, {s.location}
-              </span>
-              <span className="text-muted-foreground">
-                {review.opened.includes(s.n) ? (s.status === "unverified" ? "Checked: not found" : "Checked") : "Not opened"}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Panel>
-  )
-}
-
-function Check({ done, total, label }: { done: number; total: number; label: string }) {
-  const complete = done === total
-  return (
-    <li className="flex items-center gap-2">
-      <span
-        aria-hidden
-        className={cn(
-          "grid size-5 shrink-0 place-items-center rounded-full border text-xs",
-          complete ? "border-foreground bg-foreground text-background" : "border-muted-foreground/50"
-        )}
-      >
-        {complete ? "✓" : ""}
-      </span>
-      <span className="min-w-0 flex-1">{label}</span>
-      <span className="tabular-nums text-muted-foreground">
-        {complete ? "Done" : `${done} of ${total}`}
-      </span>
-    </li>
-  )
-}
-
-function Outbox({ contract, review, update }: PanelProps) {
+/** The cover note, tucked under the contract, with the assistant's flags on a sticky note. */
+function CoverNote({ contract, review, update }: PanelProps) {
   const progress = progressOf(contract, review)
   const { note } = contract
   const sent = review.approval === "approved"
@@ -381,114 +326,232 @@ function Outbox({ contract, review, update }: PanelProps) {
   const flag = (id: string) => note.flags.find((f) => f.id === id)!
 
   return (
-    <Panel
-      id="outbox"
-      title="Outbox"
-      description="The assistant drafted a cover note. Redact what shouldn't leave the firm, then seal it."
-    >
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        <article aria-label="Cover note, as the recipient will see it" className="bevel-paper relative flex flex-col gap-3 rounded-(--bevel-radius-xs) p-5 text-sm leading-relaxed">
-          <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-0.5 border-b border-(--bevel-paper-rule) pb-3 text-xs text-(--bevel-paper-muted)">
-            <dt>To</dt>
-            <dd className="break-words">
-              {note.to}, {note.firm} &lt;{note.email}&gt;
-            </dd>
-            <dt>Subject</dt>
-            <dd>{note.subject}</dd>
-            <dt>Attached</dt>
-            <dd>
-              Clause {contract.clause.number}, marked up ({progress.changes.done} of {progress.changes.total} edits decided)
-            </dd>
-          </dl>
-          {note.body.map((paragraph, i) => (
-            <p key={i}>
-              {paragraph.map((seg, j) => {
-                if (typeof seg === "string") return <React.Fragment key={j}>{seg}</React.Fragment>
-                const f = flag(seg.redact)
-                return review.redacted.includes(f.id) ? (
-                  <Redaction key={j} length={Math.min(f.text.length, 36)} reason={f.reason} />
-                ) : (
-                  <mark key={j} className="rounded-sm bg-(--bevel-pen-red)/12 px-0.5 text-inherit box-decoration-clone">
-                    <span className="sr-only">Flagged as {f.reason}: </span>
-                    {f.text}
-                  </mark>
-                )
-              })}
-            </p>
-          ))}
-          <p>Kind regards,<br />Castell Rowe LLP</p>
-          {sent && <SentStamp className="top-4 right-4" />}
-        </article>
-
-        <div className="flex flex-col gap-4">
-          <fieldset disabled={locked} className="flex flex-col gap-2 rounded-(--bevel-radius-lg) border bg-card p-4 text-sm">
-            <legend className="px-1 font-medium">Flagged by the assistant</legend>
-            {note.flags.map((f) => (
-              <label key={f.id} className="flex cursor-pointer items-start gap-2 has-disabled:cursor-default">
-                <input
-                  type="checkbox"
-                  className="mt-0.5 size-4 accent-foreground"
-                  checked={review.redacted.includes(f.id)}
-                  onChange={(e) =>
-                    update(contract.id, (r) => ({
-                      redacted: e.target.checked ? [...r.redacted, f.id] : r.redacted.filter((x) => x !== f.id),
-                    }))
-                  }
-                />
-                <span>
-                  Redact {f.label.charAt(0).toLowerCase() + f.label.slice(1)}{" "}
-                  <span className="text-muted-foreground">({f.reason})</span>
-                </span>
-              </label>
-            ))}
-          </fieldset>
-
-          <div className="flex flex-col gap-2 rounded-(--bevel-radius-lg) border bg-card p-4 text-sm">
-            <h3 className="font-medium">Before it leaves the firm</h3>
-            <ul className="flex flex-col gap-1.5">
-              <Check {...progress.changes} label="Decide every suggested edit" />
-              <Check {...progress.sources} label="Open every source the answer cites" />
-              <Check {...progress.redactions} label="Redact everything flagged" />
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <Approval
-        key={contract.id}
-        className="max-w-none sm:max-w-md"
-        state={review.approval}
-        onApprove={() => {
-          if (progress.ready) update(contract.id, () => ({ approval: "approved" }))
-        }}
-        onReject={() => update(contract.id, () => ({ approval: "rejected" }))}
+    <section aria-label="Cover note" className="relative md:-mt-16 md:ml-2">
+      <article
+        aria-label="Cover note, as the recipient will see it"
+        className={cn(
+          "bevel-paper relative flex flex-col gap-3 rounded-(--bevel-radius-xs) px-6 pt-6 pb-24 text-[15px] leading-relaxed md:rotate-[1.3deg] md:pt-20",
+          onDesk
+        )}
       >
-        <ApprovalTitle>Send to {note.firm}</ApprovalTitle>
-        <ApprovalDescription>
-          Casefile will email the redacted cover note and clause {contract.clause.number} to {note.to}. Sent email
-          can&apos;t be recalled.
-        </ApprovalDescription>
-        <ApprovalSignatures>
-          <ApprovalSignature name="Dana Okafor" signed />
-          <ApprovalSignature name="Mira Castell" signed={sent} />
-        </ApprovalSignatures>
-        {!locked && !progress.ready && (
-          <p className="text-(--bevel-paper-muted)">The seal unlocks when the checklist is done.</p>
+        <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-0.5 border-b border-(--bevel-paper-rule) pb-3 text-[14px] text-(--bevel-paper-muted)">
+          <dt>To</dt>
+          <dd className="break-words">
+            {note.to}, {note.firm}
+          </dd>
+          <dt>Re</dt>
+          <dd>{note.subject}</dd>
+          <dt>Encl.</dt>
+          <dd>
+            Clause {contract.clause.number}, {progress.changes.done} of {progress.changes.total} edits decided
+          </dd>
+        </dl>
+        {note.body.map((paragraph, i) => (
+          <p key={i}>
+            {paragraph.map((seg, j) => {
+              if (typeof seg === "string") return <React.Fragment key={j}>{seg}</React.Fragment>
+              const f = flag(seg.redact)
+              return review.redacted.includes(f.id) ? (
+                <Redaction key={j} length={Math.min(f.text.length, 36)} reason={f.reason} />
+              ) : (
+                <mark key={j} className="rounded-sm bg-(--bevel-pen-red)/12 px-0.5 text-inherit box-decoration-clone">
+                  <span className="sr-only">Flagged as {f.reason}: </span>
+                  {f.text}
+                </mark>
+              )
+            })}
+          </p>
+        ))}
+        <p>
+          Kind regards,
+          <br />
+          Castell Rowe LLP
+        </p>
+        {sent && <SentStamp className="top-24 right-6" />}
+      </article>
+
+      {/* The assistant's flags, on a sticky note stuck to the bottom of the page. */}
+      <fieldset
+        disabled={locked}
+        className={cn(
+          "relative z-10 mx-auto -mt-20 flex [color-scheme:light] w-[min(100%,19rem)] flex-col gap-2 rounded-[2px] bg-[#F2DE7C] px-4 pt-3 pb-4 text-[15px] text-[#3B3215] rotate-[-2deg] sm:mr-4",
+          "shadow-[0_1px_1px_rgb(0_0_0/0.25),4px_10px_16px_-6px_rgb(0_0_0/0.5)]"
         )}
-        <ApprovalActions className="flex-wrap">
-          <ApprovalReject>Send back</ApprovalReject>
-          <ApprovalSeal disabled={!progress.ready} className="disabled:cursor-not-allowed disabled:opacity-50 data-disabled:cursor-not-allowed data-disabled:opacity-50" />
-        </ApprovalActions>
-        {locked && (
-          <button
-            type="button"
-            onClick={() => update(contract.id, () => ({ approval: "pending" }))}
-            className="h-9 self-start rounded-(--bevel-radius-sm) border border-(--bevel-paper-foreground)/30 px-3 font-medium text-(--bevel-paper-foreground) outline-none hover:bg-(--bevel-paper-foreground)/5 focus-visible:ring-2 focus-visible:ring-(--bevel-pen-blue)/50"
-          >
-            {sent ? "Reset this contract (demo)" : "Reopen for review"}
-          </button>
+      >
+        <legend className="float-left mb-1 w-full font-semibold">Redact before sending</legend>
+        {note.flags.map((f) => (
+          <label key={f.id} className="flex cursor-pointer items-start gap-2 leading-snug has-disabled:cursor-default">
+            <input
+              type="checkbox"
+              className="mt-1 size-4 shrink-0 accent-[#3B3215]"
+              checked={review.redacted.includes(f.id)}
+              onChange={(e) =>
+                update(contract.id, (r) => ({
+                  redacted: e.target.checked ? [...r.redacted, f.id] : r.redacted.filter((x) => x !== f.id),
+                }))
+              }
+            />
+            <span>
+              {f.label} <span className="italic opacity-75">({f.reason})</span>
+            </span>
+          </label>
+        ))}
+      </fieldset>
+    </section>
+  )
+}
+
+/** The assistant's answer, printed as a memo, every claim stickered to its source. */
+function Assistant({ contract, review, update }: PanelProps) {
+  return (
+    <section id="assistant" aria-labelledby="assistant-title" className="flex scroll-mt-4 flex-col gap-3">
+      <Legend id="assistant-title" className={deskLegend}>
+        Assistant
+      </Legend>
+      <article
+        className={cn(
+          "bevel-paper flex flex-col gap-4 rounded-(--bevel-radius-xs) px-6 py-6 text-[16px] leading-relaxed md:rotate-[-1.4deg]",
+          onDesk
         )}
-      </Approval>
-    </Panel>
+      >
+        <p className="border-b border-(--bevel-paper-rule) pb-3 text-[17px] italic text-(--bevel-paper-foreground)">
+          <span className="sr-only">You asked: </span>
+          {contract.question}
+        </p>
+        {contract.answer.map((paragraph, i) => (
+          <p key={i}>
+            {paragraph.map((seg, j) => {
+              if (typeof seg === "string") return <React.Fragment key={j}>{seg}</React.Fragment>
+              const source = contract.sources.find((s) => s.n === seg.cite)!
+              return (
+                <Citation
+                  key={j}
+                  onOpenChange={(isOpen) => {
+                    if (isOpen) update(contract.id, (r) => ({ opened: r.opened.includes(source.n) ? r.opened : [...r.opened, source.n] }))
+                  }}
+                >
+                  <CitationTrigger tone={source.external ? "blue" : "yellow"} abbreviation="Src." label="Source">
+                    {source.n}
+                  </CitationTrigger>
+                  <CitationContent>
+                    <CitationSource>{source.source}</CitationSource>
+                    <CitationLocation>{source.location}</CitationLocation>
+                    <CitationQuote>{source.quote}</CitationQuote>
+                    <CitationStatus status={source.status}>{source.statusText}</CitationStatus>
+                  </CitationContent>
+                </Citation>
+              )
+            })}
+          </p>
+        ))}
+        <ol aria-label="Sources" className="flex flex-col gap-1.5 border-t border-(--bevel-paper-rule) pt-3 text-[14px] leading-snug text-(--bevel-paper-muted)">
+          {contract.sources.map((s) => {
+            const opened = review.opened.includes(s.n)
+            return (
+              <li key={s.n} className="flex gap-2">
+                <span className="tabular-nums">{s.n}.</span>
+                <span className="min-w-0 flex-1">
+                  {s.source}, {s.location}
+                </span>
+                <span className={cn("shrink-0 italic", opened && "text-(--bevel-pen-blue)")}>
+                  {opened ? (s.status === "unverified" ? "Not found" : "Checked") : "Unread"}
+                </span>
+              </li>
+            )
+          })}
+        </ol>
+      </article>
+    </section>
+  )
+}
+
+function Check({ done, total, label }: { done: number; total: number; label: string }) {
+  const complete = done === total
+  return (
+    <li className="flex items-start gap-2.5">
+      <span
+        aria-hidden
+        className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-[3px] border border-(--bevel-paper-foreground)/45 text-[17px] leading-none font-bold text-(--bevel-pen-blue)"
+      >
+        {complete ? "✓" : ""}
+      </span>
+      <span className="min-w-0 flex-1">
+        {label}
+        <span className="sr-only">{complete ? ", done" : `, ${done} of ${total}`}</span>
+      </span>
+      {!complete && (
+        <span aria-hidden className="tabular-nums text-(--bevel-paper-muted)">
+          {done}/{total}
+        </span>
+      )}
+    </li>
+  )
+}
+
+/** Before it leaves: the checklist slip and the seal press. */
+function Outbox({ contract, review, update }: PanelProps) {
+  const progress = progressOf(contract, review)
+  const { note } = contract
+  const sent = review.approval === "approved"
+  const locked = review.approval !== "pending"
+
+  return (
+    <section id="outbox" aria-labelledby="outbox-title" className="flex scroll-mt-4 flex-col gap-3">
+      <Legend id="outbox-title" className={deskLegend}>
+        Before it leaves
+      </Legend>
+      <div className="flex flex-col items-stretch gap-8 sm:flex-row sm:items-start sm:justify-end">
+        <div
+          className={cn(
+            "bevel-paper relative z-10 flex flex-col gap-2 self-center rounded-[2px] px-5 py-4 text-[15px] leading-snug sm:mt-14 sm:-mr-3 sm:w-64 sm:shrink-0 sm:rotate-[2.6deg]",
+            onDesk
+          )}
+        >
+          <ul aria-label="Checklist" className="flex flex-col gap-2.5">
+            <Check {...progress.changes} label="Decide every edit" />
+            <Check {...progress.sources} label="Read every source" />
+            <Check {...progress.redactions} label="Redact every flag" />
+          </ul>
+        </div>
+
+        <Approval
+          key={contract.id}
+          className={cn("max-w-none sm:max-w-md sm:rotate-[-0.8deg] text-[15px]", onDesk)}
+          state={review.approval}
+          onApprove={() => {
+            if (progress.ready) update(contract.id, () => ({ approval: "approved" }))
+          }}
+          onReject={() => update(contract.id, () => ({ approval: "rejected" }))}
+        >
+          <ApprovalTitle className="text-[19px]">Send to {note.firm}</ApprovalTitle>
+          <ApprovalDescription>
+            The redacted note and clause {contract.clause.number} go to {note.to}. Sent email can&apos;t be recalled.
+          </ApprovalDescription>
+          <ApprovalSignatures>
+            <ApprovalSignature name="Dana Okafor" signed />
+            <ApprovalSignature name="Mira Castell" signed={sent} />
+          </ApprovalSignatures>
+          {!locked && !progress.ready && (
+            <p className="text-(--bevel-pen-red)">The seal is locked until the checklist is done.</p>
+          )}
+          <ApprovalActions className="flex-wrap">
+            <ApprovalReject>Send back</ApprovalReject>
+            <ApprovalSeal
+              disabled={!progress.ready}
+              className="size-20 disabled:cursor-not-allowed disabled:opacity-50 data-disabled:cursor-not-allowed data-disabled:opacity-50"
+            />
+          </ApprovalActions>
+          {locked && (
+            <button
+              type="button"
+              onClick={() => update(contract.id, () => ({ approval: "pending" }))}
+              className="h-9 self-start rounded-(--bevel-radius-sm) border border-(--bevel-paper-foreground)/30 px-3 font-medium text-(--bevel-paper-foreground) outline-none hover:bg-(--bevel-paper-foreground)/5 focus-visible:ring-2 focus-visible:ring-(--bevel-pen-blue)/50"
+            >
+              {sent ? "Reset this contract (demo)" : "Reopen for review"}
+            </button>
+          )}
+        </Approval>
+      </div>
+    </section>
   )
 }
