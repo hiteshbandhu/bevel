@@ -7,7 +7,8 @@ import { Stamp } from "@workspace/ui/components/stamp"
 
 const DAY = 86_400_000
 
-type DueDateSlipContextValue = { latest: Date | undefined; now: Date; statusId: string }
+/** `now` is undefined until the slip knows today: before mount, when no `now` prop was given. */
+type DueDateSlipContextValue = { latest: Date | undefined; now: Date | undefined; statusId: string }
 
 const DueDateSlipContext = React.createContext<DueDateSlipContextValue | null>(null)
 
@@ -43,7 +44,13 @@ type DueDateSlipProps = React.ComponentProps<"div"> & {
  */
 function DueDateSlip({ className, title, dates, now: nowProp, children, ...props }: DueDateSlipProps) {
   const statusId = React.useId()
-  const now = React.useMemo(() => toDate(nowProp ?? new Date()), [nowProp])
+  // Read the clock after mount, not during render, so a prerendered page and
+  // the browser agree. Pass `now` to know it from the first render.
+  const [clientNow, setClientNow] = React.useState<Date>()
+  React.useEffect(() => {
+    if (nowProp === undefined) setClientNow(new Date())
+  }, [nowProp])
+  const now = React.useMemo(() => (nowProp === undefined ? clientNow : toDate(nowProp)), [nowProp, clientNow])
   const parsed = dates.map(toDate)
   const latest = parsed.at(-1)
   // Stamp only dates added after the slip appeared, not the history.
@@ -54,7 +61,7 @@ function DueDateSlip({ className, title, dates, now: nowProp, children, ...props
         role="group"
         aria-label={`${title}: date due`}
         data-slot="due-date-slip"
-        data-overdue={latest && latest < now ? "" : undefined}
+        data-overdue={latest && now && latest < now ? "" : undefined}
         className={cn("bevel-paper flex w-64 flex-col rounded-(--bevel-radius-xs) px-4 pt-3 pb-4", className)}
         {...props}
       >
@@ -76,7 +83,7 @@ function DueDateSlip({ className, title, dates, now: nowProp, children, ...props
                 key={`${d.getTime()}-${i}`}
                 className={cn("flex h-(--due-date-slip-line) items-center justify-center", !last && "opacity-60")}
               >
-                <Stamp tone={d < now ? "red" : "blue"} animate={i >= initial.current} className="py-0.5">
+                <Stamp tone={now && d < now ? "red" : "blue"} animate={i >= initial.current} className="py-0.5">
                   {stampText(d)}
                 </Stamp>
               </li>
@@ -98,10 +105,12 @@ function DueDateSlipStatus({ className, ...props }: React.ComponentProps<"p">) {
   const { latest, now, statusId } = useDueDateSlip()
   let text = "Not on loan."
   if (latest) {
-    const days = Math.round((latest.getTime() - now.getTime()) / DAY)
     const date = stampText(latest).toLowerCase().replace(/(^|\s)\S/g, (c) => c.toUpperCase())
+    const days = now ? Math.round((latest.getTime() - now.getTime()) / DAY) : undefined
     text =
-      days > 1
+      days === undefined
+        ? `Due ${date}.`
+        : days > 1
         ? `Due ${date}, in ${days} days.`
         : days === 1
           ? `Due tomorrow, ${date}.`

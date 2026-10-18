@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { demoSites } from "@/lib/demos"
 import { components } from "@/lib/catalog"
+import { registryNamespace } from "@/lib/site"
 
 export const metadata: Metadata = { title: "Demos" }
 
@@ -12,7 +13,8 @@ export default function DemosIndex() {
     <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
       <h1 className="text-4xl font-bold tracking-tight">Demos</h1>
       <p className="mt-3 max-w-prose text-lg text-muted-foreground">
-        Four made-up products, each built from Bevel components wired together. Everything on them works.
+        Four made-up products, each built from Bevel components wired together. Everything on them
+        works, and each one installs as a whole screen.
       </p>
       <ul className="mt-10 grid gap-6 sm:grid-cols-2">
         {demoSites.map((site) => (
@@ -27,6 +29,9 @@ export default function DemosIndex() {
               <span className="text-2xl font-bold tracking-tight">{site.name}</span>
               <span className="text-muted-foreground">{site.description}</span>
               <span className="mt-auto pt-2 text-sm">Built from {site.uses.map(nameOf).join(", ")}</span>
+              <code className="truncate font-mono text-xs text-muted-foreground">
+                npx shadcn@latest add {registryNamespace}/{site.block}
+              </code>
             </Link>
           </li>
         ))}

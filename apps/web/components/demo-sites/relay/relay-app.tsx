@@ -39,7 +39,8 @@ import {
 } from "@workspace/ui/components/task-plan"
 import { Vigilance, VigilanceButton, VigilanceLamps, VigilanceTimer } from "@workspace/ui/components/vigilance"
 import { cn } from "@workspace/ui/lib/utils"
-import { Panel } from "./panel"
+import { Legend, PanelKey, Screws, StatusStrip } from "../shared/environment"
+import { consoleFace } from "../shared/fonts"
 import { baseSeconds, channelOf, currentIndex, initialRun, runReducer, voiceNotes, type Phase } from "./run"
 
 type Autonomy = "stop" | "plan" | "ask" | "act" | "auto"
@@ -65,14 +66,6 @@ const startChannels: Channel[] = [
 const BUDGET = 220
 const CHECK_IN_MS = 30000
 const SUPERVISOR = "Mara Okafor"
-
-const statusDot: Record<string, string> = {
-  Running: "bg-emerald-500",
-  Shipped: "bg-emerald-500",
-  Paused: "bg-red-500",
-  "Waiting for you": "bg-amber-500",
-  Holding: "bg-muted-foreground",
-}
 
 const needsApproval = (phase: Phase) => phase === "code" || phase === "tests" || phase === "you"
 
@@ -237,233 +230,42 @@ function RelayRun({ onNewRun }: { onNewRun: () => void }) {
           : "Holding"
 
   return (
-    <div className="min-h-svh bg-background">
-      <header className="border-b bg-card">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
-          <p className="flex items-center gap-2 text-lg font-bold tracking-tight">
-            <span aria-hidden className="grid size-7 place-items-center rounded-md bg-foreground text-sm text-background">
-              R
-            </span>
-            Relay
-          </p>
-          <nav aria-label="Relay" className="order-last w-full overflow-x-auto sm:order-none sm:w-auto">
-            <ul className="flex gap-1 text-sm">
-              {["Runs", "Agents", "Repositories", "Settings"].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    aria-current={item === "Runs" ? "page" : undefined}
-                    onClick={(event) => event.preventDefault()}
-                    className="block rounded-md px-2.5 py-1.5 text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-[current=page]:bg-muted aria-[current=page]:font-medium aria-[current=page]:text-foreground"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <p className="ml-auto text-sm text-muted-foreground">
-            Supervising as <span className="font-medium text-foreground">{SUPERVISOR}</span>
-          </p>
-        </div>
+    <div
+      className={cn(
+        consoleFace.variable,
+        "relay-room min-h-svh bg-[#27313B] font-[family-name:var(--font-console)] text-[#E3E8EC]",
+        // The room is lit from above; the console catches most of it.
+        "bg-[radial-gradient(ellipse_70%_55%_at_50%_0%,rgb(255_255_255/0.09),transparent_70%)]",
+        "[--foreground:#E9EDF0] [--muted-foreground:#A3ADB5] [--legend:#B9C2C9]"
+      )}
+    >
+      <header className="mx-auto flex max-w-[1360px] flex-wrap items-baseline gap-x-6 gap-y-1 px-4 pt-5 pb-4 sm:px-8">
+        <p className="text-2xl font-bold tracking-wide">Relay</p>
+        <p className="text-lg text-[#A3ADB5]">Run 1184 on tidewater/gateway, {runStatus.toLowerCase()}</p>
+        <p className="ml-auto text-lg text-[#A3ADB5]">{SUPERVISOR} on duty</p>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="min-w-0">
-            <p className="font-mono text-sm break-all text-muted-foreground">tidewater/gateway · run 1184</p>
-            <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">Fix burst 429s in the rate limiter</h1>
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <p className="flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-sm">
-              <span
-                aria-hidden
-                className={cn("size-2 rounded-full", statusDot[runStatus])}
-              />
-              Status: <span className="font-medium">{runStatus}</span>
-            </p>
-            {run.shipped && (
-              <button
-                type="button"
-                onClick={onNewRun}
-                className="h-9 rounded-md border bg-card px-3 text-sm font-medium outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                Start a new run
-              </button>
-            )}
-          </div>
-        </div>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Now: {step ? step.text : "Plan complete"}. {hold ?? "Working."}
-        </p>
+      <main className="mx-auto max-w-[1360px] px-2 pb-10 sm:px-8">
+        {/* The console: one slab of gunmetal, everything mounted in it. */}
+        <div className="bevel-metal relative rounded-[28px] p-4 shadow-(--bevel-depth-object) [--bevel-material:#4E565E] [--bevel-material-edge:#2C3238] sm:p-8 lg:p-10">
+          <Screws inset="4" />
 
-        <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <div className="flex min-w-0 flex-col gap-6">
-            <Panel
-              title="Plan"
-              description="The lead agent's plan. Your instructions join it as you give them."
-              trayClassName="p-0 sm:p-0 overflow-hidden"
-              footer={
-                awaitingApproval ? (
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <span>The agent wants to start this step.</span>
-                    <button
-                      type="button"
-                      onClick={() => dispatch({ type: "approve" })}
-                      className="h-9 rounded-md bg-foreground px-3 text-sm font-medium text-background outline-none hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
-                    >
-                      Approve step
-                    </button>
-                  </div>
-                ) : (
-                  hold ?? `Working on it with ${channel?.name ?? "the lead"}.`
-                )
-              }
-            >
-              <TaskPlan className="max-w-none rounded-none">
-                <TaskPlanHeader>
-                  <TaskPlanTitle>Fix burst 429s (#217)</TaskPlanTitle>
-                  <TaskPlanProgress value={done} max={run.steps.length} />
-                </TaskPlanHeader>
-                <TaskPlanSteps>
-                  {run.steps.map((s) => (
-                    <TaskPlanStep key={s.id} status={s.status}>
-                      {s.text}
-                    </TaskPlanStep>
-                  ))}
-                </TaskPlanSteps>
-              </TaskPlan>
-            </Panel>
+          <div className="grid gap-x-10 gap-y-9 lg:grid-cols-12 [&>*]:min-w-0">
+            {/* Name plate and the status strip. */}
+            <div className="flex flex-col gap-4 lg:col-span-12 lg:flex-row lg:items-stretch">
+              <h1 className="bevel-metal relative rounded-(--bevel-radius-sm) px-6 py-3 text-[26px] leading-tight font-bold tracking-wide text-[#3A2E10] shadow-(--bevel-depth-raised) [--bevel-material:#CDB06A] [--bevel-material-edge:#8C7536] [text-shadow:0_1px_0_rgb(255_255_255/0.35)] lg:w-[46%]">
+                Fix burst 429s in the rate limiter
+              </h1>
+              <StatusStrip className="flex-1 self-center lg:self-stretch lg:py-0 lg:[&>p]:leading-[52px]">
+                {hold ?? `Working: ${step?.text ?? "plan complete"}.`}
+              </StatusStrip>
+            </div>
 
-            <Panel
-              title="Talk to the agent"
-              description="Hold the key, or hold Space, and say what you want. It becomes the next step."
-              footer={
-                voiceLog.length ? (
-                  <ul aria-label="Voice notes" className="flex flex-col gap-1">
-                    {voiceLog.map((line, i) => (
-                      <li key={i}>{line}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  "No voice notes yet."
-                )
-              }
-            >
-              <PushToTalk talking={talking} onTalkingChange={onTalkingChange} disabled={run.shipped}>
-                <PushToTalkKey>Hold to talk</PushToTalkKey>
-                <PushToTalkStatus idle={run.shipped ? "Run finished" : "Not listening"} />
-                <span aria-hidden className="h-4 font-mono text-xs tabular-nums opacity-70">
-                  {talking ? `${seconds.toFixed(1)}s` : ""}
-                </span>
-              </PushToTalk>
-            </Panel>
-          </div>
-
-          <div className="flex min-w-0 flex-col gap-6">
-            <Panel
-              title="Autonomy"
-              description="Order how much the agent may do alone. It confirms between actions."
-              footer={autonomyMeaning[autonomy]}
-            >
-              <EngineTelegraph
-                aria-label="Agent autonomy"
-                value={order}
-                onValueChange={(v) => setOrder(v as Autonomy)}
-                confirmed={autonomy}
-              >
-                <EngineTelegraphDial />
-                <EngineTelegraphOrders>
-                  <EngineTelegraphOrder value="stop">Stop</EngineTelegraphOrder>
-                  <EngineTelegraphOrder value="plan">Plan</EngineTelegraphOrder>
-                  <EngineTelegraphOrder value="ask">Ask</EngineTelegraphOrder>
-                  <EngineTelegraphOrder value="act">Act</EngineTelegraphOrder>
-                  <EngineTelegraphOrder value="auto">Auto</EngineTelegraphOrder>
-                </EngineTelegraphOrders>
-                <EngineTelegraphStatus />
-              </EngineTelegraph>
-            </Panel>
-
-            <Panel
-              title="Subagents"
-              description="The lead splits effort toward the current step. Take a fader to override it."
-              trayClassName="px-1 sm:px-1"
-              footer={
-                <div className="flex flex-col gap-2">
-                  <p>
-                    {paused
-                      ? "All subagents are paused."
-                      : `Total effort ${totalEffort} of ${BUDGET} budgeted${totalEffort > BUDGET ? ": over budget" : ""}.`}
-                  </p>
-                  {channels.some((c) => c.by === "You") && (
-                    <button
-                      type="button"
-                      onClick={() => setChannels((all) => all.map((c) => ({ ...c, by: "Lead" })))}
-                      className="h-9 self-start rounded-md border bg-card px-3 text-sm font-medium text-foreground outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
-                    >
-                      Hand faders back to the lead
-                    </button>
-                  )}
-                </div>
-              }
-            >
-              <Mixer aria-label="Subagent effort">
-                {channels.map((c) => (
-                  <MixerStrip key={c.name} name={c.name} muted={!isRunning(c)}>
-                    <MixerStripName />
-                    <MixerStripMute
-                      pressed={c.muted}
-                      onPressedChange={(muted) =>
-                        setChannels((all) => all.map((x) => (x.name === c.name ? { ...x, muted } : x)))
-                      }
-                    />
-                    <MixerStripSolo pressed={solo === c.name} onPressedChange={(on) => setSolo(on ? c.name : null)} />
-                    <MixerStripFader
-                      value={c.share}
-                      changedBy={c.by}
-                      format={(v) => `${v}%`}
-                      onValueChange={(share) =>
-                        setChannels((all) => all.map((x) => (x.name === c.name ? { ...x, share, by: "You" } : x)))
-                      }
-                    />
-                  </MixerStrip>
-                ))}
-              </Mixer>
-            </Panel>
-          </div>
-
-          <div className="grid min-w-0 gap-6 md:col-span-2 md:grid-cols-2 lg:col-span-1 lg:grid-cols-1 lg:content-start">
-            <Panel
-              title="Supervision"
-              description={`The run continues only while you check in, every ${CHECK_IN_MS / 1000} seconds.`}
-              footer={
-                !supervised
-                  ? run.shipped
-                    ? "The run is over. No check-ins needed."
-                    : "Not counting: the agent is at Stop."
-                  : paused
-                    ? "The agent stopped before its next action. Resume to carry on."
-                    : "Checking in keeps the agent going."
-              }
-            >
-              <Vigilance
-                key={window_}
-                aria-label="Supervision"
-                interval={CHECK_IN_MS}
-                running={supervised}
-                onTrip={onTrip}
-                onResume={onResume}
-                className="max-w-full"
-              >
-                <VigilanceLamps />
-                <VigilanceTimer />
-                <VigilanceButton />
-              </Vigilance>
-            </Panel>
-
-            <Panel title="Alerts" description="New alerts flash until you acknowledge them.">
-              <Annunciator aria-label="Run alerts">
-                <AnnunciatorPanel>
+            {/* The lamps run the width of the console. */}
+            <section aria-labelledby="relay-alerts" className="flex flex-col gap-3 lg:col-span-12">
+              <Legend id="relay-alerts">Alerts</Legend>
+              <Annunciator aria-label="Run alerts" className="max-w-none flex-row items-center gap-4 p-3">
+                <AnnunciatorPanel className="flex-1 grid-cols-3 sm:grid-cols-6">
                   <AnnunciatorTile id="paused" tone="red" active={paused}>
                     Run paused
                   </AnnunciatorTile>
@@ -483,21 +285,160 @@ function RelayRun({ onNewRun }: { onNewRun: () => void }) {
                     Ready to merge
                   </AnnunciatorTile>
                 </AnnunciatorPanel>
-                <AnnunciatorAcknowledge />
+                <AnnunciatorAcknowledge className="hidden self-auto sm:flex" />
               </Annunciator>
-            </Panel>
+            </section>
 
-            <Panel
-              title="Ship"
-              description="Merging is never automatic. Lift the cover, then flip the switch."
-              footer={<p>{shipNote && !run.shipped ? shipNote : shipBlock}</p>}
-            >
-              <GuardedSwitch checked={run.shipped} onCheckedChange={onShip} safeOnClose={!run.shipped}>
-                <GuardedSwitchLabel>Merge #482</GuardedSwitchLabel>
-                <GuardedSwitchControl />
-                <GuardedSwitchStatus />
-              </GuardedSwitch>
-            </Panel>
+            {/* The plan, clipped to the console. */}
+            <section aria-labelledby="relay-plan" className="flex flex-col gap-3 lg:col-span-4">
+              <Legend id="relay-plan">Plan</Legend>
+              <div className="relative pt-4">
+                <span aria-hidden className="bevel-metal absolute top-0 left-1/2 z-10 h-7 w-28 -translate-x-1/2 rounded-(--bevel-radius-sm) [--bevel-material:#9AA3AA]" />
+                <TaskPlan className="max-w-none">
+                  <TaskPlanHeader>
+                    <TaskPlanTitle>Issue #217</TaskPlanTitle>
+                    <TaskPlanProgress value={done} max={run.steps.length} />
+                  </TaskPlanHeader>
+                  <TaskPlanSteps>
+                    {run.steps.map((s) => (
+                      <TaskPlanStep key={s.id} status={s.status}>
+                        {s.text}
+                      </TaskPlanStep>
+                    ))}
+                  </TaskPlanSteps>
+                </TaskPlan>
+              </div>
+            </section>
+
+            {/* The hero: the order telegraph. */}
+            <section aria-labelledby="relay-autonomy" className="flex flex-col items-center gap-3 lg:col-span-5">
+              <Legend id="relay-autonomy" className="self-start lg:self-center">
+                Autonomy
+              </Legend>
+              <EngineTelegraph
+                aria-label="Agent autonomy"
+                value={order}
+                onValueChange={(v) => setOrder(v as Autonomy)}
+                confirmed={autonomy}
+                className="max-w-[460px]"
+              >
+                <EngineTelegraphDial />
+                <EngineTelegraphOrders>
+                  <EngineTelegraphOrder value="stop">Stop</EngineTelegraphOrder>
+                  <EngineTelegraphOrder value="plan">Plan</EngineTelegraphOrder>
+                  <EngineTelegraphOrder value="ask">Ask</EngineTelegraphOrder>
+                  <EngineTelegraphOrder value="act">Act</EngineTelegraphOrder>
+                  <EngineTelegraphOrder value="auto">Auto</EngineTelegraphOrder>
+                </EngineTelegraphOrders>
+                <EngineTelegraphStatus className="text-base" />
+              </EngineTelegraph>
+              <p className="max-w-[46ch] text-center text-[17px] text-[#A3ADB5]">{autonomyMeaning[autonomy]}</p>
+            </section>
+
+            {/* Check in, approve, merge. */}
+            <div className="grid content-start gap-9 sm:grid-cols-2 lg:col-span-3 lg:grid-cols-1">
+              <section aria-labelledby="relay-checkin" className="flex flex-col gap-3">
+                <Legend id="relay-checkin">Check in every {CHECK_IN_MS / 1000}s</Legend>
+                <Vigilance
+                  key={window_}
+                  aria-label="Supervision"
+                  interval={CHECK_IN_MS}
+                  running={supervised}
+                  onTrip={onTrip}
+                  onResume={onResume}
+                  className="max-w-full"
+                >
+                  <VigilanceLamps />
+                  <VigilanceTimer />
+                  <VigilanceButton />
+                </Vigilance>
+              </section>
+              <section aria-labelledby="relay-merge" className="flex flex-col items-start gap-3">
+                <Legend id="relay-merge">Merge #482</Legend>
+                <div className="flex items-end gap-5">
+                  <GuardedSwitch
+                    checked={run.shipped}
+                    onCheckedChange={onShip}
+                    safeOnClose={!run.shipped}
+                    aria-describedby="relay-merge-why"
+                  >
+                    <GuardedSwitchLabel>Merge</GuardedSwitchLabel>
+                    <GuardedSwitchControl />
+                    <GuardedSwitchStatus />
+                  </GuardedSwitch>
+                  <div className="flex flex-col gap-3 pb-1">
+                    {awaitingApproval && (
+                      <PanelKey tone="go" onClick={() => dispatch({ type: "approve" })}>
+                        Approve step
+                      </PanelKey>
+                    )}
+                    {run.shipped && <PanelKey onClick={onNewRun}>New run</PanelKey>}
+                  </div>
+                </div>
+                <p id="relay-merge-why" className="text-[17px] leading-snug text-[#A3ADB5]">
+                  {shipNote && !run.shipped ? shipNote : shipBlock}
+                </p>
+              </section>
+            </div>
+
+            {/* The desk: subagent faders, and the talk key beside them. */}
+            <section aria-labelledby="relay-subagents" className="flex min-w-0 flex-col gap-3 lg:col-span-8">
+              <div className="flex flex-wrap items-baseline justify-between gap-3">
+                <Legend id="relay-subagents">Subagents</Legend>
+                <p className="text-[17px] text-[#A3ADB5]">
+                  {paused ? "All paused" : `Effort ${totalEffort} of ${BUDGET}`}
+                  {channels.some((c) => c.by === "You") && (
+                    <button
+                      type="button"
+                      onClick={() => setChannels((all) => all.map((c) => ({ ...c, by: "Lead" })))}
+                      className="ml-4 rounded-sm underline underline-offset-4 outline-none hover:text-[#E9EDF0] focus-visible:ring-2 focus-visible:ring-[#E9D28A]"
+                    >
+                      Hand back to the lead
+                    </button>
+                  )}
+                </p>
+              </div>
+              <div className="rounded-(--bevel-radius-md) bg-[#3B4248] p-3 shadow-(--bevel-depth-recessed)">
+                <Mixer aria-label="Subagent effort" className="justify-between sm:justify-around">
+                  {channels.map((c) => (
+                    <MixerStrip key={c.name} name={c.name} muted={!isRunning(c)} className="w-[4.5rem] sm:w-24">
+                      <MixerStripName />
+                      <MixerStripMute
+                        pressed={c.muted}
+                        onPressedChange={(muted) =>
+                          setChannels((all) => all.map((x) => (x.name === c.name ? { ...x, muted } : x)))
+                        }
+                      />
+                      <MixerStripSolo pressed={solo === c.name} onPressedChange={(on) => setSolo(on ? c.name : null)} />
+                      <MixerStripFader
+                        value={c.share}
+                        changedBy={c.by}
+                        format={(v) => `${v}%`}
+                        onValueChange={(share) =>
+                          setChannels((all) => all.map((x) => (x.name === c.name ? { ...x, share, by: "You" } : x)))
+                        }
+                      />
+                    </MixerStrip>
+                  ))}
+                </Mixer>
+              </div>
+            </section>
+
+            <section aria-labelledby="relay-talk" className="flex flex-col gap-3 lg:col-span-4">
+              <Legend id="relay-talk">Talk to the agent</Legend>
+              <div className="flex flex-wrap items-start gap-6">
+                <PushToTalk talking={talking} onTalkingChange={onTalkingChange} disabled={run.shipped}>
+                  <PushToTalkKey>Hold to talk</PushToTalkKey>
+                  <PushToTalkStatus idle={run.shipped ? "Run finished" : "Hold Space, or the key"} />
+                  <span aria-hidden className="h-4 text-sm tabular-nums opacity-70">
+                    {talking ? `${seconds.toFixed(1)}s` : ""}
+                  </span>
+                </PushToTalk>
+                <ul aria-label="Voice notes" className="flex min-w-0 flex-1 flex-col gap-2 text-[17px] leading-snug text-[#A3ADB5]">
+                  {voiceLog.length ? voiceLog.map((line, i) => <li key={i}>{line}</li>) : <li>Your instructions join the plan as the next step.</li>}
+                </ul>
+              </div>
+            </section>
           </div>
         </div>
       </main>
