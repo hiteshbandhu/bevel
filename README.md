@@ -34,6 +34,12 @@ Or skip the setup and install straight from a URL:
 npx shadcn@latest add https://bevel-ui.vercel.app/r/wallet.json
 ```
 
+Every demo product also installs as a whole screen (a block) in a Next.js app:
+
+```bash
+npx shadcn@latest add @bevel/agent-console   # or billing-desk, release-hall, review-desk
+```
+
 You need React 19, Tailwind CSS v4 and a project set up with `npx shadcn@latest init`. See
 the [installation guide](https://bevel-ui.vercel.app/docs/installation).
 

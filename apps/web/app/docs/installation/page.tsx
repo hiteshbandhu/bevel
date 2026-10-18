@@ -36,6 +36,19 @@ export default function Installation() {
       <p>No configuration: point the CLI at a component&apos;s JSON. Its dependencies come with it.</p>
       <CodeBlock lang="bash" title="Terminal" code={`npx shadcn@latest add ${siteUrl}/r/wallet.json`} />
 
+      <h2>Whole screens</h2>
+      <p>
+        Each of the <a className={linkClass} href="/demo">demo products</a> installs as a block: its code
+        lands in <code>components/bevel-demos</code>, every Bevel component it uses comes with it, and a page
+        renders it. Blocks are for Next.js apps, since each product sets its type with{" "}
+        <code>next/font</code>.
+      </p>
+      <CodeBlock lang="bash" title="Terminal" code={`npx shadcn@latest add ${registryNamespace}/agent-console`} />
+      <p>
+        The others are <code>billing-desk</code>, <code>release-hall</code> and <code>review-desk</code>. Treat
+        them as a starting point: the data is made up, and the state lives in the files you just added.
+      </p>
+
       <h2>What you get</h2>
       <ul>
         <li>

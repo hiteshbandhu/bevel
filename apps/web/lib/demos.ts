@@ -1,7 +1,14 @@
-/** The demo sites: one product each, built only from Bevel components. Pages live at /demo/<n>. */
+/**
+ * The demo sites: one product each, built only from Bevel components. Pages
+ * live at /demo/<n>. Each also ships as a registry block: `folder` is its code
+ * in components/demo-sites, `entry` the component its page renders.
+ */
 export const demoSites = [
   {
     n: 1,
+    block: "agent-console",
+    folder: "relay",
+    entry: { name: "RelayApp", file: "relay-app" },
     name: "Relay",
     kind: "AI agent control room",
     description:
@@ -10,6 +17,9 @@ export const demoSites = [
   },
   {
     n: 2,
+    block: "billing-desk",
+    folder: "meterline",
+    entry: { name: "Meterline", file: "meterline" },
     name: "Meterline",
     kind: "Usage billing",
     description:
@@ -18,6 +28,9 @@ export const demoSites = [
   },
   {
     n: 3,
+    block: "release-hall",
+    folder: "shipyard",
+    entry: { name: "Shipyard", file: "shipyard" },
     name: "Shipyard",
     kind: "Release coordination",
     description:
@@ -26,6 +39,9 @@ export const demoSites = [
   },
   {
     n: 4,
+    block: "review-desk",
+    folder: "casefile",
+    entry: { name: "CasefileApp", file: "casefile-app" },
     name: "Casefile",
     kind: "Legal review desk",
     description:

@@ -9,10 +9,11 @@
 // global CSS on install; the foundation (bevel.css) is its own item that
 // every component depends on.
 
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises"
+import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises"
 import path from "node:path"
 import postcss, { type ChildNode, type Container } from "postcss"
 import { components, foundation } from "../apps/web/lib/catalog.ts"
+import { demoSites } from "../apps/web/lib/demos.ts"
 
 const root = path.resolve(import.meta.dirname, "..")
 const uiSrc = path.join(root, "packages/ui/src")
@@ -118,11 +119,53 @@ async function main() {
     })
   )
 
+  // Blocks: each demo product as a whole screen. Its code lands in
+  // components/bevel-demos/<folder>/ (so relative imports keep working) and a
+  // page at app/<block>/page.tsx renders it.
+  const demoDir = path.join(root, "apps/web/components/demo-sites")
+  const blockItems = await Promise.all(
+    demoSites.map(async (site) => {
+      const own = (await readdir(path.join(demoDir, site.folder))).map((f) => `${site.folder}/${f}`)
+      const shared = (await readdir(path.join(demoDir, "shared"))).map((f) => `shared/${f}`)
+      const uses = new Set<string>()
+      const packages = new Set<string>()
+      const files = []
+      for (const rel of [...own, ...shared]) {
+        const source = await readFile(path.join(demoDir, rel), "utf8")
+        for (const [, spec] of source.matchAll(/from "([^"]+)"/g)) {
+          if (spec!.startsWith("@workspace/ui/components/")) uses.add(spec!.slice("@workspace/ui/components/".length))
+          else if (!spec!.startsWith(".") && !spec!.startsWith("@/") && !spec!.startsWith("@workspace/") && !/^(react|next)(\/|$)/.test(spec!))
+            packages.add(spec!.startsWith("@") ? spec!.split("/").slice(0, 2).join("/") : spec!.split("/")[0]!)
+        }
+        const target = path.join(outDir, "blocks", site.block, rel)
+        await mkdir(path.dirname(target), { recursive: true })
+        await writeFile(target, rewriteImports(source))
+        files.push({ path: path.relative(root, target), type: "registry:component", target: `components/bevel-demos/${rel}` })
+      }
+      const page = path.join(outDir, "blocks", site.block, "page.tsx")
+      await writeFile(
+        page,
+        `import { ${site.entry.name} } from "@/components/bevel-demos/${site.folder}/${site.entry.file}"\n\nexport default function Page() {\n  return <${site.entry.name} />\n}\n`
+      )
+      files.push({ path: path.relative(root, page), type: "registry:page", target: `app/${site.block}/page.tsx` })
+      return {
+        name: site.block,
+        type: "registry:block",
+        title: `${site.name}, ${site.kind}`,
+        description: `${site.description} A whole screen for a Next.js app, at /${site.block}.`,
+        categories: ["blocks"],
+        dependencies: [...packages].sort(),
+        registryDependencies: [dep("bevel"), ...[...uses].sort().map(dep)],
+        files,
+      }
+    })
+  )
+
   const registry = {
     $schema: "https://ui.shadcn.com/schema/registry.json",
     name: "bevel",
     homepage: "https://github.com/hiteshbandhu/bevel",
-    items: [foundationItem, themeTransition, ...componentItems],
+    items: [foundationItem, themeTransition, ...componentItems, ...blockItems],
   }
   await writeFile(path.join(root, "registry.json"), JSON.stringify(registry, null, 2) + "\n")
   console.log(`registry.json: ${registry.items.length} items`)
