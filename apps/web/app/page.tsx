@@ -11,6 +11,7 @@ import { TaskPlanAgent } from "@/components/demos/task-plan-agent"
 import { WalletCheckout } from "@/components/demos/wallet-checkout"
 import { InstallCommand } from "@/components/install-command"
 import { categories, components } from "@/lib/catalog"
+import { xHandle, xUrl } from "@/lib/docs"
 import { registryNamespace, registryUrl } from "@/lib/site"
 
 export default function Home() {
@@ -114,7 +115,15 @@ export default function Home() {
 
       <footer className="flex flex-wrap justify-between gap-4 border-t py-10 text-sm text-muted-foreground">
         <p>Built on Base UI and Tailwind CSS. Installs with the shadcn CLI.</p>
-        <p>Keyboard and screen reader support come from Base UI underneath.</p>
+        <p>
+          Made by{" "}
+          <a
+            href={xUrl}
+            className="rounded-sm text-foreground underline underline-offset-4 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            @{xHandle}
+          </a>
+        </p>
       </footer>
     </main>
   )

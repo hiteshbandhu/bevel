@@ -11,3 +11,7 @@ export const guides = [
 export const guideHref = (slug: string) => (slug ? `/docs/${slug}` : "/docs")
 
 export const repoUrl = "https://github.com/hiteshbandhu/bevel"
+
+/** The maker, on X. */
+export const xHandle = "_hiteshbandhu"
+export const xUrl = `https://x.com/${xHandle}`
