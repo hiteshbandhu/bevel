@@ -1,10 +1,12 @@
 import type { Metadata } from "next"
+import { GoogleAnalytics } from "@next/third-parties/google"
 import { Geist_Mono, Schibsted_Grotesk } from "next/font/google"
 
 import "@workspace/ui/globals.css"
 import "./site.css"
 import { SiteHeader } from "@/components/site-header"
 import { ThemeProvider } from "@/components/theme-provider"
+import { gaId } from "@/lib/analytics"
 import { cn } from "@workspace/ui/lib/utils"
 
 const fontSans = Schibsted_Grotesk({ subsets: ["latin"], variable: "--font-sans" })
@@ -33,6 +35,7 @@ export default function RootLayout({
           {children}
         </ThemeProvider>
       </body>
+      {gaId && <GoogleAnalytics gaId={gaId} />}
     </html>
   )
 }

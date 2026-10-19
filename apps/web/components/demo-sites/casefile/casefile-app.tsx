@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { demoMilestone } from "../shared/events"
 import { cn } from "@workspace/ui/lib/utils"
 import {
   KeysortFilter,
@@ -519,7 +520,9 @@ function Outbox({ contract, review, update }: PanelProps) {
           className={cn("max-w-none sm:max-w-md sm:rotate-[-0.8deg] text-[15px]", onDesk)}
           state={review.approval}
           onApprove={() => {
-            if (progress.ready) update(contract.id, () => ({ approval: "approved" }))
+            if (!progress.ready) return
+            update(contract.id, () => ({ approval: "approved" }))
+            demoMilestone("casefile", "seal")
           }}
           onReject={() => update(contract.id, () => ({ approval: "rejected" }))}
         >

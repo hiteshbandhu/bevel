@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Check, Copy } from "lucide-react"
+import { track } from "@/lib/analytics"
 
 export function CopyButton({ value }: { value: string }) {
   const [copied, setCopied] = React.useState(false)
@@ -17,6 +18,12 @@ export function CopyButton({ value }: { value: string }) {
       type="button"
       onClick={async () => {
         await navigator.clipboard.writeText(value)
+        // Install commands say which component or block; anything else is code.
+        const install = value.match(/^npx shadcn@\S+ add (.+)$/)
+        track("select_content", {
+          content_type: install ? "install_command" : "code",
+          item_id: install ? install[1]!.split(" ").map((s) => s.split("/").pop()!.replace(".json", "")).join(",") : "",
+        })
         setCopied(true)
       }}
       className="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"

@@ -70,6 +70,7 @@ export async function ComponentDocPage({ component }: { component: ComponentDoc 
             <Example
               key={example.slug}
               id={example.slug}
+              trackId={`${component.slug}/${example.slug}`}
               title={example.title}
               description={example.description}
               wide={example.wide}

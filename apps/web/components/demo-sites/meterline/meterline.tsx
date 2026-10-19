@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { demoMilestone } from "../shared/events"
 import { ArrowDown, CreditCard } from "lucide-react"
 import { Amount } from "@workspace/ui/components/amount"
 import { Breaker, BreakerPanel, BreakerRow } from "@workspace/ui/components/breaker"
@@ -382,7 +383,10 @@ export function Meterline() {
                       </span>{" "}
                       to the balance, charged to <span className="text-[#EADFC8]">{cardName(state.card)}</span> from the wallet.
                     </p>
-                    <PanelKey tone="go" onClick={() => dispatch({ type: "pay" })} className="h-12 gap-2 self-start text-[16px] [&_svg]:size-4">
+                    <PanelKey tone="go" onClick={() => {
+                      dispatch({ type: "pay" })
+                      demoMilestone("meterline", "top_up")
+                    }} className="h-12 gap-2 self-start text-[16px] [&_svg]:size-4">
                       <CreditCard aria-hidden /> Pay {formatUsd(pack.credits)}
                     </PanelKey>
                   </div>
