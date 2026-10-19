@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { DemoInstall } from "@/components/demo-install"
+import { DemoTracker } from "@/components/demo-tracker"
 import { demoSites } from "@/lib/demos"
 
 /** A thin strip above each demo: which demo this is, and the way to the others. */
@@ -23,7 +24,7 @@ export default function DemoLayout({ children }: { children: React.ReactNode }) 
           <DemoInstall />
         </div>
       </nav>
-      {children}
+      <DemoTracker>{children}</DemoTracker>
     </>
   )
 }

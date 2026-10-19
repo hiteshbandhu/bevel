@@ -39,6 +39,7 @@ import {
 } from "@workspace/ui/components/task-plan"
 import { Vigilance, VigilanceButton, VigilanceLamps, VigilanceTimer } from "@workspace/ui/components/vigilance"
 import { cn } from "@workspace/ui/lib/utils"
+import { demoMilestone } from "../shared/events"
 import { Legend, PanelKey, Screws, StatusStrip } from "../shared/environment"
 import { consoleFace } from "../shared/fonts"
 import { baseSeconds, channelOf, currentIndex, initialRun, runReducer, voiceNotes, type Phase } from "./run"
@@ -199,6 +200,7 @@ function RelayRun({ onNewRun }: { onNewRun: () => void }) {
     if (!on || run.shipped) return
     if (readyToShip) {
       dispatch({ type: "ship" })
+      demoMilestone("relay", "merge")
       setShipNote("")
       return
     }

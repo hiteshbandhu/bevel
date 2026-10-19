@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { demoMilestone } from "../shared/events"
 import {
   SplitFlap,
   SplitFlapRow,
@@ -248,6 +249,7 @@ export function Shipyard() {
     if (next === promoting) return
     setPromoting(next)
     if (done) return
+    if (next) demoMilestone("shipyard", "promote")
     note(
       next
         ? `Promoted ${RELEASE} to production.`

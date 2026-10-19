@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Tabs } from "@base-ui/react/tabs"
+import { track } from "@/lib/analytics"
 
 const tabClass =
   "relative h-9 rounded-sm px-1 text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring data-active:text-foreground"
@@ -9,6 +10,7 @@ const tabClass =
 /** One example: the live component in its tray, and the code that renders it. */
 export function Example({
   id,
+  trackId,
   title,
   description,
   code,
@@ -17,6 +19,8 @@ export function Example({
 }: {
   wide?: boolean
   id: string
+  /** Names the example in analytics: "<component>/<example>". */
+  trackId?: string
   title: string
   description: string
   code: React.ReactNode
@@ -26,7 +30,11 @@ export function Example({
     <section id={id} className="scroll-mt-20">
       <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
       <p className="mt-1 max-w-prose text-muted-foreground">{description}</p>
-      <Tabs.Root defaultValue="preview" className="mt-4">
+      <Tabs.Root
+        defaultValue="preview"
+        className="mt-4"
+        onValueChange={(tab) => tab === "code" && track("view_code", { item_id: trackId ?? id })}
+      >
         <Tabs.List className="relative flex gap-5 border-b">
           <Tabs.Tab value="preview" className={tabClass}>
             Preview
