@@ -13,6 +13,7 @@ const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 export const metadata: Metadata = {
   title: { default: "Bevel", template: "%s – Bevel" },
   description: "Tactile, composable React components on Base UI and Tailwind. Copy them in and own them.",
+  twitter: { card: "summary_large_image", creator: "@_hiteshbandhu" },
 }
 
 export default function RootLayout({

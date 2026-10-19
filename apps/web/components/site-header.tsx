@@ -7,7 +7,7 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { cn } from "@workspace/ui/lib/utils"
 import { transitionTheme } from "@workspace/ui/lib/theme-transition"
-import { repoUrl } from "@/lib/docs"
+import { repoUrl, xHandle, xUrl } from "@/lib/docs"
 
 const links = [
   { href: "/docs", label: "Docs" },
@@ -48,6 +48,13 @@ export function SiteHeader() {
           className="ml-auto hidden rounded-sm text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring sm:inline"
         >
           GitHub
+        </a>
+        <a
+          href={xUrl}
+          className="hidden rounded-sm text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring sm:inline"
+        >
+          <span aria-hidden>X</span>
+          <span className="sr-only">@{xHandle} on X</span>
         </a>
         <button
           type="button"

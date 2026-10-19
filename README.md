@@ -90,6 +90,10 @@ pnpm check:tokens                 # design-system lint
 Issues and pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 New components especially need a clear job that no existing component already does.
 
+## Author
+
+Made by [@_hiteshbandhu](https://x.com/_hiteshbandhu) on X.
+
 ## License
 
 [MIT](LICENSE). `docs/reference/components-build` is a copy of the components.build spec
