@@ -146,7 +146,7 @@ export function ThemePlayground({ presets, children }: { presets: ThemePreset[];
   const css = `/* After: npx shadcn@latest add @bevel/themes */\n${themeCss(`[data-bevel-theme="${name}"]`, inputs)}`
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
       <style>{themeCss('[data-bevel-theme="playground"]', inputs)}</style>
       <div data-bevel-theme="playground" className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
         {children}

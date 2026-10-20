@@ -26,14 +26,15 @@ export function SiteHeader({ searchIndex }: { searchIndex: SearchGroup[] }) {
 
   return (
     <header className="border-b">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-5 px-4 sm:gap-8 sm:px-6">
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 sm:gap-8 sm:px-6">
         <Link
           href="/"
-          className="wordmark rounded-sm text-xl font-extrabold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="wordmark shrink-0 rounded-sm text-xl font-extrabold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           Bevel
         </Link>
-        <nav className="flex gap-4 text-sm sm:gap-6">
+        {/* On a phone the links scroll sideways rather than push the buttons off screen. */}
+        <nav className="-my-1 flex min-w-0 gap-4 overflow-x-auto py-1 text-sm whitespace-nowrap [scrollbar-width:none] sm:gap-6">
           {links.map((link) => (
             <Link
               key={link.href}

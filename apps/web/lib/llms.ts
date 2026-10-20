@@ -7,6 +7,7 @@ import {
   subcomponentsOf,
   type ComponentDoc,
 } from "@/lib/catalog"
+import { posts, postHref } from "@/lib/blog"
 import { demoSites } from "@/lib/demos"
 import { guideHref, guides, repoUrl } from "@/lib/docs"
 import { registryNamespace, registryUrl, siteUrl } from "@/lib/site"
@@ -81,6 +82,7 @@ export function llmsIndex() {
     "## Docs",
     "",
     ...guides.map((g) => `- [${g.title}](${abs(guideHref(g.slug))}): ${g.description}`),
+    `- [Material themes](${abs("/themes")}): brass, bakelite and anodized themes (\`${addCommand("themes")}\`, then \`data-bevel-theme="brass"\` on <html> or a container), and a playground that writes custom theme CSS.`,
     "",
   ]
   for (const category of categories) {
@@ -103,6 +105,7 @@ export function llmsIndex() {
     "",
     "## Optional",
     "",
+    ...posts.map((p) => `- [${p.title}](${abs(postHref(p.slug))}): ${p.description}`),
     `- [Full docs in one file](${abs("/llms-full.txt")}): every component with its anatomy, parts and example code.`,
     `- [Registry index](${abs("/r/registry.json")}): the shadcn registry, for \`shadcn search\` and the shadcn MCP server.`,
     `- [Source on GitHub](${repoUrl}): the components, the docs site and the registry build.`,

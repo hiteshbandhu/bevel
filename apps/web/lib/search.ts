@@ -1,4 +1,4 @@
-import { posts } from "@/lib/blog"
+import { postHref, posts } from "@/lib/blog"
 import { categories, componentHref, components, getComponent } from "@/lib/catalog"
 import { demoSites } from "@/lib/demos"
 import { guideHref, guides } from "@/lib/docs"
@@ -38,7 +38,14 @@ export function buildSearchIndex(): SearchGroup[] {
     },
     {
       value: "Guides",
-      items: guides.map((g) => ({ href: guideHref(g.slug), title: g.title, description: g.description })),
+      items: [
+        ...guides.map((g) => ({ href: guideHref(g.slug), title: g.title, description: g.description })),
+        {
+          href: "/themes",
+          title: "Material themes",
+          description: "Brass, bakelite and anodized themes, and a playground to build your own.",
+        },
+      ],
     },
     {
       value: "Demos",
@@ -51,7 +58,7 @@ export function buildSearchIndex(): SearchGroup[] {
     },
     {
       value: "Blog",
-      items: posts.map((p) => ({ href: `/blog/${p.slug}`, title: p.title, description: p.description })),
+      items: posts.map((p) => ({ href: postHref(p.slug), title: p.title, description: p.description })),
     },
   ]
 
