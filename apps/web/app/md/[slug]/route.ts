@@ -11,7 +11,7 @@ export function generateStaticParams() {
   return components.map((c) => ({ slug: c.slug }))
 }
 
-export async function GET(_request: Request, { params }: RouteContext<"/md/[slug]">) {
+export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const component = getComponent((await params).slug)
   if (!component) return new Response("Not found", { status: 404 })
   return textResponse(await componentMarkdown(component), "text/markdown")
