@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   title: { default: "Bevel", template: "%s – Bevel" },
   description: "Tactile, composable React components on Base UI and Tailwind. Copy them in and own them.",
   metadataBase: new URL(siteUrl),
+  alternates: { types: { "text/plain": [{ url: "/llms.txt", title: "Bevel docs for LLMs" }] } },
   ...preview({
     title: "Bevel",
     description: "Tactile React components for real product work. Base UI and Tailwind CSS v4, installed with the shadcn CLI.",

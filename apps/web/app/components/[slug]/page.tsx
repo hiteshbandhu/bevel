@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { ComponentDocPage } from "@/components/component-doc"
 import { components, getComponent } from "@/lib/catalog"
+import { componentAlternates } from "@/lib/llms"
 import { preview } from "@/lib/og"
 
 export const dynamicParams = false
@@ -20,6 +21,7 @@ export async function generateMetadata({
   return {
     title: component.name,
     description: component.description,
+    alternates: componentAlternates(component),
     ...preview({ title: `${component.name} – Bevel`, description: component.description, image: `${component.slug}.jpg` }),
   }
 }
