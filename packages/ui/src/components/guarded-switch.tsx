@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Switch as SwitchPrimitive } from "@base-ui/react/switch"
 import { cn } from "cn"
+import { useBevelFeedback } from "@workspace/ui/lib/feedback"
 
 type GuardedSwitchContextValue = {
   open: boolean
@@ -141,6 +142,7 @@ function GuardedSwitchLabel({ className, ...props }: React.ComponentProps<"span"
 /** The cover and the switch beneath it. */
 function GuardedSwitchControl({ className }: { className?: string }) {
   const { open, setOpen, disabled, checked, setChecked, touch, ids } = useGuardedSwitch()
+  const feedback = useBevelFeedback()
   return (
     <div
       data-slot="guarded-switch-housing"
@@ -153,7 +155,10 @@ function GuardedSwitchControl({ className }: { className?: string }) {
         aria-expanded={open}
         aria-controls={ids.control}
         disabled={disabled && !open}
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          feedback.click()
+          setOpen(!open)
+        }}
         className={cn(
           "guarded-switch-cover absolute inset-x-0 top-0 z-10 h-24 origin-top cursor-pointer rounded-(--bevel-radius-sm) outline-none",
           "transition-[rotate] duration-(--bevel-duration-move) ease-(--bevel-ease-out) motion-reduce:transition-none",
@@ -171,6 +176,7 @@ function GuardedSwitchControl({ className }: { className?: string }) {
         aria-labelledby={ids.label}
         onCheckedChange={(next) => {
           setChecked(next)
+          feedback.toggle()
           touch()
         }}
         className="bevel-recessed relative flex h-20 w-10 items-center justify-center rounded-(--bevel-radius-sm) outline-none focus-visible:ring-3 focus-visible:ring-(--guarded-switch-on)/60 data-disabled:cursor-not-allowed"

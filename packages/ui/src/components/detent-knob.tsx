@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cn } from "cn"
+import { useBevelFeedback } from "@workspace/ui/lib/feedback"
 
 type Stop = { value: string; label: string }
 
@@ -43,6 +44,7 @@ function DetentKnob({
   const [uncontrolled, setUncontrolled] = React.useState(defaultValue)
   const [bump, setBump] = React.useState<{ dir: "up" | "down"; n: number } | null>(null)
   const knob = React.useRef<HTMLDivElement>(null)
+  const feedback = useBevelFeedback()
   const value = valueProp ?? uncontrolled ?? stops[0]?.value
   const index = Math.max(0, stops.findIndex((s) => s.value === value))
 
@@ -61,12 +63,14 @@ function DetentKnob({
     if (disabled || !stops.length) return
     if (next < 0 || next > stops.length - 1) {
       setBump((b) => ({ dir: next < 0 ? "down" : "up", n: (b?.n ?? 0) + 1 }))
+      feedback.click()
       return
     }
     if (next === index) return
     const stop = stops[next]!
     setUncontrolled(stop.value)
     onValueChange?.(stop.value)
+    feedback.detent()
   }
 
   const onKeyDown = (event: React.KeyboardEvent) => {

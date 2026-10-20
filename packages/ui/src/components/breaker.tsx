@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Switch as SwitchPrimitive } from "@base-ui/react/switch"
 import { cn } from "cn"
+import { useBevelFeedback } from "@workspace/ui/lib/feedback"
 
 /** A panel of breakers, like a fuse box. Label it with BreakerPanelTitle. */
 function BreakerPanel({ className, ...props }: React.ComponentProps<"div">) {
@@ -70,6 +71,7 @@ function Breaker({
   const labelId = React.useId()
   const statusId = React.useId()
   const descriptionId = React.useId()
+  const feedback = useBevelFeedback()
 
   return (
     <div
@@ -83,6 +85,7 @@ function Breaker({
         checked={checked && !tripped}
         onCheckedChange={(next, details) => {
           if (checkedProp === undefined) setUncontrolled(next)
+          feedback.thunk()
           onCheckedChange?.(next, details)
         }}
         disabled={disabled}
