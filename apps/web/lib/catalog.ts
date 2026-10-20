@@ -73,7 +73,7 @@ export const categories: Category[] = [
     slug: "records",
     name: "Records",
     description:
-      "Seeing many things at once: notched cards that drop out when filtered, signals along a file's edge, a contact sheet, a departures board and a due-date slip.",
+      "Seeing many things at once: notched cards that drop out when filtered, signals along a file's edge, a contact sheet, a departures board, a due-date slip and a time card.",
   },
   {
     slug: "agents",
@@ -1407,6 +1407,118 @@ export const components: ComponentDoc[] = [
     ],
   },
   {
+    slug: "dip-switch",
+    name: "DIP switches",
+    category: "instruments",
+    description:
+      "A bank of tiny numbered slide switches, ON at the top, as on a circuit board. Every flag is visible at once and the bank reads as one value. For feature flags, permission bits and config words.",
+    files: ["components/dip-switch.tsx", "styles/dip-switch.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<DipSwitch aria-label="Feature flags" value={on} onValueChange={setOn}>
+  <DipSwitchBank>
+    <DipSwitchToggle value="streaming">Streamed replies</DipSwitchToggle>
+    <DipSwitchToggle value="memory">Long-term memory</DipSwitchToggle>
+  </DipSwitchBank>
+  <DipSwitchLegend />
+  <DipSwitchReadout format="hex" />
+</DipSwitch>`,
+    parts: [
+      {
+        name: "DipSwitch",
+        renders: "div (group)",
+        description:
+          "value (the values that are on), defaultValue, onValueChange, disabled, variant red, blue or black. Give it an aria-label.",
+      },
+      {
+        name: "DipSwitchBank",
+        renders: "div",
+        description: "The housing, with ON printed above. Left and right arrow keys move along it.",
+      },
+      {
+        name: "DipSwitchToggle",
+        renders: "Switch",
+        description:
+          "value; its text is its label. Numbered by position, from 1, and named “3: Web search tool”. Space flips it; disabled locks one switch.",
+      },
+      {
+        name: "DipSwitchLegend",
+        renders: "ol (decorative)",
+        description: "Each switch's number, label and ON or OFF, printed beside the bank. Hidden from screen readers, which read the switches.",
+      },
+      {
+        name: "DipSwitchReadout",
+        renders: "span",
+        description: "The bank as a number: format hex (0x0B), binary (0b00001011) or decimal. Switch 1 is the lowest bit.",
+      },
+    ],
+    examples: [
+      {
+        slug: "flags",
+        title: "Feature flags",
+        description: "Flip a workspace's flags; the bank is also the config value you ship. One is locked by the organisation.",
+        file: "dip-switch-flags.tsx",
+      },
+    ],
+  },
+  {
+    slug: "patch-bay",
+    name: "Patch bay",
+    category: "instruments",
+    description:
+      "A rack of jacks joined by patch cables: every route from a source to a destination is a cable you can see and pull. For webhook events to handlers, agent tools to agents, and inputs to outputs.",
+    files: ["components/patch-bay.tsx", "styles/patch-bay.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<PatchBay aria-label="Webhook routing" value={routes} onValueChange={setRoutes}>
+  <PatchBayPanel>
+    <PatchBayRow side="source" label="Events">
+      <PatchBayJack value="invoice.paid">invoice.paid</PatchBayJack>
+    </PatchBayRow>
+    <PatchBayRow side="destination" label="Handlers">
+      <PatchBayJack value="receipt">Send receipt</PatchBayJack>
+    </PatchBayRow>
+  </PatchBayPanel>
+  <PatchBayRoutes />
+</PatchBay>`,
+    parts: [
+      {
+        name: "PatchBay",
+        renders: "div (group)",
+        description:
+          "value and defaultValue: [source, destination] pairs. onValueChange, disabled. Announces each patch, and lists the routes for screen readers. Give it an aria-label.",
+      },
+      {
+        name: "PatchBayPanel",
+        renders: "div",
+        description: "The rack panel. Draws the cables, which hang a little between the rows, in a colour per source.",
+      },
+      {
+        name: "PatchBayRow",
+        renders: "div (group)",
+        description: "side source or destination, and a label naming the row. Sources sit on top, destinations below.",
+      },
+      {
+        name: "PatchBayJack",
+        renders: "Button",
+        description:
+          "value; its text is its name. Press one jack, then one in the other row, to patch them; patch the same pair again to pull it. Escape cancels; Delete pulls all its cables. Described as “Patched to Send receipt and Update ledger.”",
+      },
+      {
+        name: "PatchBayRoutes",
+        renders: "ul",
+        description: "Optional: a visible list of routes with an Unpatch button each. Replaces the built-in screen-reader list.",
+      },
+    ],
+    examples: [
+      {
+        slug: "webhooks",
+        title: "Webhook routing",
+        description: "Patch a billing provider's events to your handlers. One event can feed several handlers.",
+        file: "patch-bay-webhooks.tsx",
+        wide: true,
+      },
+    ],
+  },
+  {
     slug: "keysort-filter",
     name: "Keysort filter",
     category: "records",
@@ -1570,6 +1682,45 @@ export const components: ComponentDoc[] = [
         description: "Each region's status flips over as its rollout moves on.",
         file: "split-flap-deploys.tsx",
         wide: true,
+      },
+    ],
+  },
+  {
+    slug: "time-card",
+    name: "Time card",
+    category: "records",
+    description:
+      "A punch clock's time card: each session is a row with its date, time in, time out and how long it ran, and the key stamps the time now onto the next line. For timesheets, focus sessions and on-call shifts.",
+    files: ["components/time-card.tsx", "styles/time-card.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<TimeCard title="Acme redesign · week 43" entries={entries} onPunch={punch}>
+  <TimeCardStatus />
+  <TimeCardPunch />
+</TimeCard>`,
+    parts: [
+      {
+        name: "TimeCard",
+        renders: "div + table",
+        description:
+          "title (the table's caption), entries ({ in, out? }, oldest first; no out means still clocked in), onPunch({ kind, at }), rows, locale, timeZone. Durations and times print with Intl; without a timeZone they print once the browser's is known. New stamps land; the history doesn't.",
+      },
+      {
+        name: "TimeCardStatus",
+        renders: "p (status)",
+        description: "“Clocked in at 09:04.” or “Clocked out at 17:42. 10h 46m on this card.” Describes the punch key.",
+      },
+      {
+        name: "TimeCardPunch",
+        renders: "Button",
+        description: "Punch in, or Punch out while a session is open. Calls onPunch with the time now.",
+      },
+    ],
+    examples: [
+      {
+        slug: "timesheet",
+        title: "A contractor's timesheet",
+        description: "Three sessions on the card already. Punch in, then out, and watch the clock stamp each time.",
+        file: "time-card-timesheet.tsx",
       },
     ],
   },

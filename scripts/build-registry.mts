@@ -121,12 +121,25 @@ async function main() {
     css: await cssFor("styles/themes.css"),
   }
 
+  const feedbackItem = {
+    name: "feedback",
+    type: "registry:lib",
+    title: "Sound and haptics",
+    description:
+      "Opt-in sound and haptics for Bevel controls: <BevelFeedback sound haptics> and useBevelFeedback(). Synthesised with Web Audio; silent outside the provider.",
+    categories: ["foundation"],
+    files: [await emitFile("lib/feedback.ts")],
+  }
+
   const componentItems = await Promise.all(
     components.map(async (component) => {
       const code = component.files.filter((file) => !file.endsWith(".css"))
       const styles = component.files.filter((file) => file.endsWith(".css"))
       const css: CssObject = {}
       for (const file of styles) Object.assign(css, await cssFor(file))
+      // Components that click or thunk import the feedback lib: install it with them.
+      const sources = await Promise.all(code.map((file) => readFile(path.join(uiSrc, file), "utf8")))
+      const usesFeedback = sources.some((source) => source.includes("@workspace/ui/lib/feedback"))
       return {
         name: component.slug,
         type: "registry:ui",
@@ -137,6 +150,7 @@ async function main() {
         registryDependencies: [
           dep("bevel"),
           ...(component.registryDependencies ?? []).map(dep),
+          ...(usesFeedback ? [dep("feedback")] : []),
         ],
         files: await Promise.all(code.map(emitFile)),
         ...(styles.length ? { css } : {}),
@@ -220,7 +234,7 @@ async function main() {
     $schema: "https://ui.shadcn.com/schema/registry.json",
     name: "bevel",
     homepage: "https://github.com/hiteshbandhu/bevel",
-    items: [foundationItem, themeTransition, themes, ...componentItems, ...blockItems, ...exampleItems],
+    items: [foundationItem, themeTransition, themes, feedbackItem, ...componentItems, ...blockItems, ...exampleItems],
   }
   await writeFile(path.join(root, "registry.json"), JSON.stringify(registry, null, 2) + "\n")
   console.log(`registry.json: ${registry.items.length} items`)

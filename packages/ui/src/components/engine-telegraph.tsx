@@ -4,6 +4,7 @@ import * as React from "react"
 import { Radio } from "@base-ui/react/radio"
 import { RadioGroup } from "@base-ui/react/radio-group"
 import { cn } from "cn"
+import { useBevelFeedback } from "@workspace/ui/lib/feedback"
 
 type Order = { value: string; label: string }
 
@@ -48,6 +49,7 @@ type EngineTelegraphProps = Omit<React.ComponentProps<"div">, "onChange"> & {
 function EngineTelegraph({ className, value, onValueChange, confirmed, children, ...props }: EngineTelegraphProps) {
   const [orders, setOrders] = React.useState<Order[]>([])
   const statusId = React.useId()
+  const feedback = useBevelFeedback()
   const register = React.useCallback((order: Order) => {
     // Orders keep the order they mounted in, which is their order on the dial.
     setOrders((all) =>
@@ -72,7 +74,10 @@ function EngineTelegraph({ className, value, onValueChange, confirmed, children,
       >
         <RadioGroup
           value={value}
-          onValueChange={(next) => onValueChange?.(next as string)}
+          onValueChange={(next) => {
+            feedback.thunk()
+            onValueChange?.(next as string)
+          }}
           aria-describedby={statusId}
           className="contents"
         >

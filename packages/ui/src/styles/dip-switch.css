@@ -1,0 +1,64 @@
+/*
+ * DIP switch: a bank of tiny slide switches in a moulded plastic housing,
+ * ON printed at the top, numbers below. Builds on bevel.css (plastic,
+ * recessed, raised, motion).
+ */
+
+:root {
+  --dip-switch-red: oklch(0.5 0.17 27);
+  --dip-switch-red-edge: oklch(0.34 0.12 27);
+  --dip-switch-blue: oklch(0.45 0.13 258);
+  --dip-switch-blue-edge: oklch(0.3 0.09 258);
+  --dip-switch-black: oklch(0.26 0.01 260);
+  --dip-switch-black-edge: oklch(0.16 0.01 260);
+  --dip-switch-slot: oklch(0.18 0.01 260);
+  --dip-switch-actuator: oklch(0.96 0.005 90); /* white slider */
+  --dip-switch-actuator-edge: oklch(0.72 0.01 90);
+  --dip-switch-print: oklch(0.97 0.01 90); /* white silkscreen */
+  --dip-switch-focus: oklch(0.97 0.01 90);
+  --dip-switch-print-size: 0.625rem;
+  --dip-switch-slot-width: 1.25rem;
+  --dip-switch-slot-height: 2.75rem;
+  --dip-switch-actuator-height: 1.125rem;
+  --dip-switch-throw: 1.375rem; /* slot height - actuator - padding */
+  --dip-switch-gap: 0.5rem;
+}
+
+[data-slot="dip-switch"] {
+  --dip-switch-body: var(--dip-switch-red);
+  --dip-switch-body-edge: var(--dip-switch-red-edge);
+}
+[data-slot="dip-switch"][data-variant="blue"] {
+  --dip-switch-body: var(--dip-switch-blue);
+  --dip-switch-body-edge: var(--dip-switch-blue-edge);
+}
+[data-slot="dip-switch"][data-variant="black"] {
+  --dip-switch-body: var(--dip-switch-black);
+  --dip-switch-body-edge: var(--dip-switch-black-edge);
+}
+[data-slot="dip-switch-bank"] {
+  --bevel-material: var(--dip-switch-body);
+  --bevel-material-edge: var(--dip-switch-body-edge);
+  --bevel-material-recess: var(--dip-switch-slot);
+}
+[data-slot="dip-switch-actuator"] {
+  --bevel-material: var(--dip-switch-actuator);
+  --bevel-material-edge: var(--dip-switch-actuator-edge);
+}
+
+/* The printed arrow beside ON, pointing the way the sliders go. */
+@utility dip-switch-arrow {
+  width: 0;
+  height: 0;
+  border-inline: 0.1875rem solid transparent;
+  border-bottom: 0.3125rem solid currentColor;
+}
+
+@media (forced-colors: active) {
+  [data-slot="dip-switch-toggle"] {
+    border: 1px solid CanvasText;
+  }
+  [data-slot="dip-switch-actuator"] {
+    background: ButtonText;
+  }
+}

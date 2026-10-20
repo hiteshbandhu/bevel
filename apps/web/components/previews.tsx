@@ -1,5 +1,8 @@
 import type * as React from "react"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
+import { DipSwitch, DipSwitchBank, DipSwitchToggle } from "@workspace/ui/components/dip-switch"
+import { PatchBay, PatchBayJack, PatchBayPanel, PatchBayRow } from "@workspace/ui/components/patch-bay"
+import { TimeCard } from "@workspace/ui/components/time-card"
 import { SplitFlap, SplitFlapRow, SplitFlapText } from "@workspace/ui/components/split-flap"
 import { ContactSheet, ContactSheetFrame } from "@workspace/ui/components/contact-sheet"
 import { VisibleFile, VisibleFileRow, VisibleFileSignal } from "@workspace/ui/components/visible-file"
@@ -83,6 +86,56 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "time-card": () => (
+    <TimeCard
+      title="Week 43"
+      timeZone="UTC"
+      locale="en-GB"
+      rows={4}
+      entries={[
+        { in: "2026-10-19T08:58:00Z", out: "2026-10-19T12:31:00Z" },
+        { in: "2026-10-19T13:15:00Z", out: "2026-10-19T17:42:00Z" },
+        { in: "2026-10-20T09:04:00Z" },
+      ]}
+      className="pointer-events-none w-72"
+    />
+  ),
+  "patch-bay": () => (
+    <PatchBay
+      aria-label="Routing"
+      defaultValue={[
+        ["a", "x"],
+        ["a", "y"],
+        ["b", "z"],
+        ["c", "y"],
+      ]}
+      className="pointer-events-none w-72"
+    >
+      <PatchBayPanel className="p-3">
+        <PatchBayRow side="source" label="Events">
+          <PatchBayJack value="a" tabIndex={-1}>paid</PatchBayJack>
+          <PatchBayJack value="b" tabIndex={-1}>failed</PatchBayJack>
+          <PatchBayJack value="c" tabIndex={-1}>ending</PatchBayJack>
+        </PatchBayRow>
+        <PatchBayRow side="destination" label="Handlers">
+          <PatchBayJack value="x" tabIndex={-1}>Receipt</PatchBayJack>
+          <PatchBayJack value="y" tabIndex={-1}>Ledger</PatchBayJack>
+          <PatchBayJack value="z" tabIndex={-1}>Dunning</PatchBayJack>
+        </PatchBayRow>
+      </PatchBayPanel>
+    </PatchBay>
+  ),
+  "dip-switch": () => (
+    <DipSwitch aria-label="Flags" defaultValue={["a", "c", "d", "g"]} className="pointer-events-none scale-125">
+      <DipSwitchBank>
+        {["a", "b", "c", "d", "e", "f", "g", "h"].map((v) => (
+          <DipSwitchToggle key={v} value={v} tabIndex={-1}>
+            {v}
+          </DipSwitchToggle>
+        ))}
+      </DipSwitchBank>
+    </DipSwitch>
+  ),
   "due-date-slip": () => (
     <DueDateSlip title="API key" dates={["2026-08-14", "2026-09-13", "2026-11-12"]} now="2026-10-17" className="pointer-events-none w-48 scale-90" />
   ),

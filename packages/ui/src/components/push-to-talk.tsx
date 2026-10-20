@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cn } from "cn"
+import { useBevelFeedback } from "@workspace/ui/lib/feedback"
 
 type PushToTalkContextValue = { talking: boolean; disabled: boolean; setTalking: (talking: boolean) => void }
 
@@ -49,14 +50,17 @@ function PushToTalkKey({ className, children = "Hold to talk", ...props }: React
   const { talking, disabled, setTalking } = usePushToTalk()
   // Pointer up, lost capture and blur can all arrive for one release: report it once.
   const held = React.useRef(false)
+  const feedback = useBevelFeedback()
   const start = () => {
     if (disabled || held.current) return
     held.current = true
+    feedback.click()
     setTalking(true)
   }
   const stop = () => {
     if (!held.current) return
     held.current = false
+    feedback.detent()
     setTalking(false)
   }
   return (

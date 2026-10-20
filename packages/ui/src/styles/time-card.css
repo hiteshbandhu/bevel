@@ -1,0 +1,43 @@
+/*
+ * Time card: a manila card from a punch clock. Each session is a ruled
+ * row, and the clock stamps the time in purple ink. Builds on bevel.css
+ * (paper, ink, raised, motion).
+ */
+
+:root {
+  --time-card-paper: oklch(0.91 0.045 85); /* manila */
+  --time-card-rule: oklch(0.62 0.06 150 / 0.45); /* green ruling */
+  --time-card-header: oklch(0.45 0.09 150);
+  --time-card-ink: oklch(0.42 0.14 300); /* clock ribbon purple */
+  --time-card-key: oklch(0.3 0.01 260);
+  --time-card-key-edge: oklch(0.18 0.01 260);
+  --time-card-key-foreground: oklch(0.95 0.01 90);
+  --time-card-in: oklch(0.68 0.16 150);
+  --time-card-out: oklch(0.45 0.01 260);
+  --time-card-line: 2rem;
+  --time-card-land-scale: 1.4; /* the stamp starts big and lands */
+}
+
+.dark {
+  --time-card-paper: oklch(0.84 0.04 85);
+}
+
+[data-slot="time-card-card"] {
+  --bevel-paper: var(--time-card-paper);
+}
+[data-slot="time-card"] {
+  --bevel-led: var(--time-card-out);
+}
+[data-slot="time-card"][data-open] {
+  --bevel-led: var(--time-card-in);
+}
+[data-slot="time-card-punch"] {
+  --bevel-material: var(--time-card-key);
+  --bevel-material-edge: var(--time-card-key-edge);
+}
+
+@media (forced-colors: active) {
+  [data-slot="time-card-punch"] {
+    border: 1px solid ButtonText;
+  }
+}
