@@ -7,7 +7,9 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { cn } from "@workspace/ui/lib/utils"
 import { transitionTheme } from "@workspace/ui/lib/theme-transition"
+import { SiteSearch } from "@/components/site-search"
 import { repoUrl, xHandle, xUrl } from "@/lib/docs"
+import type { SearchGroup } from "@/lib/search"
 
 const links = [
   { href: "/docs", label: "Docs" },
@@ -17,7 +19,7 @@ const links = [
   { href: "/blog", label: "Blog" },
 ]
 
-export function SiteHeader() {
+export function SiteHeader({ searchIndex }: { searchIndex: SearchGroup[] }) {
   const pathname = usePathname()
   const { resolvedTheme, setTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
@@ -45,9 +47,10 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
+        <SiteSearch index={searchIndex} />
         <a
           href={repoUrl}
-          className="ml-auto hidden rounded-sm text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring sm:inline"
+          className="hidden rounded-sm text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring sm:inline"
         >
           GitHub
         </a>
@@ -64,7 +67,7 @@ export function SiteHeader() {
             const next = isDark ? "light" : "dark"
             transitionTheme(next, () => setTheme(next))
           }}
-          className="ml-auto inline-flex size-9 items-center sm:ml-0 justify-center rounded-md text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
         >
           {/* The server can't know the theme, so render both states and let CSS pick. */}
           <Sun className="size-4 dark:hidden" aria-hidden />

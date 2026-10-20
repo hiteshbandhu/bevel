@@ -8,6 +8,7 @@ import { SiteHeader } from "@/components/site-header"
 import { ThemeProvider } from "@/components/theme-provider"
 import { gaId } from "@/lib/analytics"
 import { preview } from "@/lib/og"
+import { buildSearchIndex } from "@/lib/search"
 import { siteUrl } from "@/lib/site"
 import { cn } from "@workspace/ui/lib/utils"
 
@@ -38,7 +39,7 @@ export default function RootLayout({
     >
       <body className="min-h-svh">
         <ThemeProvider>
-          <SiteHeader />
+          <SiteHeader searchIndex={buildSearchIndex()} />
           {children}
         </ThemeProvider>
       </body>
