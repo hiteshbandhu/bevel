@@ -27,6 +27,8 @@
   --annunciator-panel: var(--bevel-theme-panel);
   --annunciator-panel-edge: var(--bevel-theme-panel-edge);
   --annunciator-off: var(--bevel-theme-panel-deep);
+  --dip-switch-black: var(--bevel-theme-panel);
+  --dip-switch-black-edge: var(--bevel-theme-panel-edge);
   --breaker-panel: var(--bevel-theme-panel);
   --breaker-panel-edge: var(--bevel-theme-panel-edge);
   --breaker-body: var(--bevel-theme-panel-deep);
@@ -43,12 +45,17 @@
   --motorized-fader-panel: var(--bevel-theme-panel);
   --motorized-fader-panel-edge: var(--bevel-theme-panel-edge);
   --motorized-fader-line: var(--bevel-theme-panel-deep);
+  --patch-bay-panel: var(--bevel-theme-panel);
+  --patch-bay-panel-edge: var(--bevel-theme-panel-edge);
+  --patch-bay-ring: var(--bevel-theme-hardware);
   --push-to-talk-body: var(--bevel-theme-panel);
   --push-to-talk-body-edge: var(--bevel-theme-panel-edge);
   --push-to-talk-key: var(--bevel-theme-key);
   --split-flap-housing: var(--bevel-theme-panel);
   --split-flap-housing-edge: var(--bevel-theme-panel-edge);
   --split-flap-foreground: var(--bevel-theme-face);
+  --time-card-key: var(--bevel-theme-panel);
+  --time-card-key-edge: var(--bevel-theme-panel-edge);
   --vigilance-panel: var(--bevel-theme-panel);
   --vigilance-panel-edge: var(--bevel-theme-panel-edge);
 
