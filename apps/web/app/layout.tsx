@@ -7,6 +7,8 @@ import "./site.css"
 import { SiteHeader } from "@/components/site-header"
 import { ThemeProvider } from "@/components/theme-provider"
 import { gaId } from "@/lib/analytics"
+import { preview } from "@/lib/og"
+import { siteUrl } from "@/lib/site"
 import { cn } from "@workspace/ui/lib/utils"
 
 const fontSans = Schibsted_Grotesk({ subsets: ["latin"], variable: "--font-sans" })
@@ -15,7 +17,12 @@ const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 export const metadata: Metadata = {
   title: { default: "Bevel", template: "%s – Bevel" },
   description: "Tactile, composable React components on Base UI and Tailwind. Copy them in and own them.",
-  twitter: { card: "summary_large_image", creator: "@_hiteshbandhu" },
+  metadataBase: new URL(siteUrl),
+  ...preview({
+    title: "Bevel",
+    description: "Tactile React components for real product work. Base UI and Tailwind CSS v4, installed with the shadcn CLI.",
+    image: "bevel.jpg",
+  }),
 }
 
 export default function RootLayout({

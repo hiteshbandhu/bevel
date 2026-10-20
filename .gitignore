@@ -62,3 +62,6 @@ apps/web/public/r/
 
 # Rendered video
 apps/video/out
+
+# Launch materials: films, clips, social images, links. Kept local.
+launch-kit/
