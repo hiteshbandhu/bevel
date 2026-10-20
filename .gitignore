@@ -65,3 +65,4 @@ apps/video/out
 
 # Launch materials: films, clips, social images, links. Kept local.
 launch-kit/
+.claude/worktrees/
