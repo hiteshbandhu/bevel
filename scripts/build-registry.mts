@@ -96,6 +96,16 @@ async function main() {
     css: await cssFor("styles/theme-transition.css"),
   }
 
+  const themes = {
+    name: "themes",
+    type: "registry:item",
+    title: "Material themes",
+    description:
+      "Brass, bakelite and anodized aluminium. Set data-bevel-theme on <html> or any container; build your own at /themes.",
+    registryDependencies: [dep("bevel")],
+    css: await cssFor("styles/themes.css"),
+  }
+
   const componentItems = await Promise.all(
     components.map(async (component) => {
       const code = component.files.filter((file) => !file.endsWith(".css"))
@@ -165,7 +175,7 @@ async function main() {
     $schema: "https://ui.shadcn.com/schema/registry.json",
     name: "bevel",
     homepage: "https://github.com/hiteshbandhu/bevel",
-    items: [foundationItem, themeTransition, ...componentItems, ...blockItems],
+    items: [foundationItem, themeTransition, themes, ...componentItems, ...blockItems],
   }
   await writeFile(path.join(root, "registry.json"), JSON.stringify(registry, null, 2) + "\n")
   console.log(`registry.json: ${registry.items.length} items`)

@@ -1,0 +1,108 @@
+/*
+ * Material themes. Put data-bevel-theme="brass" (or bakelite, anodized) on
+ * <html> or on any container, and every Bevel instrument inside it is
+ * made of that material. A theme sets a few inputs:
+ *
+ *   --bevel-theme-panel     housings, plates, faces of instruments
+ *   --bevel-theme-hardware  fittings and plates (where bevel.css says brass)
+ *   --bevel-theme-face      dials, pointers, printed figures (bevel.css ivory)
+ *   --bevel-highlight, --bevel-shade, --bevel-cast   the light
+ *   --bevel-radius-scale    1 is bevel.css; machined parts are sharper
+ *   --bevel-speed           1 is bevel.css; below 1 is quicker
+ *
+ * Everything else, the edges, keys and recesses, is derived from those, so
+ * a custom theme only needs the inputs. Build one at /themes.
+ */
+
+[data-bevel-theme] {
+  --bevel-theme-panel-edge: oklch(from var(--bevel-theme-panel) calc(l - 0.1) c h);
+  --bevel-theme-panel-deep: oklch(from var(--bevel-theme-panel) calc(l - 0.06) c h);
+  --bevel-theme-key: oklch(from var(--bevel-theme-panel) calc(l + 0.1) c h);
+  --bevel-theme-hardware-edge: oklch(from var(--bevel-theme-hardware) calc(l - 0.24) calc(c * 0.7) h);
+
+  --bevel-brass: var(--bevel-theme-hardware);
+  --bevel-brass-edge: var(--bevel-theme-hardware-edge);
+  --bevel-ivory: var(--bevel-theme-face);
+
+  --annunciator-panel: var(--bevel-theme-panel);
+  --annunciator-panel-edge: var(--bevel-theme-panel-edge);
+  --annunciator-off: var(--bevel-theme-panel-deep);
+  --breaker-panel: var(--bevel-theme-panel);
+  --breaker-panel-edge: var(--bevel-theme-panel-edge);
+  --breaker-body: var(--bevel-theme-panel-deep);
+  --detent-knob-cap: var(--bevel-theme-panel);
+  --detent-knob-cap-edge: var(--bevel-theme-panel-edge);
+  --detent-knob-pointer: var(--bevel-theme-face);
+  --guarded-switch-plate: var(--bevel-theme-panel);
+  --guarded-switch-plate-edge: var(--bevel-theme-panel-edge);
+  --meter-face: var(--bevel-theme-panel-deep);
+  --meter-foreground: var(--bevel-theme-face);
+  --mixer-strip-panel: var(--bevel-theme-panel);
+  --mixer-strip-panel-edge: var(--bevel-theme-panel-edge);
+  --mixer-strip-key: var(--bevel-theme-key);
+  --motorized-fader-panel: var(--bevel-theme-panel);
+  --motorized-fader-panel-edge: var(--bevel-theme-panel-edge);
+  --motorized-fader-line: var(--bevel-theme-panel-deep);
+  --push-to-talk-body: var(--bevel-theme-panel);
+  --push-to-talk-body-edge: var(--bevel-theme-panel-edge);
+  --push-to-talk-key: var(--bevel-theme-key);
+  --split-flap-housing: var(--bevel-theme-panel);
+  --split-flap-housing-edge: var(--bevel-theme-panel-edge);
+  --split-flap-foreground: var(--bevel-theme-face);
+  --vigilance-panel: var(--bevel-theme-panel);
+  --vigilance-panel-edge: var(--bevel-theme-panel-edge);
+
+  /* Custom properties resolve where they're declared, so the scaled values are restated here. */
+  --bevel-radius-xs: calc(0.25rem * var(--bevel-radius-scale, 1));
+  --bevel-radius-sm: calc(0.5rem * var(--bevel-radius-scale, 1));
+  --bevel-radius-md: calc(0.625rem * var(--bevel-radius-scale, 1));
+  --bevel-radius-lg: calc(1rem * var(--bevel-radius-scale, 1));
+  --bevel-radius-xl: calc(1.5rem * var(--bevel-radius-scale, 1));
+  --bevel-duration-press: calc(100ms * var(--bevel-speed, 1));
+  --bevel-duration-small: calc(200ms * var(--bevel-speed, 1));
+  --bevel-duration-move: calc(300ms * var(--bevel-speed, 1));
+  --bevel-duration-ambient: calc(520ms * var(--bevel-speed, 1));
+}
+
+/* Brass: a ship's instrument. Bronze housings, polished brass, warm lamplight. */
+[data-bevel-theme="brass"] {
+  --bevel-theme-panel: oklch(0.33 0.045 62);
+  --bevel-theme-hardware: oklch(0.79 0.13 82);
+  --bevel-theme-face: oklch(0.94 0.04 85);
+  --bevel-highlight: oklch(1 0.03 85 / 0.26);
+  --bevel-shade: oklch(0.1 0.03 50 / 0.36);
+  --bevel-cast: oklch(0.3 0.06 55 / 0.28);
+  --bevel-radius-scale: 1;
+  --bevel-speed: 1.15;
+}
+
+/* Bakelite: moulded and glossy. Oxblood resin, nickel fittings, round edges. */
+[data-bevel-theme="bakelite"] {
+  --bevel-theme-panel: oklch(0.3 0.06 32);
+  --bevel-theme-hardware: oklch(0.84 0.012 90);
+  --bevel-theme-face: oklch(0.92 0.045 88);
+  --bevel-highlight: oklch(1 0 0 / 0.34);
+  --bevel-shade: oklch(0.08 0.03 30 / 0.42);
+  --bevel-cast: oklch(0.22 0.05 30 / 0.26);
+  --bevel-radius-scale: 1.6;
+  --bevel-speed: 1;
+}
+
+/* Anodized: machined aluminium, dyed blue. Crisp edges, cool light, quick. */
+[data-bevel-theme="anodized"] {
+  --bevel-theme-panel: oklch(0.46 0.1 252);
+  --bevel-theme-hardware: oklch(0.86 0.012 250);
+  --bevel-theme-face: oklch(0.97 0.006 250);
+  --bevel-highlight: oklch(1 0 0 / 0.3);
+  --bevel-shade: oklch(0.1 0.04 255 / 0.34);
+  --bevel-cast: oklch(0.25 0.05 255 / 0.22);
+  --bevel-radius-scale: 0.55;
+  --bevel-speed: 0.8;
+}
+
+/* In the dark the light dims, as it does in bevel.css; the materials stay. */
+.dark [data-bevel-theme],
+.dark[data-bevel-theme] {
+  --bevel-highlight: oklch(1 0 0 / 0.16);
+  --bevel-cast: oklch(0 0 0 / 0.55);
+}
