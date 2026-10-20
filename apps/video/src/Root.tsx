@@ -1,7 +1,7 @@
 import { Composition, Still } from "remotion"
 import { Film, filmLength } from "./film/Film"
 import { Framed } from "./film/Framed"
-import { OgComponent, OgDemo, OgSite } from "./og/Og"
+import { OgComponent, OgDemo, OgPost, OgSite } from "./og/Og"
 
 export function Root() {
   return (
@@ -12,6 +12,7 @@ export function Root() {
       <Still id="og-site" component={OgSite} width={1200} height={630} />
       <Still id="social-preview" component={OgSite} width={1280} height={640} defaultProps={{ social: true }} />
       <Still id="og-component" component={OgComponent} width={1200} height={630} defaultProps={{ slug: "annunciator" }} />
+      <Still id="og-post" component={OgPost} width={1200} height={630} defaultProps={{ slug: "skeuomorphism-is-back" }} />
       <Still id="og-demo" component={OgDemo} width={1200} height={630} defaultProps={{ n: 1 }} />
     </>
   )

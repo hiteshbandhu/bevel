@@ -2,6 +2,8 @@ import * as React from "react"
 import { AbsoluteFill, Img, continueRender, delayRender, staticFile } from "remotion"
 import { categories, components } from "../../../web/lib/catalog"
 import { demoSites } from "../../../web/lib/demos"
+import { posts } from "../../../web/lib/blog"
+import { origins } from "../../../web/lib/origins"
 import { previews } from "../../../web/components/previews"
 import { mono, sans } from "../fonts"
 import "../style.css"
@@ -198,6 +200,61 @@ export function OgDemo({ n }: { n: number }) {
             <span style={{ marginLeft: 12, fontFamily: mono, fontSize: 13, color: muted }}>bevel-ui.vercel.app/demo/{n}</span>
           </div>
           <Img src={staticFile(`demos/demo-${n}.jpg`)} style={{ display: "block", width: "100%", height: 400, objectFit: "cover", objectPosition: "top" }} />
+        </div>
+      </div>
+    </Bench>
+  )
+}
+
+/** A post: its title beside three of the objects it's about, each with its patent plate. */
+export function OgPost({ slug, objects = ["number-wheel", "guarded-switch", "split-flap"] }: { slug: string; objects?: string[] }) {
+  const post = posts.find((p) => p.slug === slug)!
+  return (
+    <Bench>
+      <div style={{ position: "absolute", inset: 0, display: "flex", padding: 56, gap: 40 }}>
+        <div style={{ width: 560, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <Wordmark size={44} />
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div style={{ fontSize: 24, color: muted }}>Blog</div>
+            <div style={{ fontSize: 58, fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1.04 }}>{post.title}</div>
+          </div>
+          <Footer />
+        </div>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
+          {objects.map((o) => {
+            const Preview = previews[o]
+            const origin = origins[o]
+            return (
+              <Tray key={o} style={{ flex: 1, borderRadius: 24, position: "relative", paddingTop: 34 }}>
+                {Preview && (
+                  <Fit width={420} height={98} max={2.6}>
+                    <Preview />
+                  </Fit>
+                )}
+                {origin && (
+                  <span
+                    className="bevel-metal"
+                    style={{
+                      position: "absolute",
+                      left: 14,
+                      top: 12,
+                      padding: "4px 9px",
+                      borderRadius: 6,
+                      fontFamily: mono,
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: "oklch(0.32 0.05 70)",
+                      boxShadow: "var(--bevel-depth-raised)",
+                      ["--bevel-material" as string]: "var(--bevel-brass)",
+                      ["--bevel-material-edge" as string]: "var(--bevel-brass-edge)",
+                    }}
+                  >
+                    {origin.kind === "patent" ? origin.label.replace(/^([A-Z]{2}) /, "Pat. $1 ") : origin.relation}, {origin.year}
+                  </span>
+                )}
+              </Tray>
+            )
+          })}
         </div>
       </div>
     </Bench>
