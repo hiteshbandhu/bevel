@@ -61,6 +61,18 @@ function rewriteImports(source: string) {
     .replaceAll("@workspace/ui/lib/", "@/lib/")
 }
 
+/** The Bevel components and npm packages a demo file imports. */
+function importsOf(source: string) {
+  const uses = new Set<string>()
+  const packages = new Set<string>()
+  for (const [, spec] of source.matchAll(/from "([^"]+)"/g)) {
+    if (spec!.startsWith("@workspace/ui/components/")) uses.add(spec!.slice("@workspace/ui/components/".length))
+    else if (!spec!.startsWith(".") && !spec!.startsWith("@/") && !spec!.startsWith("@workspace/") && !/^(react|next)(\/|$)/.test(spec!))
+      packages.add(spec!.startsWith("@") ? spec!.split("/").slice(0, 2).join("/") : spec!.split("/")[0]!)
+  }
+  return { uses, packages }
+}
+
 async function emitFile(file: string) {
   const isLib = file.startsWith("lib/")
   const target = path.join(outDir, isLib ? "lib" : "ui", path.basename(file))
@@ -81,6 +93,7 @@ async function main() {
     name: "bevel",
     type: "registry:item",
     title: "Bevel foundation",
+    categories: ["foundation"],
     description: foundation.description,
     css: await cssFor(foundation.file),
   }
@@ -89,6 +102,7 @@ async function main() {
     name: "theme-transition",
     type: "registry:lib",
     title: "Theme transition",
+    categories: ["foundation"],
     description:
       "Switch light and dark as a change in lighting: the room dims, or the lights come up. Uses View Transitions.",
     registryDependencies: [dep("bevel")],
@@ -100,6 +114,7 @@ async function main() {
     name: "themes",
     type: "registry:item",
     title: "Material themes",
+    categories: ["foundation"],
     description:
       "Brass, bakelite and anodized aluminium. Set data-bevel-theme on <html> or any container; build your own at /themes.",
     registryDependencies: [dep("bevel")],
@@ -129,6 +144,38 @@ async function main() {
     })
   )
 
+  // Examples: each component's docs examples as registry:example items, named
+  // <slug>-demo (then <slug>-demo-<example>), so the shadcn MCP server's
+  // get_item_examples_from_registries finds working code for a component.
+  const demosDir = path.join(root, "apps/web/components/demos")
+  const exampleItems = await Promise.all(
+    components.flatMap((component) =>
+      component.examples.map(async (example, i) => {
+        const source = await readFile(path.join(demosDir, example.file), "utf8")
+        const { uses, packages } = importsOf(source)
+        const target = path.join(outDir, "examples", example.file)
+        await mkdir(path.dirname(target), { recursive: true })
+        await writeFile(target, rewriteImports(source))
+        return {
+          name: i === 0 ? `${component.slug}-demo` : `${component.slug}-demo-${example.slug}`,
+          type: "registry:example",
+          title: `${component.name}: ${example.title}`,
+          description: `${example.description} An example of ${component.name}.`,
+          categories: [component.category, "examples"],
+          dependencies: [...packages].sort(),
+          registryDependencies: [...new Set([component.slug, ...uses])].map(dep),
+          files: [
+            {
+              path: path.relative(root, target),
+              type: "registry:example",
+              target: `components/bevel-examples/${example.file}`,
+            },
+          ],
+        }
+      })
+    )
+  )
+
   // Blocks: each demo product as a whole screen. Its code lands in
   // components/bevel-demos/<folder>/ (so relative imports keep working) and a
   // page at app/<block>/page.tsx renders it.
@@ -142,11 +189,9 @@ async function main() {
       const files = []
       for (const rel of [...own, ...shared]) {
         const source = await readFile(path.join(demoDir, rel), "utf8")
-        for (const [, spec] of source.matchAll(/from "([^"]+)"/g)) {
-          if (spec!.startsWith("@workspace/ui/components/")) uses.add(spec!.slice("@workspace/ui/components/".length))
-          else if (!spec!.startsWith(".") && !spec!.startsWith("@/") && !spec!.startsWith("@workspace/") && !/^(react|next)(\/|$)/.test(spec!))
-            packages.add(spec!.startsWith("@") ? spec!.split("/").slice(0, 2).join("/") : spec!.split("/")[0]!)
-        }
+        const found = importsOf(source)
+        found.uses.forEach((u) => uses.add(u))
+        found.packages.forEach((p) => packages.add(p))
         const target = path.join(outDir, "blocks", site.block, rel)
         await mkdir(path.dirname(target), { recursive: true })
         await writeFile(target, rewriteImports(source))
@@ -175,7 +220,7 @@ async function main() {
     $schema: "https://ui.shadcn.com/schema/registry.json",
     name: "bevel",
     homepage: "https://github.com/hiteshbandhu/bevel",
-    items: [foundationItem, themeTransition, themes, ...componentItems, ...blockItems],
+    items: [foundationItem, themeTransition, themes, ...componentItems, ...blockItems, ...exampleItems],
   }
   await writeFile(path.join(root, "registry.json"), JSON.stringify(registry, null, 2) + "\n")
   console.log(`registry.json: ${registry.items.length} items`)
