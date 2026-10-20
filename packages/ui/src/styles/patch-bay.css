@@ -1,0 +1,87 @@
+/*
+ * Patch bay: two rows of jacks on a rack panel, joined by patch cables
+ * that hang a little between them. Builds on bevel.css (metal, paper,
+ * motion).
+ */
+
+:root {
+  --patch-bay-panel: oklch(0.27 0.008 260); /* black anodised rack panel */
+  --patch-bay-panel-edge: oklch(0.17 0.008 260);
+  --patch-bay-print: oklch(0.9 0.01 90);
+  --patch-bay-ring: oklch(0.78 0.01 260); /* nickel jack bushing */
+  --patch-bay-hole: oklch(0.1 0.005 260);
+  --patch-bay-armed: oklch(0.82 0.15 85); /* picked up: a warm ring */
+  --patch-bay-focus: oklch(0.82 0.15 85);
+  --patch-bay-cable-1: oklch(0.6 0.19 27); /* red */
+  --patch-bay-cable-2: oklch(0.58 0.14 255); /* blue */
+  --patch-bay-cable-3: oklch(0.8 0.15 90); /* yellow */
+  --patch-bay-cable-4: oklch(0.6 0.13 150); /* green */
+  --patch-bay-cable-5: oklch(0.92 0.01 90); /* white */
+  --patch-bay-cable-6: oklch(0.6 0.15 320); /* violet */
+  --patch-bay-cable-width: 4px;
+  --patch-bay-plug-radius: 7px;
+  --patch-bay-jack-size: 2rem;
+  --patch-bay-hole-size: 0.75rem;
+  --patch-bay-jack-width: 4.5rem;
+  --patch-bay-label-height: 1.75rem; /* two lines of fine print */
+  --patch-bay-row-gap: 4.5rem; /* room for the cables to hang */
+}
+
+[data-slot="patch-bay-panel"] {
+  --bevel-material: var(--patch-bay-panel);
+  --bevel-material-edge: var(--patch-bay-panel-edge);
+}
+
+/* A nickel bushing round a dark hole, lit from above. */
+@utility patch-bay-socket {
+  background-color: var(--patch-bay-ring);
+  background-image: linear-gradient(to bottom, var(--bevel-highlight-strong), transparent 50%, var(--bevel-shade));
+  box-shadow:
+    0 0 0 2px var(--patch-bay-panel-edge),
+    0 2px 3px var(--bevel-shade);
+}
+@utility patch-bay-socket-armed {
+  box-shadow:
+    0 0 0 2px var(--patch-bay-panel-edge),
+    0 0 0 4px var(--patch-bay-armed),
+    0 0 10px 2px var(--patch-bay-armed);
+}
+@utility patch-bay-hole {
+  background-color: var(--patch-bay-hole);
+  box-shadow: var(--bevel-depth-recessed);
+}
+
+/* Cables: a body in the cable's colour over a soft shadow on the panel. */
+@utility patch-bay-cable-body {
+  fill: none;
+  stroke: var(--patch-bay-cable);
+  stroke-width: var(--patch-bay-cable-width);
+  stroke-linecap: round;
+}
+@utility patch-bay-cable-shadow {
+  fill: none;
+  stroke: var(--bevel-shade-strong);
+  stroke-width: var(--patch-bay-cable-width);
+  stroke-linecap: round;
+  translate: 0 3px;
+  filter: blur(1.5px);
+}
+@utility patch-bay-plug {
+  r: var(--patch-bay-plug-radius);
+  fill: var(--patch-bay-cable);
+  stroke: var(--bevel-shade-strong);
+  stroke-width: 1.5px;
+}
+
+@media (forced-colors: active) {
+  [data-slot="patch-bay-jack"] {
+    border: 1px solid ButtonText;
+  }
+  [data-slot="patch-bay-jack"][aria-pressed="true"] {
+    outline: 3px solid Highlight;
+  }
+  .patch-bay-cable-body,
+  .patch-bay-plug {
+    stroke: CanvasText;
+  }
+}

@@ -1461,6 +1461,64 @@ export const components: ComponentDoc[] = [
     ],
   },
   {
+    slug: "patch-bay",
+    name: "Patch bay",
+    category: "instruments",
+    description:
+      "A rack of jacks joined by patch cables: every route from a source to a destination is a cable you can see and pull. For webhook events to handlers, agent tools to agents, and inputs to outputs.",
+    files: ["components/patch-bay.tsx", "styles/patch-bay.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<PatchBay aria-label="Webhook routing" value={routes} onValueChange={setRoutes}>
+  <PatchBayPanel>
+    <PatchBayRow side="source" label="Events">
+      <PatchBayJack value="invoice.paid">invoice.paid</PatchBayJack>
+    </PatchBayRow>
+    <PatchBayRow side="destination" label="Handlers">
+      <PatchBayJack value="receipt">Send receipt</PatchBayJack>
+    </PatchBayRow>
+  </PatchBayPanel>
+  <PatchBayRoutes />
+</PatchBay>`,
+    parts: [
+      {
+        name: "PatchBay",
+        renders: "div (group)",
+        description:
+          "value and defaultValue: [source, destination] pairs. onValueChange, disabled. Announces each patch, and lists the routes for screen readers. Give it an aria-label.",
+      },
+      {
+        name: "PatchBayPanel",
+        renders: "div",
+        description: "The rack panel. Draws the cables, which hang a little between the rows, in a colour per source.",
+      },
+      {
+        name: "PatchBayRow",
+        renders: "div (group)",
+        description: "side source or destination, and a label naming the row. Sources sit on top, destinations below.",
+      },
+      {
+        name: "PatchBayJack",
+        renders: "Button",
+        description:
+          "value; its text is its name. Press one jack, then one in the other row, to patch them; patch the same pair again to pull it. Escape cancels; Delete pulls all its cables. Described as “Patched to Send receipt and Update ledger.”",
+      },
+      {
+        name: "PatchBayRoutes",
+        renders: "ul",
+        description: "Optional: a visible list of routes with an Unpatch button each. Replaces the built-in screen-reader list.",
+      },
+    ],
+    examples: [
+      {
+        slug: "webhooks",
+        title: "Webhook routing",
+        description: "Patch a billing provider's events to your handlers. One event can feed several handlers.",
+        file: "patch-bay-webhooks.tsx",
+        wide: true,
+      },
+    ],
+  },
+  {
     slug: "keysort-filter",
     name: "Keysort filter",
     category: "records",

@@ -328,6 +328,16 @@ export const origins: Record<string, Origin> = {
     url: patent("US4012608A"),
     note: "Lockard's miniature switch fits a row of slide switches into a dual-in-line package that plugs into a circuit board like a chip: the bank of numbered sliders on DipSwitchBank.",
   },
+  "patch-bay": {
+    kind: "patent",
+    relation: "Patent",
+    label: "US 489,570",
+    title: "Spring-jack switch",
+    who: "Charles E. Scribner (Western Electric)",
+    year: 1893,
+    url: patent("US489570A"),
+    note: "Scribner's spring-jack, filed in 1880, let a switchboard operator connect two lines by pushing a plug on a cord into a jack. Every patch bay since routes signals the same way.",
+  },
   "mixer-strip": {
     kind: "history",
     relation: "History",
