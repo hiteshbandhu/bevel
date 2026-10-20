@@ -10,7 +10,8 @@ import { MeterLiveUsage } from "@/components/demos/meter-live-usage"
 import { TaskPlanAgent } from "@/components/demos/task-plan-agent"
 import { WalletCheckout } from "@/components/demos/wallet-checkout"
 import { InstallCommand } from "@/components/install-command"
-import { categories, components } from "@/lib/catalog"
+import { categories, components, componentHref, getComponent } from "@/lib/catalog"
+import { origins } from "@/lib/origins"
 import { xHandle, xUrl } from "@/lib/docs"
 import { registryNamespace, registryUrl } from "@/lib/site"
 
@@ -80,6 +81,36 @@ export default function Home() {
           </div>
           <DelegationBoardAgents />
         </div>
+      </section>
+
+      <section className="border-t py-16" aria-labelledby="origins">
+        <h2 id="origins" className="text-2xl font-semibold tracking-tight">
+          Every component has a patent, or a past
+        </h2>
+        <p className="mt-2 max-w-prose text-muted-foreground">
+          Each one is modelled on a real object, and its page cites where that object came from: a
+          cyclometer from 1895, a postage meter from 1902, a departure board from Udine.
+        </p>
+        <ul className="mt-8 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+          {["number-wheel", "meter", "visible-file", "keysort-filter", "split-flap", "guarded-switch"].map((slug) => {
+            const origin = origins[slug]!
+            const component = getComponent(slug)!
+            return (
+              <li key={slug} className="flex flex-col gap-2">
+                <span className="bevel-metal self-start rounded-(--bevel-radius-sm) px-3 py-1.5 font-mono text-xs font-semibold tracking-wide text-[oklch(0.32_0.05_70)] shadow-(--bevel-depth-raised) [--bevel-material:var(--bevel-brass)] [--bevel-material-edge:var(--bevel-brass-edge)]">
+                  {origin.kind === "patent" ? origin.label.replace(/^([A-Z]{2}) /, "Pat. $1 ") : origin.relation}, {origin.year}
+                </span>
+                <Link
+                  href={componentHref(component)}
+                  className="self-start rounded-sm font-semibold outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  {component.name}
+                </Link>
+                <p className="text-sm text-muted-foreground">{origin.note}</p>
+              </li>
+            )
+          })}
+        </ul>
       </section>
 
       <section className="grid gap-10 border-t py-16 lg:grid-cols-[1fr_1fr]" aria-labelledby="install">

@@ -11,6 +11,8 @@ import {
   type ComponentDoc,
 } from "@/lib/catalog"
 import { readDemo, readLibraryFile } from "@/lib/source"
+import { origins } from "@/lib/origins"
+import { OriginPlate } from "@/components/origin-plate"
 import { registryNamespace, registryUrl } from "@/lib/site"
 
 const crumbClass =
@@ -62,6 +64,8 @@ export async function ComponentDocPage({ component }: { component: ComponentDoc 
           , and works on its own anywhere else.
         </p>
       )}
+
+      {origins[component.slug] && <OriginPlate origin={origins[component.slug]!} />}
 
       <div className="mt-12 flex flex-col gap-16">
         {component.examples.map((example, i) => {
