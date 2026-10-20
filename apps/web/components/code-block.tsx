@@ -9,7 +9,7 @@ export async function CodeBlock({
   className,
 }: {
   code: string
-  lang?: "tsx" | "css" | "bash" | "json"
+  lang?: "tsx" | "css" | "bash" | "json" | "markdown"
   title?: string
   className?: string
 }) {
