@@ -318,6 +318,16 @@ export const origins: Record<string, Origin> = {
     url: patent("US5122720A"),
     note: "Servo-driven faders that replay stored moves, with a touch-sensitive cap so a hand on the fader takes over from the automation.",
   },
+  "dip-switch": {
+    kind: "patent",
+    relation: "Patent",
+    label: "US 4,012,608",
+    title: "Miniature switch with substantial wiping action",
+    who: "Joseph L. Lockard (AMP)",
+    year: 1977,
+    url: patent("US4012608A"),
+    note: "Lockard's miniature switch fits a row of slide switches into a dual-in-line package that plugs into a circuit board like a chip: the bank of numbered sliders on DipSwitchBank.",
+  },
   "mixer-strip": {
     kind: "history",
     relation: "History",

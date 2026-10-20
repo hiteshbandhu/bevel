@@ -1407,6 +1407,60 @@ export const components: ComponentDoc[] = [
     ],
   },
   {
+    slug: "dip-switch",
+    name: "DIP switches",
+    category: "instruments",
+    description:
+      "A bank of tiny numbered slide switches, ON at the top, as on a circuit board. Every flag is visible at once and the bank reads as one value. For feature flags, permission bits and config words.",
+    files: ["components/dip-switch.tsx", "styles/dip-switch.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<DipSwitch aria-label="Feature flags" value={on} onValueChange={setOn}>
+  <DipSwitchBank>
+    <DipSwitchToggle value="streaming">Streamed replies</DipSwitchToggle>
+    <DipSwitchToggle value="memory">Long-term memory</DipSwitchToggle>
+  </DipSwitchBank>
+  <DipSwitchLegend />
+  <DipSwitchReadout format="hex" />
+</DipSwitch>`,
+    parts: [
+      {
+        name: "DipSwitch",
+        renders: "div (group)",
+        description:
+          "value (the values that are on), defaultValue, onValueChange, disabled, variant red, blue or black. Give it an aria-label.",
+      },
+      {
+        name: "DipSwitchBank",
+        renders: "div",
+        description: "The housing, with ON printed above. Left and right arrow keys move along it.",
+      },
+      {
+        name: "DipSwitchToggle",
+        renders: "Switch",
+        description:
+          "value; its text is its label. Numbered by position, from 1, and named “3: Web search tool”. Space flips it; disabled locks one switch.",
+      },
+      {
+        name: "DipSwitchLegend",
+        renders: "ol (decorative)",
+        description: "Each switch's number, label and ON or OFF, printed beside the bank. Hidden from screen readers, which read the switches.",
+      },
+      {
+        name: "DipSwitchReadout",
+        renders: "span",
+        description: "The bank as a number: format hex (0x0B), binary (0b00001011) or decimal. Switch 1 is the lowest bit.",
+      },
+    ],
+    examples: [
+      {
+        slug: "flags",
+        title: "Feature flags",
+        description: "Flip a workspace's flags; the bank is also the config value you ship. One is locked by the organisation.",
+        file: "dip-switch-flags.tsx",
+      },
+    ],
+  },
+  {
     slug: "keysort-filter",
     name: "Keysort filter",
     category: "records",

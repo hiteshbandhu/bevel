@@ -1,5 +1,6 @@
 import type * as React from "react"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
+import { DipSwitch, DipSwitchBank, DipSwitchToggle } from "@workspace/ui/components/dip-switch"
 import { SplitFlap, SplitFlapRow, SplitFlapText } from "@workspace/ui/components/split-flap"
 import { ContactSheet, ContactSheetFrame } from "@workspace/ui/components/contact-sheet"
 import { VisibleFile, VisibleFileRow, VisibleFileSignal } from "@workspace/ui/components/visible-file"
@@ -83,6 +84,17 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "dip-switch": () => (
+    <DipSwitch aria-label="Flags" defaultValue={["a", "c", "d", "g"]} className="pointer-events-none scale-150">
+      <DipSwitchBank>
+        {["a", "b", "c", "d", "e", "f", "g", "h"].map((v) => (
+          <DipSwitchToggle key={v} value={v} tabIndex={-1}>
+            {v}
+          </DipSwitchToggle>
+        ))}
+      </DipSwitchBank>
+    </DipSwitch>
+  ),
   "due-date-slip": () => (
     <DueDateSlip title="API key" dates={["2026-08-14", "2026-09-13", "2026-11-12"]} now="2026-10-17" className="pointer-events-none w-48 scale-90" />
   ),
