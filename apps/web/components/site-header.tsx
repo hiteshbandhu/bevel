@@ -7,30 +7,34 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { cn } from "@workspace/ui/lib/utils"
 import { transitionTheme } from "@workspace/ui/lib/theme-transition"
+import { SiteSearch } from "@/components/site-search"
 import { repoUrl, xHandle, xUrl } from "@/lib/docs"
+import type { SearchGroup } from "@/lib/search"
 
 const links = [
   { href: "/docs", label: "Docs" },
   { href: "/components", label: "Components" },
   { href: "/demo", label: "Demos" },
+  { href: "/themes", label: "Themes" },
   { href: "/blog", label: "Blog" },
 ]
 
-export function SiteHeader() {
+export function SiteHeader({ searchIndex }: { searchIndex: SearchGroup[] }) {
   const pathname = usePathname()
   const { resolvedTheme, setTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
 
   return (
     <header className="border-b">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-5 px-4 sm:gap-8 sm:px-6">
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 sm:gap-8 sm:px-6">
         <Link
           href="/"
-          className="wordmark rounded-sm text-xl font-extrabold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="wordmark shrink-0 rounded-sm text-xl font-extrabold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           Bevel
         </Link>
-        <nav className="flex gap-4 text-sm sm:gap-6">
+        {/* On a phone the links scroll sideways rather than push the buttons off screen. */}
+        <nav className="-my-1 flex min-w-0 gap-4 overflow-x-auto py-1 text-sm whitespace-nowrap [scrollbar-width:none] sm:gap-6">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -44,9 +48,10 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
+        <SiteSearch index={searchIndex} />
         <a
           href={repoUrl}
-          className="ml-auto hidden rounded-sm text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring sm:inline"
+          className="hidden rounded-sm text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring sm:inline"
         >
           GitHub
         </a>
@@ -63,7 +68,7 @@ export function SiteHeader() {
             const next = isDark ? "light" : "dark"
             transitionTheme(next, () => setTheme(next))
           }}
-          className="ml-auto inline-flex size-9 items-center sm:ml-0 justify-center rounded-md text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
         >
           {/* The server can't know the theme, so render both states and let CSS pick. */}
           <Sun className="size-4 dark:hidden" aria-hidden />

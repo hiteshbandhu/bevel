@@ -12,17 +12,24 @@ export function readDemo(file: string) {
   return readFile(path.join(demosDir, file), "utf8")
 }
 
-/**
- * A library file as a user's project sees it: workspace imports rewritten to
- * the "@/" form, the same rewrite the registry build applies.
- */
-export async function readLibraryFile(file: string) {
-  return (await readFile(path.join(uiSrcDir, file), "utf8"))
+/** Workspace imports in the "@/" form a user's project uses, the same rewrite the registry build applies. */
+export function toProjectImports(source: string) {
+  return source
     .replaceAll("@workspace/ui/components/", "@/components/ui/")
     .replaceAll("@workspace/ui/lib/", "@/lib/")
 }
 
-export function highlight(code: string, lang: "tsx" | "css" | "bash" | "json" = "tsx") {
+/** A demo as a user's project sees it. */
+export async function readProjectDemo(file: string) {
+  return toProjectImports(await readDemo(file))
+}
+
+/** A library file as a user's project sees it. */
+export async function readLibraryFile(file: string) {
+  return toProjectImports(await readFile(path.join(uiSrcDir, file), "utf8"))
+}
+
+export function highlight(code: string, lang: "tsx" | "css" | "bash" | "json" | "markdown" = "tsx") {
   return codeToHtml(code.trimEnd(), {
     lang,
     themes: { light: "github-light", dark: "github-dark" },

@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { CodeBlock } from "@/components/code-block"
-import { Guide, Note } from "@/components/prose"
+import Link from "next/link"
+import { Guide, Note, linkClass } from "@/components/prose"
 
 export const metadata: Metadata = { title: "Theming" }
 
@@ -58,6 +59,23 @@ onClick={() => transitionTheme(next, () => setTheme(next))}`}
   --bevel-duration-move: 240ms;              /* snappier motion */
 }`}
       />
+
+      <h2>Material themes</h2>
+      <p>
+        Three themes change what the instruments are made of: <code>brass</code>, <code>bakelite</code> and{" "}
+        <code>anodized</code>. Add them, then set <code>data-bevel-theme</code> on <code>&lt;html&gt;</code> or
+        on any container:
+      </p>
+      <CodeBlock lang="bash" title="Terminal" code="npx shadcn@latest add @bevel/themes" />
+      <CodeBlock lang="tsx" title="layout.tsx" code={`<html data-bevel-theme="anodized">`} />
+      <p>
+        A theme sets a few inputs (panel, hardware and face colours, the light, a radius scale and a speed),
+        and derives edges, keys and recesses from them. Build your own in the{" "}
+        <Link href="/themes" className={linkClass}>
+          theme playground
+        </Link>{" "}
+        and copy the CSS.
+      </p>
 
       <h2>One-off changes</h2>
       <p>
