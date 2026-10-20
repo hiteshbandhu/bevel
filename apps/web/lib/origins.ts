@@ -228,6 +228,16 @@ export const origins: Record<string, Origin> = {
     url: "https://libguides.ala.org/librarycards/history",
     note: "The card-in-a-pocket checkout comes from the Newark charging system, which recorded each loan, and its due date, on the book's card.",
   },
+  "time-card": {
+    kind: "patent",
+    relation: "Patent",
+    label: "US 393,205",
+    title: "Time-recorder",
+    who: "Willard L. Bundy",
+    year: 1888,
+    url: patent("US393205A"),
+    note: "Bundy's key recorder let each worker turn their own key in the clock, which printed a mark for that key and the hour onto a paper strip, so arrivals were logged without a watchman. A time card logs each session the same way.",
+  },
   "guarded-switch": {
     kind: "patent",
     relation: "Patent",

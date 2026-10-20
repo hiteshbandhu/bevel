@@ -73,7 +73,7 @@ export const categories: Category[] = [
     slug: "records",
     name: "Records",
     description:
-      "Seeing many things at once: notched cards that drop out when filtered, signals along a file's edge, a contact sheet, a departures board and a due-date slip.",
+      "Seeing many things at once: notched cards that drop out when filtered, signals along a file's edge, a contact sheet, a departures board, a due-date slip and a time card.",
   },
   {
     slug: "agents",
@@ -1682,6 +1682,45 @@ export const components: ComponentDoc[] = [
         description: "Each region's status flips over as its rollout moves on.",
         file: "split-flap-deploys.tsx",
         wide: true,
+      },
+    ],
+  },
+  {
+    slug: "time-card",
+    name: "Time card",
+    category: "records",
+    description:
+      "A punch clock's time card: each session is a row with its date, time in, time out and how long it ran, and the key stamps the time now onto the next line. For timesheets, focus sessions and on-call shifts.",
+    files: ["components/time-card.tsx", "styles/time-card.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<TimeCard title="Acme redesign · week 43" entries={entries} onPunch={punch}>
+  <TimeCardStatus />
+  <TimeCardPunch />
+</TimeCard>`,
+    parts: [
+      {
+        name: "TimeCard",
+        renders: "div + table",
+        description:
+          "title (the table's caption), entries ({ in, out? }, oldest first; no out means still clocked in), onPunch({ kind, at }), rows, locale, timeZone. Durations and times print with Intl; without a timeZone they print once the browser's is known. New stamps land; the history doesn't.",
+      },
+      {
+        name: "TimeCardStatus",
+        renders: "p (status)",
+        description: "“Clocked in at 09:04.” or “Clocked out at 17:42. 10h 46m on this card.” Describes the punch key.",
+      },
+      {
+        name: "TimeCardPunch",
+        renders: "Button",
+        description: "Punch in, or Punch out while a session is open. Calls onPunch with the time now.",
+      },
+    ],
+    examples: [
+      {
+        slug: "timesheet",
+        title: "A contractor's timesheet",
+        description: "Three sessions on the card already. Punch in, then out, and watch the clock stamp each time.",
+        file: "time-card-timesheet.tsx",
       },
     ],
   },

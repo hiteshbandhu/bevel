@@ -1,6 +1,7 @@
 import type * as React from "react"
 import { DipSwitchFlags } from "./dip-switch-flags"
 import { PatchBayWebhooks } from "./patch-bay-webhooks"
+import { TimeCardTimesheet } from "./time-card-timesheet"
 import { DueDateSlipKey } from "./due-date-slip-key"
 import { SplitFlapDeploys } from "./split-flap-deploys"
 import { ContactSheetVariants } from "./contact-sheet-variants"
@@ -46,6 +47,7 @@ import { WalletUsage } from "./wallet-usage"
 export const demos: Record<string, React.ComponentType> = {
   "dip-switch-flags.tsx": DipSwitchFlags,
   "patch-bay-webhooks.tsx": PatchBayWebhooks,
+  "time-card-timesheet.tsx": TimeCardTimesheet,
   "due-date-slip-key.tsx": DueDateSlipKey,
   "split-flap-deploys.tsx": SplitFlapDeploys,
   "contact-sheet-variants.tsx": ContactSheetVariants,

@@ -2,6 +2,7 @@ import type * as React from "react"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
 import { DipSwitch, DipSwitchBank, DipSwitchToggle } from "@workspace/ui/components/dip-switch"
 import { PatchBay, PatchBayJack, PatchBayPanel, PatchBayRow } from "@workspace/ui/components/patch-bay"
+import { TimeCard } from "@workspace/ui/components/time-card"
 import { SplitFlap, SplitFlapRow, SplitFlapText } from "@workspace/ui/components/split-flap"
 import { ContactSheet, ContactSheetFrame } from "@workspace/ui/components/contact-sheet"
 import { VisibleFile, VisibleFileRow, VisibleFileSignal } from "@workspace/ui/components/visible-file"
@@ -85,6 +86,20 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "time-card": () => (
+    <TimeCard
+      title="Week 43"
+      timeZone="UTC"
+      locale="en-GB"
+      rows={4}
+      entries={[
+        { in: "2026-10-19T08:58:00Z", out: "2026-10-19T12:31:00Z" },
+        { in: "2026-10-19T13:15:00Z", out: "2026-10-19T17:42:00Z" },
+        { in: "2026-10-20T09:04:00Z" },
+      ]}
+      className="pointer-events-none w-72"
+    />
+  ),
   "patch-bay": () => (
     <PatchBay
       aria-label="Routing"
