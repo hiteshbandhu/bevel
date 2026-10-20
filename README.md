@@ -5,6 +5,8 @@ Tactile, skeuomorphic React components for real product work. Built on
 
 **[bevel-ui.vercel.app](https://bevel-ui.vercel.app)**: docs, every component, and live demos.
 
+<a href="https://bevel-ui.vercel.app"><img src="docs/media/bevel.gif" alt="Bevel components in motion: a guarded switch flipping, alarm lamps lighting, faders moving and a departure board turning over" width="100%"></a>
+
 Each component is a physical object that does a real job in a modern app: a cover over a
 deploy switch, alarm lamps that latch until someone sees them, a fader an agent can move and
 you can take back, a library slip for an expiring API key. Like shadcn/ui, it isn't a
@@ -54,6 +56,18 @@ the [installation guide](https://bevel-ui.vercel.app/docs/installation).
 | Agents | Name tag, Task plan, Activity log, Approval, Delegation board |
 | Documents | Citation, Redline |
 | Marks | Stamp and seal, Redaction |
+
+## Demos
+
+Four made-up products, each one screen built from Bevel components. Every demo also
+installs as a whole screen, e.g. `npx shadcn@latest add @bevel/agent-console`.
+
+| | |
+| --- | --- |
+| [<img src="docs/media/demo-1.jpg" alt="Relay: an operator's console for an AI agent run">](https://bevel-ui.vercel.app/demo/1) | [<img src="docs/media/demo-2.jpg" alt="Meterline: a billing desk with a wallet, meter and ledger">](https://bevel-ui.vercel.app/demo/2) |
+| **Relay**, an agent control room · `@bevel/agent-console` | **Meterline**, usage billing · `@bevel/billing-desk` |
+| [<img src="docs/media/demo-3.jpg" alt="Shipyard: a release hall with a departures board">](https://bevel-ui.vercel.app/demo/3) | [<img src="docs/media/demo-4.jpg" alt="Casefile: a lawyer's desk with a contract under review">](https://bevel-ui.vercel.app/demo/4) |
+| **Shipyard**, release coordination · `@bevel/release-hall` | **Casefile**, a legal review desk · `@bevel/review-desk` |
 
 ## Principles
 
