@@ -10,22 +10,30 @@ import { MeterLiveUsage } from "@/components/demos/meter-live-usage"
 import { TaskPlanAgent } from "@/components/demos/task-plan-agent"
 import { WalletCheckout } from "@/components/demos/wallet-checkout"
 import { InstallCommand } from "@/components/install-command"
+import { JsonLd, library } from "@/components/json-ld"
 import { categories, components, componentHref, getComponent } from "@/lib/catalog"
 import { origins } from "@/lib/origins"
 import { xHandle, xUrl } from "@/lib/docs"
-import { registryNamespace, registryUrl } from "@/lib/site"
+import { registryNamespace, registryUrl, siteUrl } from "@/lib/site"
 
 export default function Home() {
   return (
     <main className="mx-auto max-w-6xl px-4 sm:px-6">
+      <JsonLd
+        data={[
+          { "@context": "https://schema.org", "@type": "WebSite", name: "Bevel", url: siteUrl },
+          { "@context": "https://schema.org", ...library },
+        ]}
+      />
       <section className="grid items-center gap-12 py-16 lg:grid-cols-[1fr_auto] lg:py-24">
         <div className="min-w-0">
+          <p className="mb-4 text-sm font-medium text-muted-foreground">Skeuomorphic React components for shadcn</p>
           <h1 className="max-w-[14ch] text-5xl leading-[1.05] font-bold tracking-tight text-balance sm:text-6xl">
             Interface parts with weight, edges and light.
           </h1>
           <p className="mt-6 max-w-[46ch] text-lg text-muted-foreground">
-            Bevel is a set of tactile React components built on Base UI and Tailwind. Add one with
-            the shadcn CLI and the code is yours to change.
+            Bevel is an open-source library of skeuomorphic, tactile React components built on Base
+            UI and Tailwind. Add one with the shadcn CLI and the code is yours to change.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link

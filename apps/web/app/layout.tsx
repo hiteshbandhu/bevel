@@ -15,16 +15,15 @@ import { cn } from "@workspace/ui/lib/utils"
 const fontSans = Schibsted_Grotesk({ subsets: ["latin"], variable: "--font-sans" })
 const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
+const description =
+  "Open-source skeuomorphic React components: switches, meters, dials and ledgers modelled on real patents. Base UI, Tailwind CSS v4, installed with the shadcn CLI."
+
 export const metadata: Metadata = {
-  title: { default: "Bevel", template: "%s – Bevel" },
-  description: "Tactile, composable React components on Base UI and Tailwind. Copy them in and own them.",
+  title: { default: "Bevel: skeuomorphic React components for shadcn", template: "%s – Bevel" },
+  description,
+  keywords: ["skeuomorphic", "skeuomorphism", "skeuomorphic UI", "tactile UI", "React components", "shadcn", "shadcn registry", "Base UI", "Tailwind CSS"],
   metadataBase: new URL(siteUrl),
-  alternates: { types: { "text/plain": [{ url: "/llms.txt", title: "Bevel docs for LLMs" }] } },
-  ...preview({
-    title: "Bevel",
-    description: "Tactile React components for real product work. Base UI and Tailwind CSS v4, installed with the shadcn CLI.",
-    image: "bevel.jpg",
-  }),
+  ...preview({ title: "Bevel: skeuomorphic React components", description, image: "bevel.jpg", path: "/" }),
 }
 
 export default function RootLayout({
