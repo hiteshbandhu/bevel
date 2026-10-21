@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
+import { guideMetadata } from "@/lib/og"
 import { CodeBlock } from "@/components/code-block"
 import { Guide, Note } from "@/components/prose"
 import { SoundDemo } from "@/components/sound-demo"
 
-export const metadata: Metadata = { title: "Sound and haptics" }
+export const metadata: Metadata = guideMetadata("sound")
 
 export default function Sound() {
   return (

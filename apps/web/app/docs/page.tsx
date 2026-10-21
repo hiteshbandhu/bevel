@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
+import { guideMetadata } from "@/lib/og"
 import Link from "next/link"
 import { Guide, linkClass } from "@/components/prose"
 import { components } from "@/lib/catalog"
 
-export const metadata: Metadata = { title: "Introduction" }
+export const metadata: Metadata = guideMetadata("")
 
 export default function Introduction() {
   return (

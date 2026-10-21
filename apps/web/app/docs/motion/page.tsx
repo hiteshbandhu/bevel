@@ -1,8 +1,9 @@
 import type { Metadata } from "next"
+import { guideMetadata } from "@/lib/og"
 import { CodeBlock } from "@/components/code-block"
 import { Guide, Note } from "@/components/prose"
 
-export const metadata: Metadata = { title: "Motion" }
+export const metadata: Metadata = guideMetadata("motion")
 
 export default function Motion() {
   return (

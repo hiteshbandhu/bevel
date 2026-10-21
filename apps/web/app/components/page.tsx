@@ -1,8 +1,16 @@
 import type { Metadata } from "next"
 import { CategorySection } from "@/components/category-section"
 import { categories } from "@/lib/catalog"
+import { preview } from "@/lib/og"
 
-export const metadata: Metadata = { title: "Components" }
+const description =
+  "Every Bevel component: skeuomorphic React parts for money, instruments, records, agents and documents. Built on Base UI and Tailwind CSS v4, installed with the shadcn CLI."
+
+export const metadata: Metadata = {
+  title: "Skeuomorphic React components",
+  description,
+  ...preview({ title: "Skeuomorphic React components – Bevel", description, image: "bevel.jpg", path: "/components" }),
+}
 
 export default function ComponentsIndex() {
   return (
