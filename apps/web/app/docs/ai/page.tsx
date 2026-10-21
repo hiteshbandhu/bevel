@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
+import { guideMetadata } from "@/lib/og"
 import { CodeBlock } from "@/components/code-block"
 import { Guide, Note, linkClass } from "@/components/prose"
 import { registryNamespace, registryUrl, siteUrl } from "@/lib/site"
 
-export const metadata: Metadata = { title: "Use with AI" }
+export const metadata: Metadata = guideMetadata("ai")
 
 const mcpServer = { command: "npx", args: ["shadcn@latest", "mcp"] }
 

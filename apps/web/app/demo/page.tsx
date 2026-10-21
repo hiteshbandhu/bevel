@@ -2,9 +2,17 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { demoSites } from "@/lib/demos"
 import { components } from "@/lib/catalog"
+import { preview } from "@/lib/og"
 import { registryNamespace } from "@/lib/site"
 
-export const metadata: Metadata = { title: "Demos" }
+const description =
+  "Four products built only from Bevel's skeuomorphic components: an agent console, a billing desk, a release hall and a review desk. Each installs as a whole screen."
+
+export const metadata: Metadata = {
+  title: "Demos",
+  description,
+  ...preview({ title: "Demos – Bevel", description, image: "bevel.jpg", path: "/demo" }),
+}
 
 const nameOf = (slug: string) => components.find((c) => c.slug === slug)?.name ?? slug
 

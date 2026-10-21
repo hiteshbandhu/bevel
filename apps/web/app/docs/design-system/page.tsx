@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
+import { guideMetadata } from "@/lib/og"
 import { CodeBlock } from "@/components/code-block"
 import { Guide, Note } from "@/components/prose"
 import { readFoundationTokens } from "@/lib/tokens"
 
-export const metadata: Metadata = { title: "Design system" }
+export const metadata: Metadata = guideMetadata("design-system")
 
 export default async function DesignSystem() {
   const groups = await readFoundationTokens()

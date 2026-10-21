@@ -8,7 +8,7 @@ const description = "Notes on building Bevel: the objects it borrows from, and w
 export const metadata: Metadata = {
   title: "Blog",
   description,
-  ...preview({ title: "Blog – Bevel", description, image: "bevel.jpg" }),
+  ...preview({ title: "Blog – Bevel", description, image: "bevel.jpg", path: "/blog" }),
 }
 
 export default function Blog() {

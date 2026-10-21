@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
+import { guideMetadata } from "@/lib/og"
 import { CodeBlock } from "@/components/code-block"
 import { Guide, Note, linkClass } from "@/components/prose"
 import { registryNamespace, registryUrl, siteUrl } from "@/lib/site"
 
-export const metadata: Metadata = { title: "Installation" }
+export const metadata: Metadata = guideMetadata("installation")
 
 export default function Installation() {
   return (

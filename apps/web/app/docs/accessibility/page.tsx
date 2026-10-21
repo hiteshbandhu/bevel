@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
+import { guideMetadata } from "@/lib/og"
 import { Guide, Note } from "@/components/prose"
 
-export const metadata: Metadata = { title: "Accessibility" }
+export const metadata: Metadata = guideMetadata("accessibility")
 
 export default function Accessibility() {
   return (

@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
+import { guideMetadata } from "@/lib/og"
 import { CodeBlock } from "@/components/code-block"
 import Link from "next/link"
 import { Guide, Note, linkClass } from "@/components/prose"
 
-export const metadata: Metadata = { title: "Theming" }
+export const metadata: Metadata = guideMetadata("theming")
 
 export default function Theming() {
   return (

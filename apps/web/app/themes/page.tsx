@@ -16,7 +16,7 @@ const description = "Brass, bakelite or anodized aluminium: pick a material, tun
 export const metadata: Metadata = {
   title: "Themes",
   description,
-  ...preview({ title: "Material themes – Bevel", description, image: "bevel.jpg" }),
+  ...preview({ title: "Material themes – Bevel", description, image: "bevel.jpg", path: "/themes" }),
 }
 
 const stage = [AnnunciatorAgent, GuardedSwitchDeploy, MeterLiveUsage, BreakerCaps, SplitFlapDeploys, MotorizedFaderTemperature]
