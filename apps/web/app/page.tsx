@@ -27,13 +27,32 @@ export default function Home() {
       />
       <section className="grid items-center gap-12 py-16 lg:grid-cols-[1fr_auto] lg:py-24">
         <div className="min-w-0">
-          <p className="mb-4 text-sm font-medium text-muted-foreground">Skeuomorphic React components for shadcn</p>
+          {/* Machines carried their patent number on a brass plate; so does this. */}
+          <Link
+            href="#origins"
+            className="group mb-7 flex w-fit max-w-full items-center gap-3 rounded-full border bg-muted/40 py-1 pr-5 pl-1 text-sm outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <span className="bevel-metal shrink-0 rounded-full px-2.5 py-0.5 font-mono text-[11px] font-semibold tracking-wide text-[oklch(0.32_0.05_70)] shadow-(--bevel-depth-raised) [--bevel-material:var(--bevel-brass)] [--bevel-material-edge:var(--bevel-brass-edge)] [text-shadow:0_1px_0_oklch(1_0_0/0.35)]">
+              Pat. 1895–2023
+            </span>
+            <span className="truncate text-muted-foreground group-hover:text-foreground">
+              {/* The short line where the hero column is narrow: phones, and lg before xl. */}
+              <span className="sm:hidden lg:inline xl:hidden">Modelled on real patents</span>
+              <span className="hidden sm:inline lg:hidden xl:inline">Every component is modelled on a real patent</span>
+            </span>
+            <span
+              aria-hidden
+              className="shrink-0 text-muted-foreground transition-transform duration-(--bevel-duration-small) ease-(--bevel-ease-out) group-hover:translate-x-0.5 group-hover:text-foreground motion-reduce:transition-none"
+            >
+              →
+            </span>
+          </Link>
           <h1 className="max-w-[14ch] text-5xl leading-[1.05] font-bold tracking-tight text-balance sm:text-6xl">
             Interface parts with weight, edges and light.
           </h1>
           <p className="mt-6 max-w-[46ch] text-lg text-muted-foreground">
-            Bevel is an open-source library of skeuomorphic, tactile React components built on Base
-            UI and Tailwind. Add one with the shadcn CLI and the code is yours to change.
+            Bevel is an open-source library of skeuomorphic React components for shadcn, built on
+            Base UI and Tailwind. Add one with the shadcn CLI and the code is yours to change.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
