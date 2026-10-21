@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { CodeBlock } from "@/components/code-block"
+import { JsonLd, author } from "@/components/json-ld"
 import { DetentKnobEffort } from "@/components/demos/detent-knob-effort"
 import { GuardedSwitchDeploy } from "@/components/demos/guarded-switch-deploy"
 import { KeysortFilterContracts } from "@/components/demos/keysort-filter-contracts"
@@ -10,17 +11,17 @@ import { SplitFlapDeploys } from "@/components/demos/split-flap-deploys"
 import { VigilanceAgent } from "@/components/demos/vigilance-agent"
 import { Post, Specimen } from "@/components/post"
 import { Note, linkClass } from "@/components/prose"
-import { posts } from "@/lib/blog"
+import { postHref, posts } from "@/lib/blog"
 import { components } from "@/lib/catalog"
 import { preview } from "@/lib/og"
-import { registryNamespace, registryUrl } from "@/lib/site"
+import { registryNamespace, registryUrl, siteUrl } from "@/lib/site"
 
 const post = posts.find((p) => p.slug === "skeuomorphism-is-back")!
 
 export const metadata: Metadata = {
   title: post.title,
   description: post.description,
-  ...preview({ title: post.title, description: post.description, image: `blog-${post.slug}.jpg` }),
+  ...preview({ title: post.title, description: post.description, image: `blog-${post.slug}.jpg`, path: postHref(post.slug), type: "article" }),
 }
 
 const count = components.filter((c) => !c.parent).length
@@ -28,6 +29,19 @@ const count = components.filter((c) => !c.parent).length
 export default function SkeuomorphismIsBack() {
   return (
     <Post slug="skeuomorphism-is-back">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: post.title,
+          description: post.description,
+          datePublished: post.date,
+          url: `${siteUrl}${postHref(post.slug)}`,
+          image: `${siteUrl}/og/blog-${post.slug}.jpg`,
+          author,
+          about: { "@id": `${siteUrl}/#library` },
+        }}
+      />
       <p>
         In 2013, iOS 7 took the felt off Game Center and the yellow paper out of Notes, and most of the
         industry followed it into flat design within a year or two. It was the right call. Screens had
