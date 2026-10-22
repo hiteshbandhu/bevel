@@ -99,7 +99,7 @@ const rows: [string, string, string, string, string][] = [
   ["Contrast", "High", "Low: the control is the surface's colour", "High: the object stands apart from the surface", "Depends on whatever is behind the glass"],
   ["Pressed state", "A colour change", "Shadows flip inward", "The key travels down", "The glass gets more opaque"],
   ["Accessibility", "Good, if focus states are clear", "Usually fails WCAG contrast", "Good, if state is also said in words", "Risky over busy or bright backdrops"],
-  ["Peak", "2013 on (iOS 7)", "2019–2020, on Dribbble", "2007–2012 (iOS 6), back since about 2024", "Named around 2020; Apple's Liquid Glass in 2025"],
+  ["Peak", "2013 on (iOS 7)", "2019–2020, on Dribbble", "2007–2012 (iOS 6), returning now in a restrained form", "Named around 2020; Apple's Liquid Glass in 2025"],
   ["Use it for", "Dense, text-heavy screens", "Mostly mockups", "Controls where state or stakes matter", "Panels and bars that float over content"],
 ]
 
