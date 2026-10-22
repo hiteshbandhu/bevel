@@ -7,8 +7,9 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { cn } from "@workspace/ui/lib/utils"
 import { transitionTheme } from "@workspace/ui/lib/theme-transition"
+import { GitHubStar } from "@/components/github-star"
 import { SiteSearch } from "@/components/site-search"
-import { repoUrl, xHandle, xUrl } from "@/lib/docs"
+import { xHandle, xUrl } from "@/lib/docs"
 import type { SearchGroup } from "@/lib/search"
 
 const links = [
@@ -19,7 +20,7 @@ const links = [
   { href: "/blog", label: "Blog" },
 ]
 
-export function SiteHeader({ searchIndex }: { searchIndex: SearchGroup[] }) {
+export function SiteHeader({ searchIndex, stars }: { searchIndex: SearchGroup[]; stars: number | null }) {
   const pathname = usePathname()
   const { resolvedTheme, setTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
@@ -49,12 +50,7 @@ export function SiteHeader({ searchIndex }: { searchIndex: SearchGroup[] }) {
           ))}
         </nav>
         <SiteSearch index={searchIndex} />
-        <a
-          href={repoUrl}
-          className="hidden rounded-sm text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring sm:inline"
-        >
-          GitHub
-        </a>
+        <GitHubStar stars={stars} size="sm" className="hidden sm:inline-flex" />
         <a
           href={xUrl}
           className="hidden rounded-sm text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring sm:inline"

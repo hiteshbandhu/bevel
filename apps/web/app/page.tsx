@@ -9,14 +9,17 @@ import { LedgerHistory } from "@/components/demos/ledger-history"
 import { MeterLiveUsage } from "@/components/demos/meter-live-usage"
 import { TaskPlanAgent } from "@/components/demos/task-plan-agent"
 import { WalletCheckout } from "@/components/demos/wallet-checkout"
+import { GitHubStar } from "@/components/github-star"
 import { InstallCommand } from "@/components/install-command"
 import { JsonLd, library } from "@/components/json-ld"
 import { categories, components, componentHref, getComponent } from "@/lib/catalog"
+import { getStars } from "@/lib/github"
 import { origins } from "@/lib/origins"
 import { xHandle, xUrl } from "@/lib/docs"
 import { registryNamespace, registryUrl, siteUrl } from "@/lib/site"
 
-export default function Home() {
+export default async function Home() {
+  const stars = await getStars()
   return (
     <main className="mx-auto max-w-6xl px-4 sm:px-6">
       <JsonLd
@@ -61,6 +64,7 @@ export default function Home() {
             >
               Browse {components.length} components
             </Link>
+            <GitHubStar stars={stars} />
             <InstallCommand command={`npx shadcn@latest add ${registryNamespace}/wallet`} />
           </div>
         </div>
