@@ -25,6 +25,8 @@ const serveUrl = await bundle({
 const browser = await openBrowser("chrome")
 
 const jobs: { id: string; props: Record<string, unknown>; out: string; format: "jpeg" | "png" }[] = [
+  { id: "logo", props: { variant: "lamp", padded: true }, out: path.join(root, "apps/web/public/logo.png"), format: "png" },
+  { id: "logo", props: { variant: "lamp", padded: false }, out: path.join(kitDir, "logo-full-bleed.png"), format: "png" },
   { id: "og-site", props: {}, out: path.join(ogDir, "bevel.jpg"), format: "jpeg" },
   { id: "social-preview", props: { social: true }, out: path.join(kitDir, "github-social-preview.png"), format: "png" },
   ...demoSites.map((s) => ({ id: "og-demo", props: { n: s.n }, out: path.join(ogDir, `demo-${s.n}.jpg`), format: "jpeg" as const })),

@@ -36,6 +36,17 @@ async function visit(file: string) {
 const entry = component.files.find((f) => f.endsWith(".tsx"))!
 await visit(entry)
 
+// The demo may use other Bevel modules too (a keycard demo shows a payment
+// card): those join the bundle and keep their exports, so the demo can import
+// everything from the one file.
+const demoSource = await readFile(path.join(root, "apps/web/components/demos", component.examples[0]!.file), "utf8")
+const exported = new Set([entry])
+for (const [, dir, name] of demoSource.matchAll(workspaceImport)) {
+  const file = `${dir}/${name}${dir === "lib" ? ".ts" : ".tsx"}`
+  await visit(file)
+  exported.add(file)
+}
+
 const npmImports = new Set<string>()
 const bodies: string[] = []
 for (const file of order) {
@@ -46,7 +57,7 @@ for (const file of order) {
     npmImports.add(line.trim())
     return ""
   })
-  if (file !== entry) {
+  if (!exported.has(file)) {
     // A dependency's exports become plain declarations inside the bundle.
     source = source.replace(/^export\s+(?:type\s+)?\{[^}]*\}\s*\n?/gm, "").replace(/^export\s+(?=(function|const|type|interface|class)\b)/gm, "")
   }
@@ -66,6 +77,11 @@ const code = bodies.join("\n\n")
 // behind a variant (active:bevel-pressed), the variant becomes a selector.
 const variantSelector: Record<string, (cls: string) => string> = {
   active: (c) => `${c}:active`,
+  before: (c) => `${c}::before`,
+  after: (c) => `${c}::after`,
+  "aria-pressed": (c) => `${c}[aria-pressed="true"]`,
+  "aria-checked": (c) => `${c}[aria-checked="true"]`,
+  "aria-expanded": (c) => `${c}[aria-expanded="true"]`,
   hover: (c) => `@media (hover: hover) { ${c}:hover`,
   "focus-visible": (c) => `${c}:focus-visible`,
   disabled: (c) => `${c}:disabled`,
@@ -73,6 +89,9 @@ const variantSelector: Record<string, (cls: string) => string> = {
 const esc = (s: string) => s.replace(/([:[\]=/.()])/g, "\\$1")
 function variantRule(variant: string, utility: string): string | null {
   const cls = `.${esc(`${variant}:${utility}`)}`
+  // in-data-[state=new]: styles the element when an ancestor matches.
+  const inData = variant.match(/^in-data-\[([\w-]+)(?:=([\w-]+))?\]$/)
+  if (inData) return `:where([data-${inData[1]}${inData[2] ? `="${inData[2]}"` : ""}]) ${cls}`
   const data = variant.match(/^data-\[([\w-]+)(?:=([\w-]+))?\]$/) ?? variant.match(/^data-([\w-]+)()$/)
   if (data) return `${cls}[data-${data[1]}${data[2] ? `="${data[2]}"` : ""}]`
   const v = variantSelector[variant]
@@ -137,10 +156,8 @@ if (typeof document !== "undefined" && !document.getElementById(BEVEL_STYLE_ID))
 `
 const file = `${header}\n${[...npmImports].join("\n")}\n${styleInjection}\n${code}\n`
 
-// The demo: the catalog's first example, importing the bundle instead of the workspace.
-const demoSource = await readFile(path.join(root, "apps/web/components/demos", component.examples[0]!.file), "utf8")
-const demo = demoSource.replace(`@workspace/ui/components/${slug}`, `./${slug}`)
-if (/@workspace\//.test(demo)) throw new Error(`the ${slug} demo imports other workspace modules`)
+// The demo: the catalog's first example, importing everything from the bundle.
+const demo = demoSource.replace(/"@workspace\/ui\/(components|lib)\/[\w-]+"/g, `"./${slug}"`)
 // 21st's preview imports each demo as: import Demo from "./demos/<slug>"
 const demoName = demo.match(/export function (\w+)/)?.[1]
 if (!demoName) throw new Error(`the ${slug} demo has no exported function`)
