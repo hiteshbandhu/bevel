@@ -47,7 +47,7 @@ export function StyleRow({ styles }: { styles: (LabStep & { surface: string })[]
   return (
     <figure data-llm="omit" className="my-6">
       <style>{styles.map((s, i) => s.css.replaceAll(".button", `.lab-style-${i}`)).join("\n")}</style>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className={`grid grid-cols-1 gap-3 ${styles.length === 4 ? "min-[420px]:grid-cols-2 md:grid-cols-4" : "sm:grid-cols-3"}`}>
         {styles.map((style, i) => (
           <div
             key={style.label}
