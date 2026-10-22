@@ -1,6 +1,23 @@
 import type { Metadata } from "next"
 import { guides, guideHref, xHandle } from "@/lib/docs"
 
+/**
+ * A description short enough for search results (Bing flags anything over
+ * 160 characters): whole sentences up to `max`, or the first sentence cut at
+ * a word with an ellipsis. Pages keep the full text; only the meta tag is trimmed.
+ */
+export function metaDescription(text: string, max = 155) {
+  if (text.length <= max) return text
+  let out = ""
+  for (const sentence of text.split(/(?<=[.!?])\s+/)) {
+    const next = out ? `${out} ${sentence}` : sentence
+    if (next.length > max) break
+    out = next
+  }
+  if (out) return out
+  return `${text.slice(0, text.lastIndexOf(" ", max - 1))}…`
+}
+
 type Alternates = NonNullable<Metadata["alternates"]>
 
 const llms = { "text/plain": [{ url: "/llms.txt", title: "Bevel docs for LLMs" }] }
@@ -28,7 +45,9 @@ export function preview({
   type?: "website" | "article"
 }): Metadata {
   const images = [{ url: `/og/${image}`, width: 1200, height: 630, alt: title }]
+  description = metaDescription(description)
   return {
+    description,
     alternates: { canonical: path, types: { ...llms, ...types } },
     openGraph: { title, description, images, url: path, siteName: "Bevel", type },
     twitter: { card: "summary_large_image", creator: `@${xHandle}`, title, description, images },

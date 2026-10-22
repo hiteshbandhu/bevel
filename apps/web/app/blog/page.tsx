@@ -3,7 +3,8 @@ import Link from "next/link"
 import { formatPostDate, postHref, posts } from "@/lib/blog"
 import { preview } from "@/lib/og"
 
-const description = "Notes on building Bevel: the objects it borrows from, and why."
+const description =
+  "Notes on skeuomorphic UI design and building Bevel: CSS tutorials, comparisons, and the real objects its React components borrow from."
 
 export const metadata: Metadata = {
   title: "Blog",

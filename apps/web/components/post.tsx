@@ -43,7 +43,7 @@ export function Specimen({ slug, children }: { slug: string; children: React.Rea
   const origin = origins[slug]
   return (
     <figure className="my-6 flex flex-col">
-      <div className="tray flex overflow-x-auto rounded-(--bevel-radius-xl) px-4 py-10 sm:px-10 [&>*]:mx-auto">
+      <div data-llm="omit" className="tray flex overflow-x-auto rounded-(--bevel-radius-xl) px-4 py-10 sm:px-10 [&>*]:mx-auto">
         {children}
       </div>
       <figcaption className="mt-3 text-sm text-muted-foreground">
