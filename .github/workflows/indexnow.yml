@@ -4,19 +4,34 @@
 # The key file lives at apps/web/public/<key>.txt; IndexNow checks it there.
 name: IndexNow
 
+# Vercel doesn't report deployments to GitHub here, so this runs on every push
+# to main and waits until production serves that commit's build.
 on:
-  deployment_status:
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 permissions: {}
 
 jobs:
   ping:
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
     runs-on: ubuntu-latest
     env:
       SITE_URL: ${{ vars.SITE_URL || 'https://bevel-ui.vercel.app' }}
       INDEXNOW_KEY: 72ef7ff50ee700bf8872cbe9bcd97c63
     steps:
+      - name: Wait for the production deploy
+        run: |
+          # The home page's script chunk names change when a deploy changes code;
+          # wait for a new set (up to 8 minutes; content-only deploys just time out).
+          build() { curl -fsSL "$SITE_URL/" | grep -o '_next/static/[^"]*chunks/[^"]*' | sort -u | sha1sum; }
+          before=$(build || true)
+          for i in $(seq 1 48); do
+            sleep 10
+            now=$(build || true)
+            if [ -n "$now" ] && [ "$now" != "$before" ]; then echo "New build is live"; exit 0; fi
+          done
+          echo "No new build seen; submitting anyway"
       - name: Submit the sitemap's URLs
         run: |
           urls=$(curl -fsSL "$SITE_URL/sitemap.xml" | grep -o '<loc>[^<]*</loc>' | sed -e 's/<loc>//' -e 's/<\/loc>//')
