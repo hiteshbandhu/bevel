@@ -1767,6 +1767,70 @@ export const components: ComponentDoc[] = [
     ],
   },
   {
+    slug: "text-field",
+    name: "Text field",
+    category: "essentials",
+    description:
+      "A text input cut into the panel as a slot, with a printed label above and description and error lines below. Focus lights the slot's edge amber, the colour of a caret; an invalid field edges in red and lights a lamp by its label. Inputs, textareas, search boxes with an icon and a key hint, amounts with a unit.",
+    files: ["components/text-field.tsx", "styles/text-field.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<TextField name="email">
+  <TextFieldLabel />
+  <TextFieldSlot>
+    <TextFieldAdornment />
+    <TextFieldInput />
+    <TextFieldKbd />
+  </TextFieldSlot>
+  <TextFieldDescription />
+  <TextFieldError />
+</TextField>`,
+    parts: [
+      {
+        name: "TextField",
+        renders: "Field.Root",
+        description:
+          "size sm or md. Everything Base UI Field takes: name, disabled, invalid, validate, validationMode. Wires the label, description and error to the control.",
+      },
+      {
+        name: "TextFieldLabel",
+        renders: "Field.Label",
+        description: "The printed label. Its lamp lights red while the field is invalid.",
+      },
+      {
+        name: "TextFieldSlot",
+        renders: "div",
+        description:
+          "The slot, when there are adornments. Pressing anywhere in it focuses the control. Optional: a bare TextFieldInput is its own slot.",
+      },
+      { name: "TextFieldInput", renders: "Input", description: "The input. value, defaultValue, onValueChange, and every input attribute." },
+      { name: "TextFieldTextarea", renders: "Field.Control (textarea)", description: "Several lines, resizable vertically." },
+      { name: "TextFieldAdornment", renders: "span", description: "An icon, unit or prefix printed in the slot." },
+      { name: "TextFieldKbd", renders: "kbd", description: "A small keycap: the shortcut that focuses the field." },
+      { name: "TextFieldDescription", renders: "Field.Description", description: "What goes in it. Describes the control." },
+      {
+        name: "TextFieldError",
+        renders: "Field.Error (alert)",
+        description:
+          "Shown while invalid and announced as it appears. match a validity state (valueMissing, typeMismatch…) or leave it off to show validate's message or the form's.",
+      },
+    ],
+    examples: [
+      {
+        slug: "settings",
+        title: "Workspace settings",
+        description:
+          "Fields validate as you leave them and again on save; the server's answer comes back on the field it's about. Save as is: the URL is taken.",
+        file: "text-field-settings.tsx",
+      },
+      {
+        slug: "search",
+        title: "Search box",
+        description: "An icon and a key hint in the slot. ⌘K or / focuses it from anywhere on the page.",
+        file: "text-field-search.tsx",
+      },
+    ],
+  },
+  {
     slug: "toggle-lever",
     name: "Toggle lever",
     category: "essentials",

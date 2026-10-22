@@ -1,4 +1,6 @@
 import type * as React from "react"
+import { TextFieldSettings } from "./text-field-settings"
+import { TextFieldSearch } from "./text-field-search"
 import { ToggleLeverNotifications } from "./toggle-lever-notifications"
 import { LatchCheckboxPermissions } from "./latch-checkbox-permissions"
 import { DipSwitchFlags } from "./dip-switch-flags"
@@ -90,6 +92,8 @@ export const demos: Record<string, React.ComponentType> = {
   "wallet-billing.tsx": WalletBilling,
   "wallet-checkout.tsx": WalletCheckout,
   "wallet-usage.tsx": WalletUsage,
+  "text-field-settings.tsx": TextFieldSettings,
+  "text-field-search.tsx": TextFieldSearch,
   "toggle-lever-notifications.tsx": ToggleLeverNotifications,
   "latch-checkbox-permissions.tsx": LatchCheckboxPermissions,
 }

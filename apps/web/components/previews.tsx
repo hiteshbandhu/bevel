@@ -1,4 +1,6 @@
 import type * as React from "react"
+import { Search } from "lucide-react"
+import { TextField, TextFieldAdornment, TextFieldInput, TextFieldKbd, TextFieldLabel, TextFieldSlot } from "@workspace/ui/components/text-field"
 import { ToggleLever } from "@workspace/ui/components/toggle-lever"
 import { LatchCheckbox } from "@workspace/ui/components/latch-checkbox"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
@@ -88,6 +90,18 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "text-field": () => (
+    <TextField className="pointer-events-none w-56" size="sm">
+      <TextFieldLabel>Search</TextFieldLabel>
+      <TextFieldSlot>
+        <TextFieldAdornment>
+          <Search aria-hidden />
+        </TextFieldAdornment>
+        <TextFieldInput tabIndex={-1} readOnly placeholder="Components" />
+        <TextFieldKbd>⌘K</TextFieldKbd>
+      </TextFieldSlot>
+    </TextField>
+  ),
   "toggle-lever": () => (
     <div className="pointer-events-none flex scale-150 flex-col items-center gap-2">
       <ToggleLever aria-label="On" defaultChecked tabIndex={-1} />
