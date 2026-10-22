@@ -60,6 +60,6 @@ export function guideMetadata(slug: (typeof guides)[number]["slug"]): Metadata {
   return {
     title: guide.title,
     description: guide.description,
-    ...preview({ title: `${guide.title} – Bevel`, description: guide.description, image: "bevel.jpg", path: guideHref(slug), type: "article" }),
+    ...preview({ title: `${guide.title} – Bevel`, description: guide.description, image: `page-docs-${slug || "introduction"}.jpg`, path: guideHref(slug), type: "article" }),
   }
 }
