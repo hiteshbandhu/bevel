@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { CopyPage } from "@/components/copy-page"
 import { CodeBlock } from "@/components/code-block"
 import { ComponentTile } from "@/components/component-tile"
 import { demos } from "@/components/demos"
@@ -53,7 +54,10 @@ export async function ComponentDocPage({ component }: { component: ComponentDoc 
           )}
         </ol>
       </nav>
-      <h1 className="mt-2 text-4xl font-bold tracking-tight">{component.name}</h1>
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+        <h1 className="text-4xl font-bold tracking-tight">{component.name}</h1>
+        <CopyPage />
+      </div>
       <p className="mt-3 max-w-prose text-lg text-muted-foreground">{component.description}</p>
       {parent && (
         <p className="mt-4 max-w-prose text-sm text-muted-foreground">

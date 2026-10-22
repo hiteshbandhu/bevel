@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { CopyPage } from "@/components/copy-page"
 import { cn } from "@workspace/ui/lib/utils"
 import { guideHref, guides } from "@/lib/docs"
 
@@ -10,7 +11,10 @@ export function Guide({ slug, children }: { slug: (typeof guides)[number]["slug"
   return (
     <article className="max-w-3xl">
       <p className="text-sm text-muted-foreground">Get started</p>
-      <h1 className="mt-2 text-4xl font-bold tracking-tight">{guide.title}</h1>
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+        <h1 className="text-4xl font-bold tracking-tight">{guide.title}</h1>
+        <CopyPage />
+      </div>
       <p className="mt-3 max-w-prose text-lg text-muted-foreground">{guide.description}</p>
       <div className="prose-guide mt-10">{children}</div>
       {next && (

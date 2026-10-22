@@ -10,6 +10,7 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from "@workspace/ui/components/menu"
+import { Key } from "@workspace/ui/components/key"
 
 type CopyPageMenuProps = {
   /** The page as Markdown, e.g. "/components/menu.md". Relative URLs resolve against the current page. */
@@ -58,10 +59,10 @@ export function MenuCopyPage({ markdownUrl = "/components/menu.md" }: CopyPageMe
 
   return (
     <Menu>
-      <MenuTrigger className="inline-flex h-8 items-center gap-1.5 rounded-(--bevel-radius-sm) border bg-background pr-2 pl-3 text-sm font-medium outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring data-popup-open:bg-muted">
-        {state === "copied" ? <Check className="size-4" aria-hidden /> : <Copy className="size-4" aria-hidden />}
+      <MenuTrigger render={<Key variant="secondary" size="sm" />}>
+        {state === "copied" ? <Check aria-hidden /> : <Copy aria-hidden />}
         {state === "copied" ? "Copied" : "Copy page"}
-        <ChevronDown className="size-3.5 text-muted-foreground" aria-hidden />
+        <ChevronDown aria-hidden />
       </MenuTrigger>
       <MenuContent align="end">
         <MenuItem onClick={copy}>

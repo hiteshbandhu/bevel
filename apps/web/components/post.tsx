@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { CopyPage } from "@/components/copy-page"
 import { OriginPlate } from "@/components/origin-plate"
 import { componentHref, getComponent } from "@/lib/catalog"
 import { xHandle, xUrl } from "@/lib/docs"
@@ -21,6 +22,9 @@ export function Post({ slug, children }: { slug: (typeof posts)[number]["slug"];
         <h1 className="mt-3 text-4xl leading-tight font-bold tracking-tight text-balance sm:text-5xl">
           {post.title}
         </h1>
+        <div className="mt-4">
+          <CopyPage />
+        </div>
         <p className="mt-4 max-w-prose text-lg text-muted-foreground">{post.description}</p>
         <p className="mt-6 text-sm text-muted-foreground">
           <time dateTime={post.date}>{formatPostDate(post.date)}</time> ·{" "}

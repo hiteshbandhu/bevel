@@ -7,6 +7,7 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { cn } from "@workspace/ui/lib/utils"
 import { transitionTheme } from "@workspace/ui/lib/theme-transition"
+import { IconKey } from "@workspace/ui/components/icon-key"
 import { GitHubStar } from "@/components/github-star"
 import { SiteSearch } from "@/components/site-search"
 import { xHandle, xUrl } from "@/lib/docs"
@@ -24,6 +25,9 @@ export function SiteHeader({ searchIndex, stars }: { searchIndex: SearchGroup[];
   const pathname = usePathname()
   const { resolvedTheme, setTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
+  // The server can't know the theme, so the toggle's name waits for mount.
+  const [mounted, setMounted] = React.useState(false)
+  React.useEffect(() => setMounted(true), [])
 
   return (
     <header className="border-b">
@@ -60,20 +64,18 @@ export function SiteHeader({ searchIndex, stars }: { searchIndex: SearchGroup[];
           <span aria-hidden>X</span>
           <span className="sr-only">@{xHandle} on X</span>
         </a>
-        <button
-          type="button"
+        <IconKey
+          variant="ghost"
+          aria-label={!mounted ? "Switch theme" : isDark ? "Turn the lights on" : "Turn the lights down"}
           onClick={() => {
             const next = isDark ? "light" : "dark"
             transitionTheme(next, () => setTheme(next))
           }}
-          className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
         >
           {/* The server can't know the theme, so render both states and let CSS pick. */}
           <Sun className="size-4 dark:hidden" aria-hidden />
           <Moon className="hidden size-4 dark:block" aria-hidden />
-          <span className="sr-only dark:hidden">Turn the lights down</span>
-          <span className="hidden dark:sr-only dark:block">Turn the lights on</span>
-        </button>
+        </IconKey>
       </div>
     </header>
   )
