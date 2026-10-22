@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { ToggleLever } from "@workspace/ui/components/toggle-lever"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
 import { DipSwitch, DipSwitchBank, DipSwitchToggle } from "@workspace/ui/components/dip-switch"
 import { PatchBay, PatchBayJack, PatchBayPanel, PatchBayRow } from "@workspace/ui/components/patch-bay"
@@ -86,6 +87,12 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  "toggle-lever": () => (
+    <div className="pointer-events-none flex scale-150 flex-col items-center gap-2">
+      <ToggleLever aria-label="On" defaultChecked tabIndex={-1} />
+      <ToggleLever aria-label="Off" tabIndex={-1} />
+    </div>
+  ),
   "time-card": () => (
     <TimeCard
       title="Week 43"

@@ -54,6 +54,12 @@ export const foundation = {
 
 export const categories: Category[] = [
   {
+    slug: "essentials",
+    name: "Essentials",
+    description:
+      "Everyday controls (buttons, fields, switches, overlays) made of Bevel's materials. The real Base UI control, with a body.",
+  },
+  {
     slug: "money",
     name: "Money",
     description: "Balances, payment methods and credits for checkout, billing and usage-based products.",
@@ -1757,6 +1763,43 @@ export const components: ComponentDoc[] = [
         title: "An expiring API key",
         description: "The key lapsed four days ago. Renew it, and again, until the renewals run out.",
         file: "due-date-slip-key.tsx",
+      },
+    ],
+  },
+  {
+    slug: "toggle-lever",
+    name: "Toggle lever",
+    category: "essentials",
+    description:
+      "An everyday on/off switch, as a bat-handle toggle on a small plate. The lever swings through its bushing toward the side that's on and settles with a little spring; a lamp at the end of the plate lights. For settings rows. (For banks of config bits use DIP switches; for dangerous actions, the guarded switch.)",
+    files: ["components/toggle-lever.tsx", "styles/toggle-lever.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<ToggleLeverField>
+  <ToggleLeverLabel />
+  <ToggleLeverDescription />
+  <ToggleLever />
+</ToggleLeverField>`,
+    parts: [
+      {
+        name: "ToggleLever",
+        renders: "Switch",
+        description:
+          "checked, defaultChecked, onCheckedChange, disabled, name. size md prints OFF and ON on the plate; sm is lever and lamp only. Space flips it. Alone, give it an aria-label.",
+      },
+      {
+        name: "ToggleLeverField",
+        renders: "Field.Root",
+        description: "A settings row: label and description on the left, the lever on the right. disabled locks the row.",
+      },
+      { name: "ToggleLeverLabel", renders: "Field.Label", description: "Names the switch. Clicking it throws the lever." },
+      { name: "ToggleLeverDescription", renders: "Field.Description", description: "Describes the switch." },
+    ],
+    examples: [
+      {
+        slug: "notifications",
+        title: "Notification settings",
+        description: "A lever per row, and a master lever that pauses them all.",
+        file: "toggle-lever-notifications.tsx",
       },
     ],
   },
