@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
       beforeFiles: [
         { source: "/components/:slug([a-z0-9-]+).md", destination: "/md/:slug" },
         { source: "/components/:parent([a-z0-9-]+)/:slug([a-z0-9-]+).md", destination: "/md/:slug" },
+        // Guides and posts as Markdown, converted from the rendered page (app/md-page).
+        { source: "/docs.md", destination: "/md-page/docs" },
+        { source: "/docs/:slug([a-z0-9-]+).md", destination: "/md-page/docs/:slug" },
+        { source: "/blog/:slug([a-z0-9-]+).md", destination: "/md-page/blog/:slug" },
       ],
     }
   },

@@ -5,6 +5,8 @@ import { CodeBlock } from "@/components/code-block"
  * live element read the same string, so the demo can't drift from the code.
  * Each step's `.button` selector is rewritten to a class of its own, and a
  * step's button carries every earlier step's class too, so steps build up.
+ * Live demos carry data-llm="omit": the Markdown export (app/md-page) keeps
+ * the code and drops the demo.
  */
 export type LabStep = { label: string; css: string }
 
@@ -14,7 +16,7 @@ const scoped = (css: string, i: number) => css.replaceAll(".button", `.lab-step-
 export function LabRow({ steps, upTo }: { steps: LabStep[]; upTo?: number }) {
   const shown = steps.slice(0, upTo ?? steps.length)
   return (
-    <figure className="my-6">
+    <figure data-llm="omit" className="my-6">
       <style>{steps.map((s, i) => scoped(s.css, i)).join("\n")}</style>
       <div className="tray grid grid-cols-2 gap-6 rounded-(--bevel-radius-xl) px-4 py-10 sm:grid-cols-4">
         {shown.map((step, i) => (
@@ -43,7 +45,7 @@ export function LabCode({ step, title = "styles.css" }: { step: LabStep; title?:
 /** Styles compared side by side: each is applied on its own, on its own surface. */
 export function StyleRow({ styles }: { styles: (LabStep & { surface: string })[] }) {
   return (
-    <figure className="my-6">
+    <figure data-llm="omit" className="my-6">
       <style>{styles.map((s, i) => s.css.replaceAll(".button", `.lab-style-${i}`)).join("\n")}</style>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {styles.map((style, i) => (

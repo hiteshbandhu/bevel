@@ -81,7 +81,7 @@ export function llmsIndex() {
     "",
     "## Docs",
     "",
-    ...guides.map((g) => `- [${g.title}](${abs(guideHref(g.slug))}): ${g.description}`),
+    ...guides.map((g) => `- [${g.title}](${abs(`${guideHref(g.slug)}.md`)}): ${g.description}`),
     `- [Material themes](${abs("/themes")}): brass, bakelite and anodized themes (\`${addCommand("themes")}\`, then \`data-bevel-theme="brass"\` on <html> or a container), and a playground that writes custom theme CSS.`,
     "",
   ]
@@ -105,7 +105,7 @@ export function llmsIndex() {
     "",
     "## Optional",
     "",
-    ...posts.map((p) => `- [${p.title}](${abs(postHref(p.slug))}): ${p.description}`),
+    ...posts.map((p) => `- [${p.title}](${abs(`${postHref(p.slug)}.md`)}): ${p.description}`),
     `- [Full docs in one file](${abs("/llms-full.txt")}): every component with its anatomy, parts and example code.`,
     `- [Registry index](${abs("/r/registry.json")}): the shadcn registry, for \`shadcn search\` and the shadcn MCP server.`,
     `- [Source on GitHub](${repoUrl}): the components, the docs site and the registry build.`,
