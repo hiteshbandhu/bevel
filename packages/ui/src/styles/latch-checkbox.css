@@ -1,0 +1,54 @@
+/*
+ * Latch checkbox: a small push-key in a recessed collar. Checked, the key
+ * latches down and its mark lights; mixed holds it half-way with a dash.
+ * Builds on bevel.css (recessed, raised, pressed, spring).
+ */
+
+:root {
+  --latch-checkbox-collar: oklch(0.86 0.004 260);
+  --latch-checkbox-cap-face: oklch(0.985 0.004 90); /* ivory key */
+  --latch-checkbox-cap-edge: oklch(0.74 0.008 90);
+  --latch-checkbox-lit: oklch(0.7 0.16 62); /* amber, lit from inside the key */
+  --latch-checkbox-glow: drop-shadow(0 0 2px oklch(0.78 0.16 68 / 0.75));
+  --latch-checkbox-focus: oklch(0.76 0.15 68);
+  --latch-checkbox-shade: oklch(0 0 0 / 0.28);
+  --latch-checkbox-size: 1.25rem; /* the collar */
+  --latch-checkbox-cap: 1rem; /* the key: collar minus the inset either side */
+  --latch-checkbox-cap-radius: 0.125rem; /* concentric: collar radius minus the inset */
+  --latch-checkbox-glyph: 0.75rem;
+  --latch-checkbox-travel: 0.125rem; /* how far the key sinks when latched */
+  --latch-checkbox-half: 0.0625rem;
+}
+
+.dark {
+  --latch-checkbox-collar: oklch(0.15 0.005 260);
+  --latch-checkbox-cap-face: oklch(0.36 0.006 260);
+  --latch-checkbox-cap-edge: oklch(0.22 0.006 260);
+  --latch-checkbox-lit: oklch(0.8 0.16 72);
+  --latch-checkbox-shade: oklch(0 0 0 / 0.7);
+}
+
+[data-slot="latch-checkbox"] {
+  --bevel-material-recess: var(--latch-checkbox-collar);
+  --bevel-shade-strong: var(--latch-checkbox-shade);
+}
+[data-slot="latch-checkbox-cap"] {
+  --bevel-material: var(--latch-checkbox-cap-face);
+  --bevel-material-edge: var(--latch-checkbox-cap-edge);
+}
+
+/* The mark is printed on a lamp lens in the key: lit amber when down. */
+@utility latch-checkbox-mark {
+  color: var(--latch-checkbox-lit);
+  filter: var(--latch-checkbox-glow);
+}
+
+@media (forced-colors: active) {
+  [data-slot="latch-checkbox"] {
+    border: 1px solid CanvasText;
+  }
+  [data-slot="latch-checkbox-mark"] {
+    color: Highlight;
+    filter: none;
+  }
+}

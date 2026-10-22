@@ -1,0 +1,95 @@
+/*
+ * Text field: a slot cut into the panel. The well is a shade darker than the
+ * surface and shadowed along its upper inner edge by the one light. Focus
+ * lights a thin amber edge, the colour of a caret; an invalid field edges in
+ * red and lights the lamp by its label. Builds on bevel.css (recessed, led).
+ */
+
+:root {
+  --text-field-well: oklch(0.955 0.004 90);
+  --text-field-shade: oklch(0 0 0 / 0.2); /* the inner shadow under the slot's top edge */
+  --text-field-glow: oklch(0.76 0.15 68); /* amber caret */
+  --text-field-glow-soft: oklch(0.76 0.15 68 / 0.35);
+  --text-field-error: oklch(0.6 0.21 27);
+  --text-field-error-soft: oklch(0.6 0.21 27 / 0.3);
+  --text-field-error-print: oklch(0.5 0.19 27);
+  --text-field-print: oklch(0.45 0.01 260); /* the printed label */
+  --text-field-key: oklch(0.97 0.004 90);
+  --text-field-key-edge: oklch(0.8 0.006 90);
+  --text-field-key-print: oklch(0.4 0.01 260);
+  --text-field-height: 2.25rem;
+  --text-field-textarea-height: 5.5rem;
+}
+
+.dark {
+  --text-field-well: oklch(0.17 0.005 260);
+  --text-field-shade: oklch(0 0 0 / 0.7);
+  --text-field-error-print: oklch(0.72 0.17 25);
+  --text-field-print: oklch(0.72 0.01 260);
+  --text-field-key: oklch(0.32 0.006 260);
+  --text-field-key-edge: oklch(0.2 0.006 260);
+  --text-field-key-print: oklch(0.86 0.005 260);
+}
+
+[data-slot="text-field"][data-size="sm"] {
+  --text-field-height: 2rem;
+  --text-field-textarea-height: 4.5rem;
+}
+
+/* The well: recessed, in the field's own colour and a softer shade. */
+@utility text-field-well {
+  --bevel-material-recess: var(--text-field-well);
+  --bevel-shade-strong: var(--text-field-shade);
+  background-color: var(--bevel-material-recess);
+  box-shadow: var(--bevel-depth-recessed);
+}
+
+/* A control inside a slot is part of the slot's well, not a well of its own. */
+[data-slot="text-field-slot"] :is([data-slot="text-field-input"], [data-slot="text-field-textarea"]) {
+  background-color: transparent;
+  box-shadow: none;
+}
+[data-slot="text-field-slot"]:has([data-slot="text-field-textarea"]) {
+  align-items: flex-start;
+}
+
+/* Focus lights the slot's edge. */
+[data-slot="text-field-slot"]:focus-within,
+:is([data-slot="text-field-input"], [data-slot="text-field-textarea"]):not([data-slot="text-field-slot"] *):focus-visible {
+  box-shadow:
+    var(--bevel-depth-recessed),
+    0 0 0 1px var(--text-field-glow),
+    0 0 0 3px var(--text-field-glow-soft);
+}
+
+/* Invalid: a red edge, brighter while focused. */
+[data-slot="text-field"][data-invalid] :is([data-slot="text-field-slot"], [data-slot="text-field-input"], [data-slot="text-field-textarea"]):not([data-slot="text-field-slot"] *) {
+  box-shadow:
+    var(--bevel-depth-recessed),
+    0 0 0 1px var(--text-field-error);
+}
+[data-slot="text-field"][data-invalid] :is([data-slot="text-field-slot"]:focus-within, :is([data-slot="text-field-input"], [data-slot="text-field-textarea"]):not([data-slot="text-field-slot"] *):focus-visible) {
+  box-shadow:
+    var(--bevel-depth-recessed),
+    0 0 0 1px var(--text-field-error),
+    0 0 0 3px var(--text-field-error-soft);
+}
+
+[data-slot="text-field-lamp"] {
+  --bevel-led: var(--text-field-error);
+}
+[data-slot="text-field-kbd"] {
+  --bevel-material: var(--text-field-key);
+  --bevel-material-edge: var(--text-field-key-edge);
+}
+
+@media (forced-colors: active) {
+  [data-slot="text-field-slot"],
+  :is([data-slot="text-field-input"], [data-slot="text-field-textarea"]):not([data-slot="text-field-slot"] *) {
+    border: 1px solid CanvasText;
+  }
+  [data-slot="text-field-slot"]:focus-within,
+  :is([data-slot="text-field-input"], [data-slot="text-field-textarea"]):not([data-slot="text-field-slot"] *):focus-visible {
+    outline: 2px solid Highlight;
+  }
+}

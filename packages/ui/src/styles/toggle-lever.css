@@ -1,0 +1,94 @@
+/*
+ * Toggle lever: a bat-handle toggle on a small brushed plate. The bat pivots
+ * in a hex bushing at the centre and points at the word that's on; the lamp
+ * at the end of the plate is lit while it's on. Builds on bevel.css (metal,
+ * led, spring).
+ */
+
+:root {
+  --toggle-lever-plate: oklch(0.88 0.004 260);
+  --toggle-lever-plate-edge: oklch(0.68 0.006 260);
+  --toggle-lever-print: oklch(0.42 0.01 260); /* engraved legend */
+  --toggle-lever-print-lit: oklch(0.2 0.01 260);
+  --toggle-lever-print-size: 0.5625rem;
+  --toggle-lever-chrome: oklch(0.97 0.003 260);
+  --toggle-lever-chrome-shaft: oklch(0.8 0.004 260);
+  --toggle-lever-chrome-edge: oklch(0.55 0.006 260);
+  --toggle-lever-bushing: oklch(0.6 0.006 260);
+  --toggle-lever-lamp-off: oklch(0.55 0.01 260);
+  --toggle-lever-lamp-on: oklch(0.8 0.17 145); /* green: running */
+  --toggle-lever-focus: oklch(0.76 0.15 68);
+  --toggle-lever-cast: 0 1px 0.5px oklch(0 0 0 / 0.45); /* the bat's shadow on the plate */
+  --toggle-lever-glint: oklch(1 0 0);
+  --toggle-lever-lamp-shade: oklch(0 0 0 / 0.35);
+  --toggle-lever-throw: 1.5rem; /* the space the bat swings across */
+  --toggle-lever-reach: 0.6875rem; /* bushing centre to the end of the ball */
+}
+
+.dark {
+  --toggle-lever-plate: oklch(0.34 0.006 260);
+  --toggle-lever-plate-edge: oklch(0.22 0.006 260);
+  --toggle-lever-print: oklch(0.66 0.01 260);
+  --toggle-lever-print-lit: oklch(0.95 0.005 260);
+  --toggle-lever-bushing: oklch(0.24 0.006 260);
+  --toggle-lever-lamp-off: oklch(0.3 0.01 260);
+}
+
+[data-slot="toggle-lever"] {
+  --bevel-material: var(--toggle-lever-plate);
+  --bevel-material-edge: var(--toggle-lever-plate-edge);
+  --bevel-led: var(--toggle-lever-lamp-off);
+}
+[data-slot="toggle-lever"][data-checked] {
+  --bevel-led: var(--toggle-lever-lamp-on);
+}
+/* An unlit lamp gives no glow. */
+[data-slot="toggle-lever"]:not([data-checked]) [data-slot="toggle-lever-lamp"] {
+  box-shadow:
+    inset 0 -1px 1px var(--toggle-lever-lamp-shade),
+    0 1px 0 var(--bevel-highlight);
+}
+
+/* Engraved legends: the one the bat points at is the lit one. */
+@utility toggle-lever-print {
+  font-size: var(--toggle-lever-print-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: var(--bevel-tracking-label);
+  text-transform: uppercase;
+  color: var(--toggle-lever-print);
+  text-shadow: var(--bevel-deboss);
+}
+[data-slot="toggle-lever"][data-checked] [data-side="on"],
+[data-slot="toggle-lever"][data-unchecked] [data-side="off"] {
+  color: var(--toggle-lever-print-lit);
+}
+
+/* The bat: a chrome shaft ending in a ball, casting a small shadow on the plate. */
+@utility toggle-lever-bat {
+  filter: drop-shadow(var(--toggle-lever-cast));
+}
+@utility toggle-lever-ball {
+  background-color: var(--toggle-lever-chrome);
+  background-image: radial-gradient(circle at 35% 30%, var(--toggle-lever-glint), transparent 55%);
+  box-shadow: inset 0 0 0 0.5px var(--toggle-lever-chrome-edge);
+}
+@utility toggle-lever-bushing {
+  background-color: var(--toggle-lever-bushing);
+  background-image: radial-gradient(circle at 50% 35%, var(--bevel-highlight-strong), transparent 60%);
+  box-shadow:
+    inset 0 0 0 1px var(--toggle-lever-chrome-edge),
+    0 1px 0 var(--bevel-highlight);
+}
+
+@media (forced-colors: active) {
+  [data-slot="toggle-lever"] {
+    border: 1px solid CanvasText;
+  }
+  [data-slot="toggle-lever-bat"] > * {
+    background: CanvasText;
+  }
+  [data-slot="toggle-lever"][data-checked] [data-slot="toggle-lever-lamp"] {
+    background: Highlight;
+  }
+}

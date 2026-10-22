@@ -4,6 +4,11 @@ import { Badge, BadgeLamp } from "@workspace/ui/components/badge"
 import { IconKey } from "@workspace/ui/components/icon-key"
 import { Kbd, KbdGroup } from "@workspace/ui/components/kbd"
 import { Key, KeyLamp } from "@workspace/ui/components/key"
+import { Search } from "lucide-react"
+import { TextField, TextFieldAdornment, TextFieldInput, TextFieldKbd, TextFieldLabel, TextFieldSlot } from "@workspace/ui/components/text-field"
+import { ToggleLever } from "@workspace/ui/components/toggle-lever"
+import { LatchCheckbox } from "@workspace/ui/components/latch-checkbox"
+import { PresetKey, PresetKeys } from "@workspace/ui/components/preset-keys"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
 import { DipSwitch, DipSwitchBank, DipSwitchToggle } from "@workspace/ui/components/dip-switch"
 import { PatchBay, PatchBayJack, PatchBayPanel, PatchBayRow } from "@workspace/ui/components/patch-bay"
@@ -137,6 +142,39 @@ export const previews: Record<string, React.ComponentType> = {
         Paused
       </Badge>
     </div>
+  "text-field": () => (
+    <TextField className="pointer-events-none w-56" size="sm">
+      <TextFieldLabel>Search</TextFieldLabel>
+      <TextFieldSlot>
+        <TextFieldAdornment>
+          <Search aria-hidden />
+        </TextFieldAdornment>
+        <TextFieldInput tabIndex={-1} readOnly placeholder="Components" />
+        <TextFieldKbd>⌘K</TextFieldKbd>
+      </TextFieldSlot>
+    </TextField>
+  ),
+  "toggle-lever": () => (
+    <div className="pointer-events-none flex scale-150 flex-col items-center gap-2">
+      <ToggleLever aria-label="On" defaultChecked tabIndex={-1} />
+      <ToggleLever aria-label="Off" tabIndex={-1} />
+    </div>
+  ),
+  "latch-checkbox": () => (
+    <div className="pointer-events-none flex scale-150 gap-2">
+      <LatchCheckbox aria-label="Checked" defaultChecked tabIndex={-1} />
+      <LatchCheckbox aria-label="Mixed" indeterminate tabIndex={-1} />
+      <LatchCheckbox aria-label="Unchecked" tabIndex={-1} />
+    </div>
+  ),
+  "preset-keys": () => (
+    <PresetKeys aria-label="Range" defaultValue="7d" className="pointer-events-none">
+      {["24h", "7d", "30d"].map((v) => (
+        <PresetKey key={v} value={v} tabIndex={-1}>
+          {v}
+        </PresetKey>
+      ))}
+    </PresetKeys>
   ),
   "time-card": () => (
     <TimeCard

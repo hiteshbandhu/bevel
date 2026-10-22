@@ -1907,6 +1907,212 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "text-field",
+    name: "Text field",
+    category: "essentials",
+    description:
+      "A text input cut into the panel as a slot, with a printed label above and description and error lines below. Focus lights the slot's edge amber, the colour of a caret; an invalid field edges in red and lights a lamp by its label. Inputs, textareas, search boxes with an icon and a key hint, amounts with a unit.",
+    files: ["components/text-field.tsx", "styles/text-field.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<TextField name="email">
+  <TextFieldLabel />
+  <TextFieldSlot>
+    <TextFieldAdornment />
+    <TextFieldInput />
+    <TextFieldKbd />
+  </TextFieldSlot>
+  <TextFieldDescription />
+  <TextFieldError />
+</TextField>`,
+    parts: [
+      {
+        name: "TextField",
+        renders: "Field.Root",
+        description:
+          "size sm or md. Everything Base UI Field takes: name, disabled, invalid, validate, validationMode. Wires the label, description and error to the control.",
+      },
+      {
+        name: "TextFieldLabel",
+        renders: "Field.Label",
+        description: "The printed label. Its lamp lights red while the field is invalid.",
+      },
+      {
+        name: "TextFieldSlot",
+        renders: "div",
+        description:
+          "The slot, when there are adornments. Pressing anywhere in it focuses the control. Optional: a bare TextFieldInput is its own slot.",
+      },
+      { name: "TextFieldInput", renders: "Input", description: "The input. value, defaultValue, onValueChange, and every input attribute." },
+      { name: "TextFieldTextarea", renders: "Field.Control (textarea)", description: "Several lines, resizable vertically." },
+      { name: "TextFieldAdornment", renders: "span", description: "An icon, unit or prefix printed in the slot." },
+      { name: "TextFieldKbd", renders: "kbd", description: "A small keycap: the shortcut that focuses the field." },
+      { name: "TextFieldDescription", renders: "Field.Description", description: "What goes in it. Describes the control." },
+      {
+        name: "TextFieldError",
+        renders: "Field.Error (alert)",
+        description:
+          "Shown while invalid and announced as it appears. match a validity state (valueMissing, typeMismatch…) or leave it off to show validate's message or the form's.",
+      },
+    ],
+    examples: [
+      {
+        slug: "settings",
+        title: "Workspace settings",
+        description:
+          "Fields validate as you leave them and again on save; the server's answer comes back on the field it's about. Save as is: the URL is taken.",
+        file: "text-field-settings.tsx",
+      },
+      {
+        slug: "search",
+        title: "Search box",
+        description: "An icon and a key hint in the slot. ⌘K or / focuses it from anywhere on the page.",
+        file: "text-field-search.tsx",
+      },
+    ],
+  },
+  {
+    slug: "toggle-lever",
+    name: "Toggle lever",
+    category: "essentials",
+    description:
+      "An everyday on/off switch, as a bat-handle toggle on a small plate. The lever swings through its bushing toward the side that's on and settles with a little spring; a lamp at the end of the plate lights. For settings rows. (For banks of config bits use DIP switches; for dangerous actions, the guarded switch.)",
+    files: ["components/toggle-lever.tsx", "styles/toggle-lever.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<ToggleLeverField>
+  <ToggleLeverLabel />
+  <ToggleLeverDescription />
+  <ToggleLever />
+</ToggleLeverField>`,
+    parts: [
+      {
+        name: "ToggleLever",
+        renders: "Switch",
+        description:
+          "checked, defaultChecked, onCheckedChange, disabled, name. size md prints OFF and ON on the plate; sm is lever and lamp only. Space flips it. Alone, give it an aria-label.",
+      },
+      {
+        name: "ToggleLeverField",
+        renders: "Field.Root",
+        description: "A settings row: label and description on the left, the lever on the right. disabled locks the row.",
+      },
+      { name: "ToggleLeverLabel", renders: "Field.Label", description: "Names the switch. Clicking it throws the lever." },
+      { name: "ToggleLeverDescription", renders: "Field.Description", description: "Describes the switch." },
+    ],
+    examples: [
+      {
+        slug: "notifications",
+        title: "Notification settings",
+        description: "A lever per row, and a master lever that pauses them all.",
+        file: "toggle-lever-notifications.tsx",
+      },
+    ],
+  },
+  {
+    slug: "latch-checkbox",
+    name: "Latch checkbox",
+    category: "essentials",
+    description:
+      "A checkbox as a latching push-key. Press it and it sinks and stays down with its mark lit amber; press again and it springs back up. Mixed holds it half-down with a dash. Small enough for lists and table rows.",
+    files: ["components/latch-checkbox.tsx", "styles/latch-checkbox.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<LatchCheckboxGroup value={allowed} onValueChange={setAllowed} allValues={all}>
+  <LatchCheckboxField>
+    <LatchCheckbox parent />
+    <LatchCheckboxLabel />
+  </LatchCheckboxField>
+  <LatchCheckboxField>
+    <LatchCheckbox value="read" />
+    <LatchCheckboxLabel />
+    <LatchCheckboxDescription />
+  </LatchCheckboxField>
+</LatchCheckboxGroup>`,
+    parts: [
+      {
+        name: "LatchCheckbox",
+        renders: "Checkbox",
+        description:
+          "checked, defaultChecked, onCheckedChange, indeterminate, disabled, name. In a group: value, or parent to toggle them all. Space presses it. Alone, give it an aria-label.",
+      },
+      {
+        name: "LatchCheckboxField",
+        renders: "Field.Root",
+        description: "The key with its label beside it and an optional description below.",
+      },
+      { name: "LatchCheckboxLabel", renders: "Field.Label", description: "Names the checkbox. Clicking it presses the key." },
+      { name: "LatchCheckboxDescription", renders: "Field.Description", description: "Describes the checkbox." },
+      {
+        name: "LatchCheckboxGroup",
+        renders: "CheckboxGroup",
+        description: "value (the values that are down), defaultValue, onValueChange, allValues for a parent key. Name it with aria-labelledby.",
+      },
+    ],
+    examples: [
+      {
+        slug: "permissions",
+        title: "Agent permissions",
+        description: "Which tools an agent may use. The top key presses them all, and sits half-down while only some are on.",
+        file: "latch-checkbox-permissions.tsx",
+      },
+    ],
+  },
+  {
+    slug: "preset-keys",
+    name: "Preset keys",
+    category: "essentials",
+    description:
+      "Tabs and segmented controls as interlocked preset keys, like a car radio's: press one and it latches down while the one that was down springs back up. Only one is ever down. PresetTabs switches panels; PresetKeys picks a value.",
+    files: ["components/preset-keys.tsx", "styles/preset-keys.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<PresetTabs defaultValue="preview">
+  <PresetTabsList size="sm">
+    <PresetTabsTab value="preview" />
+    <PresetTabsTab value="code" />
+  </PresetTabsList>
+  <PresetTabsPanel value="preview" />
+  <PresetTabsPanel value="code" />
+</PresetTabs>
+
+<PresetKeys aria-label="Range" value={range} onValueChange={setRange}>
+  <PresetKey value="7d" />
+  <PresetKey value="30d" />
+</PresetKeys>`,
+    parts: [
+      {
+        name: "PresetTabs",
+        renders: "Tabs.Root",
+        description: "value, defaultValue, onValueChange, orientation. Arrow keys move along the keys; Enter or Space presses one.",
+      },
+      {
+        name: "PresetTabsList",
+        renders: "Tabs.List",
+        description: "The keybed. size sm for a Preview/Code row or a toolbar, md for a screen's sections. activateOnFocus to press as you arrow.",
+      },
+      { name: "PresetTabsTab", renders: "Tabs.Tab", description: "One key, with a lamp lit while it's down. value, disabled." },
+      { name: "PresetTabsPanel", renders: "Tabs.Panel", description: "The panel a key shows. value, keepMounted." },
+      {
+        name: "PresetKeys",
+        renders: "RadioGroup",
+        description:
+          "A segmented control: value, defaultValue, onValueChange, name, disabled, size. Exactly one key is down; arrow keys move and press. Give it an aria-label.",
+      },
+      { name: "PresetKey", renders: "Radio", description: "One key. value, disabled." },
+    ],
+    examples: [
+      {
+        slug: "example",
+        title: "Preview and code",
+        description: "The tabs over a docs example, at the small size.",
+        file: "preset-keys-example.tsx",
+      },
+      {
+        slug: "range",
+        title: "Time range",
+        description: "A segmented range picker over a usage chart.",
+        file: "preset-keys-range.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {
