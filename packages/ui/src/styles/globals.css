@@ -38,6 +38,10 @@
 @import "./due-date-slip.css";
 @import "./dip-switch.css";
 @import "./patch-bay.css";
+@import "./tooltip.css";
+@import "./popover.css";
+@import "./menu.css";
+@import "./dialog.css";
 @import "./time-card.css";
 @import "./key.css";
 @import "./kbd.css";

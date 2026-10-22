@@ -2113,6 +2113,268 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "tooltip",
+    name: "Tooltip",
+    category: "essentials",
+    description:
+      "A label-maker strip: dark embossing tape with raised pale letters and a tab pointing at the trigger. It feeds out a short way from the trigger's side; in a group, the next one prints at once.",
+    files: ["components/tooltip.tsx", "styles/tooltip.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger aria-label="Copy link" />
+    <TooltipContent>Copy link</TooltipContent>
+  </Tooltip>
+</TooltipProvider>`,
+    parts: [
+      {
+        name: "TooltipProvider",
+        renders: "Tooltip provider",
+        description:
+          "Shares the open delay (delay, default 400ms; closeDelay). Once one tooltip shows, the next opens instantly and without animation.",
+      },
+      { name: "Tooltip", renders: "Tooltip root", description: "One trigger and its label. open, defaultOpen, onOpenChange, disabled." },
+      {
+        name: "TooltipTrigger",
+        renders: "button",
+        description: "Opens on hover and keyboard focus. Give an icon-only trigger an aria-label; pass render to use your own button.",
+      },
+      {
+        name: "TooltipContent",
+        renders: "Tooltip popup",
+        description:
+          "The tape, with its tab. tone: black (default), red, blue. side, align, sideOffset, alignOffset. Text prints in capitals; keep it to a few words.",
+      },
+    ],
+    examples: [
+      {
+        slug: "toolbar",
+        title: "Icon buttons",
+        description: "An editor toolbar. Hover one button and slide along: each label prints at once.",
+        file: "tooltip-toolbar.tsx",
+      },
+      {
+        slug: "tapes",
+        title: "Sides and tapes",
+        description: "Each label feeds out from its own side. Red and blue tape are for the label that must stand out.",
+        file: "tooltip-tapes.tsx",
+      },
+    ],
+  },
+  {
+    slug: "popover",
+    name: "Popover",
+    category: "essentials",
+    description:
+      "A sheet of panel stock lifted off the page on the shared light, with a folded tab at its trigger. It lifts toward you and settles; Escape or a click outside puts it down and returns focus.",
+    files: ["components/popover.tsx", "styles/popover.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Popover>
+  <PopoverTrigger />
+  <PopoverContent>
+    <PopoverHeader>
+      <PopoverTitle />
+      <PopoverDescription />
+      <PopoverClose />
+    </PopoverHeader>
+  </PopoverContent>
+</Popover>`,
+    parts: [
+      { name: "Popover", renders: "Popover root", description: "open, defaultOpen, onOpenChange, modal." },
+      { name: "PopoverTrigger", renders: "button", description: "Opens the sheet. Pass render to use your own button." },
+      {
+        name: "PopoverContent",
+        renders: "Popover popup",
+        description:
+          "The sheet, 20rem wide (--popover-width), padded and stacked. side (default bottom), align, sideOffset, alignOffset, collisionPadding. tab={false} leaves out the folded tab.",
+      },
+      { name: "PopoverHeader", renders: "div", description: "Title and description; leaves room for a corner close." },
+      { name: "PopoverTitle", renders: "h2", description: "Names the sheet for screen readers." },
+      { name: "PopoverDescription", renders: "p", description: "Muted text under the title." },
+      {
+        name: "PopoverClose",
+        renders: "button",
+        description: "With no children, a × in the top corner labelled “Close”. With children, an unstyled close button.",
+      },
+    ],
+    examples: [
+      {
+        slug: "share",
+        title: "Share a page",
+        description: "A link to copy and who can see it.",
+        file: "popover-share.tsx",
+      },
+    ],
+  },
+  {
+    slug: "menu",
+    name: "Menu",
+    category: "essentials",
+    description:
+      "A selector plate: items engraved into brushed metal, the highlighted one pressed in, a lamp for checked settings, engraved rules between groups and keycaps for shortcuts. Dropdown, submenu and context menu.",
+    files: ["components/menu.tsx", "styles/menu.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Menu>
+  <MenuTrigger />
+  <MenuContent>
+    <MenuItem>
+      Duplicate
+      <MenuShortcut keys={["⌘", "D"]} />
+    </MenuItem>
+    <MenuLinkItem href="/page.md" />
+    <MenuSub>
+      <MenuSubTrigger />
+      <MenuSubContent>
+        <MenuItem />
+      </MenuSubContent>
+    </MenuSub>
+    <MenuSeparator />
+    <MenuCheckboxItem />
+    <MenuGroup>
+      <MenuGroupLabel />
+      <MenuRadioGroup>
+        <MenuRadioItem />
+      </MenuRadioGroup>
+    </MenuGroup>
+  </MenuContent>
+</Menu>`,
+    parts: [
+      { name: "Menu", renders: "Menu root", description: "open, defaultOpen, onOpenChange, modal." },
+      { name: "MenuTrigger", renders: "button", description: "Opens the plate. Pass render to use your own button." },
+      {
+        name: "MenuContent",
+        renders: "Menu popup",
+        description: "The plate. side (default bottom), align (default start), sideOffset, alignOffset, collisionPadding. Scrolls when tall.",
+      },
+      {
+        name: "MenuItem",
+        renders: "div (menuitem)",
+        description: "Pressed in while highlighted. onClick runs it. variant=\"destructive\" engraves it in red. Icons are muted and sized for you.",
+      },
+      { name: "MenuLinkItem", renders: "a (menuitem)", description: "An item that is a real link: href, target." },
+      {
+        name: "MenuCheckboxItem",
+        renders: "div (menuitemcheckbox)",
+        description: "A pill lamp, lit when checked. checked, onCheckedChange. Stays open when toggled.",
+      },
+      { name: "MenuRadioGroup", renders: "div (group)", description: "value, onValueChange." },
+      { name: "MenuRadioItem", renders: "div (menuitemradio)", description: "A round lamp, lit when chosen. value." },
+      { name: "MenuGroup", renders: "div (group)", description: "Groups items under a label." },
+      { name: "MenuGroupLabel", renders: "div", description: "A small stamped heading." },
+      { name: "MenuSeparator", renders: "div (separator)", description: "An engraved rule." },
+      {
+        name: "MenuShortcut",
+        renders: "span",
+        description: "keys: one keycap per key. Hidden from screen readers; put aria-keyshortcuts on the item.",
+      },
+      { name: "MenuSub", renders: "Submenu root", description: "Holds a submenu." },
+      { name: "MenuSubTrigger", renders: "div (menuitem)", description: "Opens the submenu on hover, → or Enter. Has a chevron." },
+      { name: "MenuSubContent", renders: "Menu popup", description: "The submenu's plate, beside its trigger." },
+      { name: "ContextMenu", renders: "Context menu root", description: "Opens on right-click or long-press." },
+      { name: "ContextMenuTrigger", renders: "div", description: "The area that opens it." },
+      { name: "ContextMenuContent", renders: "Menu popup", description: "The plate at the pointer. Fill it with the same items." },
+    ],
+    examples: [
+      {
+        slug: "copy-page",
+        title: "Copy page",
+        description:
+          "The menu on a docs page with a Markdown version: copy it, view it, or open it in ChatGPT or Claude. Pass markdownUrl.",
+        file: "menu-copy-page.tsx",
+      },
+      {
+        slug: "file-actions",
+        title: "File actions",
+        description: "Shortcuts as keycaps, a submenu, a setting with a lamp, a sort order and a destructive item.",
+        file: "menu-file-actions.tsx",
+      },
+    ],
+  },
+  {
+    slug: "dialog",
+    name: "Dialog",
+    category: "essentials",
+    description:
+      "The lights go down and a panel rises onto the desk, screwed or stitched at its corners. Content has no padding of its own, so it hosts forms and command palettes alike; AlertDialog asks before something can't be undone.",
+    files: ["components/dialog.tsx", "styles/dialog.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Dialog>
+  <DialogTrigger />
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle />
+      <DialogDescription />
+    </DialogHeader>
+    <DialogBody />
+    <DialogFooter>
+      <DialogClose />
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
+<AlertDialog>
+  <AlertDialogTrigger />
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle />
+      <AlertDialogDescription />
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel />
+      <AlertDialogAction />
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`,
+    parts: [
+      {
+        name: "Dialog",
+        renders: "Dialog root",
+        description: "open, defaultOpen, onOpenChange, modal. Escape, the backdrop and Close put it away; focus returns to the trigger.",
+      },
+      { name: "DialogTrigger", renders: "button", description: "Opens the dialog. Pass render to use your own button." },
+      {
+        name: "DialogContent",
+        renders: "Dialog popup",
+        description:
+          "Dims the room and raises the panel. No padding. align: center or top (for a palette). fasteners: screws (default), stitch, none. showCloseButton (default true). Width from --dialog-width; override with className.",
+      },
+      { name: "DialogHeader", renders: "div", description: "Title and description, padded, clear of the corner ×." },
+      { name: "DialogTitle", renders: "h2", description: "Names the dialog for screen readers. Required; hide it with sr-only if it must not show." },
+      { name: "DialogDescription", renders: "p", description: "Muted text under the title." },
+      { name: "DialogBody", renders: "div", description: "Padded; scrolls when the panel runs out of room." },
+      { name: "DialogFooter", renders: "div", description: "A ledge behind an engraved rule, holding the keys. Stacks on small screens." },
+      { name: "DialogClose", renders: "button", description: "A raised key that closes. tone: default or destructive." },
+      { name: "AlertDialog", renders: "Alert dialog root", description: "Doesn't close on an outside click." },
+      { name: "AlertDialogContent", renders: "Alert dialog popup", description: "The same panel, narrower (--dialog-alert-width), with no corner ×. fasteners." },
+      { name: "AlertDialogCancel", renders: "button", description: "The safe answer. Put it first: it takes focus. Says “Cancel” by default." },
+      {
+        name: "AlertDialogAction",
+        renders: "button",
+        description: "Does it and closes; onClick runs first. A red key by default (tone=\"destructive\").",
+      },
+    ],
+    examples: [
+      {
+        slug: "delete-project",
+        title: "Delete a project",
+        description: "An alert dialog with a red key. Cancel takes focus, and a stray click outside does nothing.",
+        file: "dialog-delete-project.tsx",
+      },
+      {
+        slug: "rename",
+        title: "A form",
+        description: "Rename a document. Enter saves; Escape, × or Cancel leave it.",
+        file: "dialog-rename.tsx",
+      },
+      {
+        slug: "command",
+        title: "Command palette",
+        description: "⌘K opens a palette in the dialog: top-aligned, no padding, no fasteners.",
+        file: "dialog-command.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

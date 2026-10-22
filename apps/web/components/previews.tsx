@@ -176,6 +176,68 @@ export const previews: Record<string, React.ComponentType> = {
       ))}
     </PresetKeys>
   ),
+  /* Overlays render into a portal, so their tiles are stills built from the same styles. */
+  tooltip: () => (
+    <div className="flex flex-col items-center gap-2">
+      <div
+        data-slot="tooltip-content"
+        data-tone="black"
+        className="tooltip-tape relative rounded-(--bevel-radius-xs) px-2 py-1 text-(length:--tooltip-text) font-semibold tracking-(--bevel-tracking-print) uppercase"
+      >
+        Copy link
+        <span data-slot="tooltip-tab" data-side="top" className="absolute left-1/2 -translate-x-1/2" />
+      </div>
+      <span className="inline-flex size-8 items-center justify-center rounded-(--bevel-radius-sm) border bg-background text-muted-foreground">
+        <svg aria-hidden viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M6.5 9.5l3-3M7 4.5l1-1a2.5 2.5 0 013.5 3.5l-1 1M9 11.5l-1 1A2.5 2.5 0 014.5 9l1-1" />
+        </svg>
+      </span>
+    </div>
+  ),
+  popover: () => (
+    <div className="flex flex-col items-center gap-3">
+      <span className="inline-flex h-8 items-center rounded-(--bevel-radius-sm) border bg-muted px-3 text-sm font-medium">Share</span>
+      <div data-slot="popover-content" className="popover-sheet relative flex w-56 flex-col gap-1 rounded-(--bevel-radius-md) p-3 text-sm">
+        <span data-slot="popover-tab" data-side="bottom" className="absolute left-1/2 -translate-x-1/2" />
+        <span className="font-semibold">Share this page</span>
+        <span className="text-(--popover-sheet-muted)">Anyone with the link can view it.</span>
+      </div>
+    </div>
+  ),
+  menu: () => (
+    <div data-slot="menu-content" className="menu-plate flex w-52 flex-col rounded-(--bevel-radius-md) p-1 text-sm">
+      <span className="flex h-8 items-center rounded-(--bevel-radius-sm) px-2">Copy as Markdown</span>
+      <span className="bevel-pressed flex h-8 items-center rounded-(--bevel-radius-sm) px-2 [text-shadow:none]">View as Markdown</span>
+      <span className="menu-rule -mx-1 my-1" />
+      <span data-checked="" className="flex h-8 items-center gap-2 rounded-(--bevel-radius-sm) px-2.5">
+        <span data-slot="menu-lamp" className="bevel-led h-1.5 w-2.5 rounded-full" />
+        Show preview
+        <span data-slot="menu-shortcut" className="ml-auto flex gap-0.5 [text-shadow:none]">
+          <kbd className="bevel-raised inline-flex h-(--menu-key-size) min-w-(--menu-key-size) items-center justify-center rounded-(--bevel-radius-xs) px-1 font-sans text-(length:--bevel-fine) text-(--menu-key-foreground)">⌘</kbd>
+          <kbd className="bevel-raised inline-flex h-(--menu-key-size) min-w-(--menu-key-size) items-center justify-center rounded-(--bevel-radius-xs) px-1 font-sans text-(length:--bevel-fine) text-(--menu-key-foreground)">P</kbd>
+        </span>
+      </span>
+    </div>
+  ),
+  dialog: () => (
+    <div className="relative grid w-full place-items-center overflow-hidden rounded-(--bevel-radius-md) p-6">
+      <span className="dialog-dim absolute inset-0" />
+      <div data-slot="dialog-content" className="dialog-panel relative flex w-60 flex-col overflow-hidden rounded-(--bevel-radius-lg) text-sm">
+        <span data-slot="dialog-screws" className="absolute inset-(--dialog-screw-inset)">
+          <span className="dialog-screw absolute top-0 left-0" />
+          <span className="dialog-screw absolute top-0 right-0" />
+          <span className="dialog-screw absolute bottom-0 left-0" />
+          <span className="dialog-screw absolute right-0 bottom-0" />
+        </span>
+        <span className="px-5 pt-5 font-semibold">Delete acme-web?</span>
+        <span className="px-5 pt-1 text-(--dialog-panel-muted)">This can&rsquo;t be undone.</span>
+        <span className="mt-4 flex justify-end gap-2 border-t border-t-(--dialog-rule-shade) bg-(--dialog-ledge) px-5 py-3">
+          <span data-slot="alert-dialog-cancel" className="bevel-raised inline-flex h-7 items-center rounded-(--bevel-radius-sm) px-2.5 text-xs font-medium text-(--dialog-key-ink)">Cancel</span>
+          <span data-slot="alert-dialog-action" data-tone="destructive" className="bevel-raised inline-flex h-7 items-center rounded-(--bevel-radius-sm) px-2.5 text-xs font-medium text-(--dialog-key-ink)">Delete</span>
+        </span>
+      </div>
+    </div>
+  ),
   "time-card": () => (
     <TimeCard
       title="Week 43"

@@ -10,6 +10,14 @@ import { ToggleLeverNotifications } from "./toggle-lever-notifications"
 import { LatchCheckboxPermissions } from "./latch-checkbox-permissions"
 import { PresetKeysExample } from "./preset-keys-example"
 import { PresetKeysRange } from "./preset-keys-range"
+import { TooltipToolbar } from "./tooltip-toolbar"
+import { TooltipTapes } from "./tooltip-tapes"
+import { PopoverShare } from "./popover-share"
+import { MenuCopyPage } from "./menu-copy-page"
+import { MenuFileActions } from "./menu-file-actions"
+import { DialogDeleteProject } from "./dialog-delete-project"
+import { DialogRename } from "./dialog-rename"
+import { DialogCommand } from "./dialog-command"
 import { DipSwitchFlags } from "./dip-switch-flags"
 import { PatchBayWebhooks } from "./patch-bay-webhooks"
 import { TimeCardTimesheet } from "./time-card-timesheet"
@@ -110,4 +118,12 @@ export const demos: Record<string, React.ComponentType> = {
   "latch-checkbox-permissions.tsx": LatchCheckboxPermissions,
   "preset-keys-example.tsx": PresetKeysExample,
   "preset-keys-range.tsx": PresetKeysRange,
+  "tooltip-toolbar.tsx": TooltipToolbar,
+  "tooltip-tapes.tsx": TooltipTapes,
+  "popover-share.tsx": PopoverShare,
+  "menu-copy-page.tsx": MenuCopyPage,
+  "menu-file-actions.tsx": MenuFileActions,
+  "dialog-delete-project.tsx": DialogDeleteProject,
+  "dialog-rename.tsx": DialogRename,
+  "dialog-command.tsx": DialogCommand,
 }
