@@ -53,7 +53,8 @@ for (const slug of process.argv.slice(2)) {
     ...(prepared ? ["--draft", `draft:${prepared}`] : []),
   ]
   try {
-    const { stdout } = await run("npx", args, { cwd: dir, maxBuffer: 1 << 24 })
+    // The CLI has hung for half an hour on a publish; give up on one after five minutes.
+    const { stdout } = await run("npx", args, { cwd: dir, maxBuffer: 1 << 24, timeout: 300_000 })
     const result = JSON.parse(stdout.trim().split("\n").pop()!)
     if (result.state !== "published") throw new Error(stdout.slice(-400))
     writeFileSync(state, JSON.stringify(result, null, 2))
