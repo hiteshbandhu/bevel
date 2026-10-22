@@ -3,7 +3,7 @@
 // published; reuses a component's draft if one was prepared earlier.
 //   node scripts/publish-21st.mts <slug>...
 import { execFile } from "node:child_process"
-import { existsSync, readFileSync, writeFileSync } from "node:fs"
+import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs"
 import path from "node:path"
 import { promisify } from "node:util"
 import { categories, components } from "../apps/web/lib/catalog.ts"
@@ -36,11 +36,17 @@ for (const slug of process.argv.slice(2)) {
     console.log(`skip ${slug}: no passing render yet`)
     continue
   }
+  // 21st caps covers at 4 MB; a busy demo's PNG can be over, so ship a JPEG then.
+  let cover = "./preview/default.png"
+  if (statSync(path.join(dir, "preview/default.png")).size > 3_800_000) {
+    await run("sips", ["-s", "format", "jpeg", "-s", "formatOptions", "85", "preview/default.png", "--out", "preview/cover.jpg"], { cwd: dir })
+    cover = "./preview/cover.jpg"
+  }
   const prepared = existsSync(path.join(dir, "publish.json")) ? readFileSync(path.join(dir, "publish.json"), "utf8").match(/"draft_id":"([^"]+)"/)?.[1] : undefined
   const category = categories.find((k) => k.slug === c.category)?.name.toLowerCase() ?? c.category
   const description = `${short(c.description)} Skeuomorphic, accessible, Base UI. Part of Bevel: bevel-ui.vercel.app`
   const args = [
-    ...cli, "publish", `./${slug}.tsx`, "--demo", `./${slug}.demo.tsx`, "--preview", "./preview/default.png",
+    ...cli, "publish", `./${slug}.tsx`, "--demo", `./${slug}.demo.tsx`, "--preview", cover,
     "--to", "bevel", "--name", c.name, "--slug", slug,
     "--tags", ["skeuomorphic", category, "shadcn", "base-ui", "tactile"].join(","),
     "--description", description, "--visibility", "published", "--auto", "--no-open", "--json",
