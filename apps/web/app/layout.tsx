@@ -17,7 +17,7 @@ const fontSans = Schibsted_Grotesk({ subsets: ["latin"], variable: "--font-sans"
 const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
 const description =
-  "Open-source skeuomorphic React components: switches, meters, dials and ledgers modelled on real patents. Base UI, Tailwind CSS v4, installed with the shadcn CLI."
+  "Open-source skeuomorphic React components: switches, meters and dials modelled on real patents. Base UI and Tailwind CSS v4, installed with the shadcn CLI."
 
 export const metadata: Metadata = {
   title: { default: "Bevel: skeuomorphic React components for shadcn", template: "%s – Bevel" },
