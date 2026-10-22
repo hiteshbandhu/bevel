@@ -24,6 +24,8 @@ export const metadata: Metadata = {
   description,
   keywords: ["skeuomorphic", "skeuomorphism", "skeuomorphic UI", "tactile UI", "React components", "shadcn", "shadcn registry", "Base UI", "Tailwind CSS"],
   metadataBase: new URL(siteUrl),
+  // Google Search Console ownership, for the bevel-ui.vercel.app URL-prefix property.
+  verification: { google: "tHC5OjbEzdhx3yrrFrsZDp58-5WrcdOA-D8SJw1W0DQ" },
   ...preview({ title: "Bevel: skeuomorphic React components", description, image: "bevel.jpg", path: "/" }),
 }
 
