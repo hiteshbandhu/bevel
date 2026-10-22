@@ -6,6 +6,7 @@
 //
 //   node scripts/render-reel.mts                         16:9 → launch-kit/reel.mp4
 //   node scripts/render-reel.mts --shape vertical        9:16 → launch-kit/reel-vertical.mp4
+//   node scripts/render-reel.mts --cut                   the reel-edit cut → launch-kit/reel-cut-video.mp4 (no audio; mix separately)
 //   node scripts/render-reel.mts --check                 loop seam + determinism only
 //   node scripts/render-reel.mts --png 1.6 5.4 17        stills into launch-kit/reel-frames/
 //
@@ -24,12 +25,13 @@ const opt = (name: string, fallback: string) => {
   const i = argv.indexOf(`--${name}`)
   return i >= 0 ? argv[i + 1]! : fallback
 }
-const vertical = opt("shape", "landscape") === "vertical"
+const cut = argv.includes("--cut")
+const vertical = cut || opt("shape", "landscape") === "vertical"
 const fps = Number(opt("fps", "30"))
 const base = opt("url", "http://localhost:3000")
 const size = vertical ? { width: 1080, height: 1920 } : { width: 1920, height: 1080 }
 const kit = path.join(root, "launch-kit")
-const out = opt("out", path.join(kit, vertical ? "reel-vertical.mp4" : "reel.mp4"))
+const out = opt("out", path.join(kit, cut ? "reel-cut-video.mp4" : vertical ? "reel-vertical.mp4" : "reel.mp4"))
 await mkdir(kit, { recursive: true })
 
 const browser = await chromium.launch()
@@ -37,7 +39,7 @@ const page = await browser.newPage({ viewport: size, deviceScaleFactor: 1 })
 const errors: string[] = []
 page.on("pageerror", (e) => errors.push(String(e)))
 page.on("console", (m) => m.type() === "error" && !m.text().includes("_next/webpack-hmr") && errors.push(m.text()))
-await page.goto(`${base}/reel?external=1${vertical ? "&shape=vertical" : ""}`, { waitUntil: "load" })
+await page.goto(`${base}/reel${cut ? "/cut" : ""}?external=1${vertical && !cut ? "&shape=vertical" : ""}`, { waitUntil: "load" })
 await page.waitForFunction(() => document.documentElement.dataset.ready === "1", null, { timeout: 60_000 })
 const duration = await page.evaluate(() => (window as unknown as { anim: { duration: number } }).anim.duration)
 
@@ -73,7 +75,7 @@ if (pngAt >= 0) {
   const dir = path.join(kit, "reel-frames")
   await mkdir(dir, { recursive: true })
   for (const t of argv.slice(pngAt + 1).filter((a) => !a.startsWith("--")).map(Number)) {
-    const file = path.join(dir, `${vertical ? "v" : "h"}-t${t.toFixed(2)}.png`)
+    const file = path.join(dir, `${cut ? "c" : vertical ? "v" : "h"}-t${t.toFixed(2)}.png`)
     await writeFile(file, await shot(t))
     console.log(path.relative(root, file))
   }
