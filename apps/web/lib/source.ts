@@ -29,7 +29,7 @@ export async function readLibraryFile(file: string) {
   return toProjectImports(await readFile(path.join(uiSrcDir, file), "utf8"))
 }
 
-export function highlight(code: string, lang: "tsx" | "css" | "bash" | "json" | "markdown" = "tsx") {
+export function highlight(code: string, lang: "tsx" | "css" | "html" | "bash" | "json" | "markdown" = "tsx") {
   return codeToHtml(code.trimEnd(), {
     lang,
     themes: { light: "github-light", dark: "github-dark" },
