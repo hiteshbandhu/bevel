@@ -207,8 +207,9 @@ export function OgDemo({ n }: { n: number }) {
 }
 
 /** A post: its title beside three of the objects it's about, each with its patent plate. */
-export function OgPost({ slug, objects = ["number-wheel", "guarded-switch", "split-flap"] }: { slug: string; objects?: string[] }) {
+export function OgPost({ slug }: { slug: string }) {
   const post = posts.find((p) => p.slug === slug)!
+  const objects: readonly string[] = post.objects
   return (
     <Bench>
       <div style={{ position: "absolute", inset: 0, display: "flex", padding: 56, gap: 40 }}>
