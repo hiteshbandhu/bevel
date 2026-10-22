@@ -221,9 +221,9 @@ export const previews: Record<string, React.ComponentType> = {
     </div>
   ),
   dialog: () => (
-    <div className="relative grid w-full place-items-center overflow-hidden rounded-(--bevel-radius-md) p-6">
+    <div className="relative grid w-full place-items-center overflow-hidden rounded-(--bevel-radius-md) p-4">
       <span className="dialog-dim absolute inset-0" />
-      <div data-slot="dialog-content" className="dialog-panel relative flex w-60 flex-col overflow-hidden rounded-(--bevel-radius-lg) text-sm">
+      <div data-slot="dialog-content" className="dialog-panel relative flex w-52 flex-col overflow-hidden rounded-(--bevel-radius-lg) text-sm">
         <span data-slot="dialog-screws" className="absolute inset-(--dialog-screw-inset)">
           <span className="dialog-screw absolute top-0 left-0" />
           <span className="dialog-screw absolute top-0 right-0" />
