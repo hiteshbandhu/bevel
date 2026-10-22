@@ -4,6 +4,7 @@ import { Geist_Mono, Schibsted_Grotesk } from "next/font/google"
 
 import "@workspace/ui/globals.css"
 import "./site.css"
+import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { ThemeProvider } from "@/components/theme-provider"
 import { gaId } from "@/lib/analytics"
@@ -44,6 +45,7 @@ export default async function RootLayout({
         <ThemeProvider>
           <SiteHeader searchIndex={buildSearchIndex()} stars={await getStars()} />
           {children}
+          <SiteFooter />
         </ThemeProvider>
       </body>
       {gaId && <GoogleAnalytics gaId={gaId} />}

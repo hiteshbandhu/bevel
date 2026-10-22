@@ -16,7 +16,6 @@ import { categories, components, componentHref, getComponent } from "@/lib/catal
 import { faq } from "@/lib/faq"
 import { getStars } from "@/lib/github"
 import { origins } from "@/lib/origins"
-import { xHandle, xUrl } from "@/lib/docs"
 import { registryNamespace, registryUrl, siteUrl } from "@/lib/site"
 
 export default async function Home() {
@@ -201,18 +200,6 @@ export default async function Home() {
         </dl>
       </section>
 
-      <footer className="flex flex-wrap justify-between gap-4 border-t py-10 text-sm text-muted-foreground">
-        <p>Built on Base UI and Tailwind CSS. Installs with the shadcn CLI.</p>
-        <p>
-          Made by{" "}
-          <a
-            href={xUrl}
-            className="rounded-sm text-foreground underline underline-offset-4 outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            @{xHandle}
-          </a>
-        </p>
-      </footer>
     </main>
   )
 }
