@@ -142,6 +142,7 @@ export const previews: Record<string, React.ComponentType> = {
         Paused
       </Badge>
     </div>
+  ),
   "text-field": () => (
     <TextField className="pointer-events-none w-56" size="sm">
       <TextFieldLabel>Search</TextFieldLabel>
