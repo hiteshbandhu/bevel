@@ -38,6 +38,7 @@
 @import "./due-date-slip.css";
 @import "./dip-switch.css";
 @import "./patch-bay.css";
+@import "./tooltip.css";
 @import "./time-card.css";
 @import "./theme-transition.css";
 /* Last, so a theme on <html> wins over the palettes above. */

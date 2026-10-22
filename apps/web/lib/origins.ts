@@ -358,4 +358,14 @@ export const origins: Record<string, Origin> = {
     url: "https://www.uaudio.com/blogs/ua/ua-610-the-console-that-changed-recording-forever",
     note: "Putnam's 610 console was built from identical modular channel strips: one strip per source, as Bevel does per agent.",
   },
+  tooltip: {
+    kind: "patent",
+    relation: "Patent",
+    label: "US 3,006,451",
+    title: "Hand operated embossing tool",
+    who: "David W. Souza (Dymo Industries)",
+    year: 1961,
+    url: patent("US3006451A"),
+    note: "Souza's hand-held labeler pressed raised letters into a strip of coloured plastic tape, which stretched pale where it was struck: the dark tape and light letters of a Tooltip.",
+  },
 }

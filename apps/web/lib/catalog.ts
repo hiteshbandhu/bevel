@@ -54,6 +54,11 @@ export const foundation = {
 
 export const categories: Category[] = [
   {
+    slug: "essentials",
+    name: "Essentials",
+    description: "Everyday controls (buttons, fields, switches, overlays) made of Bevel's materials. The real Base UI control, with a body.",
+  },
+  {
     slug: "money",
     name: "Money",
     description: "Balances, payment methods and credits for checkout, billing and usage-based products.",
@@ -1757,6 +1762,55 @@ export const components: ComponentDoc[] = [
         title: "An expiring API key",
         description: "The key lapsed four days ago. Renew it, and again, until the renewals run out.",
         file: "due-date-slip-key.tsx",
+      },
+    ],
+  },
+  {
+    slug: "tooltip",
+    name: "Tooltip",
+    category: "essentials",
+    description:
+      "A label-maker strip: dark embossing tape with raised pale letters and a tab pointing at the trigger. It feeds out a short way from the trigger's side; in a group, the next one prints at once.",
+    files: ["components/tooltip.tsx", "styles/tooltip.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger aria-label="Copy link" />
+    <TooltipContent>Copy link</TooltipContent>
+  </Tooltip>
+</TooltipProvider>`,
+    parts: [
+      {
+        name: "TooltipProvider",
+        renders: "Tooltip provider",
+        description:
+          "Shares the open delay (delay, default 400ms; closeDelay). Once one tooltip shows, the next opens instantly and without animation.",
+      },
+      { name: "Tooltip", renders: "Tooltip root", description: "One trigger and its label. open, defaultOpen, onOpenChange, disabled." },
+      {
+        name: "TooltipTrigger",
+        renders: "button",
+        description: "Opens on hover and keyboard focus. Give an icon-only trigger an aria-label; pass render to use your own button.",
+      },
+      {
+        name: "TooltipContent",
+        renders: "Tooltip popup",
+        description:
+          "The tape, with its tab. tone: black (default), red, blue. side, align, sideOffset, alignOffset. Text prints in capitals; keep it to a few words.",
+      },
+    ],
+    examples: [
+      {
+        slug: "toolbar",
+        title: "Icon buttons",
+        description: "An editor toolbar. Hover one button and slide along: each label prints at once.",
+        file: "tooltip-toolbar.tsx",
+      },
+      {
+        slug: "tapes",
+        title: "Sides and tapes",
+        description: "Each label feeds out from its own side. Red and blue tape are for the label that must stand out.",
+        file: "tooltip-tapes.tsx",
       },
     ],
   },

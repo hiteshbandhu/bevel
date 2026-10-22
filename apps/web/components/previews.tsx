@@ -86,6 +86,24 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  /* Overlays render into a portal, so their tiles are stills built from the same styles. */
+  tooltip: () => (
+    <div className="flex flex-col items-center gap-2">
+      <div
+        data-slot="tooltip-content"
+        data-tone="black"
+        className="tooltip-tape relative rounded-(--bevel-radius-xs) px-2 py-1 text-(length:--tooltip-text) font-semibold tracking-(--bevel-tracking-print) uppercase"
+      >
+        Copy link
+        <span data-slot="tooltip-tab" data-side="top" className="absolute left-1/2 -translate-x-1/2" />
+      </div>
+      <span className="inline-flex size-8 items-center justify-center rounded-(--bevel-radius-sm) border bg-background text-muted-foreground">
+        <svg aria-hidden viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M6.5 9.5l3-3M7 4.5l1-1a2.5 2.5 0 013.5 3.5l-1 1M9 11.5l-1 1A2.5 2.5 0 014.5 9l1-1" />
+        </svg>
+      </span>
+    </div>
+  ),
   "time-card": () => (
     <TimeCard
       title="Week 43"

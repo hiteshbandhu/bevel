@@ -1,0 +1,84 @@
+/*
+ * Tooltip: a strip of embossing tape, as from a label maker. Dark glossy
+ * tape, raised letters stretched pale, and a short tab of tape pointing at
+ * the trigger. Builds on bevel.css (light, motion, shape).
+ */
+
+:root {
+  --tooltip-tape-black: oklch(0.22 0.008 260);
+  --tooltip-tape-red: oklch(0.47 0.17 27);
+  --tooltip-tape-blue: oklch(0.42 0.13 258);
+  /* Embossing stretches the plastic until it turns pale. */
+  --tooltip-letter: oklch(0.96 0.006 90);
+  --tooltip-rim: oklch(0 0 0 / 0.3);
+  /* Raised letters: the light catches the top, the lower edge throws a shadow. */
+  --tooltip-emboss: 0 1px 0 oklch(0 0 0 / 0.55), 0 -0.5px 0 oklch(1 0 0 / 0.35);
+  --tooltip-text: 0.75rem;
+  --tooltip-max-width: 18rem;
+  --tooltip-offset: 0.5rem; /* gap to the trigger, tab included */
+  --tooltip-slide: 0.25rem; /* tape feeding out from the trigger's side */
+  --tooltip-tab-width: 0.625rem;
+  --tooltip-tab-depth: 0.3125rem;
+}
+
+.dark {
+  /* On a dark page the black tape keeps an edge. */
+  --tooltip-tape-black: oklch(0.3 0.008 260);
+}
+
+[data-slot="tooltip-content"],
+[data-slot="tooltip-tab"] {
+  --tooltip-tape: var(--tooltip-tape-black);
+}
+[data-slot="tooltip-content"][data-tone="red"],
+[data-slot="tooltip-content"][data-tone="red"] [data-slot="tooltip-tab"] {
+  --tooltip-tape: var(--tooltip-tape-red);
+}
+[data-slot="tooltip-content"][data-tone="blue"],
+[data-slot="tooltip-content"][data-tone="blue"] [data-slot="tooltip-tab"] {
+  --tooltip-tape: var(--tooltip-tape-blue);
+}
+
+/* Glossy tape: a sheen along the top, the lower edge in shade, a hairline rim. */
+@utility tooltip-tape {
+  background-color: var(--tooltip-tape);
+  background-image: linear-gradient(to bottom, var(--bevel-highlight-strong), transparent 45%, var(--bevel-shade));
+  box-shadow:
+    inset 0 0 0 1px var(--tooltip-rim),
+    var(--bevel-depth-cast-sm);
+  color: var(--tooltip-letter);
+  text-shadow: var(--tooltip-emboss);
+}
+
+/* The tab: a short tongue of tape, narrowing toward the trigger. */
+[data-slot="tooltip-tab"] {
+  background-color: var(--tooltip-tape);
+}
+[data-slot="tooltip-tab"][data-side="top"],
+[data-slot="tooltip-tab"][data-side="bottom"] {
+  width: var(--tooltip-tab-width);
+  height: var(--tooltip-tab-depth);
+}
+[data-slot="tooltip-tab"][data-side="left"],
+[data-slot="tooltip-tab"][data-side="right"] {
+  width: var(--tooltip-tab-depth);
+  height: var(--tooltip-tab-width);
+}
+[data-slot="tooltip-tab"][data-side="top"] {
+  top: 100%;
+  clip-path: polygon(0 0, 100% 0, 70% 100%, 30% 100%);
+}
+[data-slot="tooltip-tab"][data-side="bottom"] {
+  bottom: 100%;
+  clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
+  /* The tab facing the light catches it. */
+  background-image: linear-gradient(to bottom, transparent, var(--bevel-highlight-strong));
+}
+[data-slot="tooltip-tab"][data-side="left"] {
+  left: 100%;
+  clip-path: polygon(0 0, 100% 30%, 100% 70%, 0 100%);
+}
+[data-slot="tooltip-tab"][data-side="right"] {
+  right: 100%;
+  clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 70%);
+}
