@@ -22,8 +22,9 @@
 }
 
 .dark {
-  /* On a dark page the black tape keeps an edge. */
-  --tooltip-tape-black: oklch(0.3 0.008 260);
+  /* Dark trays sit near 0.2, so the black tape lifts well clear of them and takes a pale rim. */
+  --tooltip-tape-black: oklch(0.42 0.008 260);
+  --tooltip-rim: oklch(1 0 0 / 0.16);
 }
 
 [data-slot="tooltip-content"],

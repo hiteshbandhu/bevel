@@ -48,8 +48,9 @@ function TextFieldLabel({ className, children, ...props }: Field.Label.Props) {
   )
 }
 
+// flex-1 only inside a slot: on a bare input in the field's column, its 0% basis beats the height.
 const control =
-  "min-w-0 flex-1 text-sm text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:text-muted-foreground"
+  "min-w-0 in-data-[slot=text-field-slot]:flex-1 text-sm text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:text-muted-foreground"
 
 /**
  * The slot, when the field has adornments: an icon, a unit, a key hint.

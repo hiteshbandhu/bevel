@@ -3,16 +3,18 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Moon, Sun } from "lucide-react"
+import { Menu as MenuIcon, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { cn } from "@workspace/ui/lib/utils"
 import { transitionTheme } from "@workspace/ui/lib/theme-transition"
 import { IconKey } from "@workspace/ui/components/icon-key"
+import { Menu, MenuContent, MenuLinkItem, MenuSeparator, MenuTrigger } from "@workspace/ui/components/menu"
 import { GitHubStar } from "@/components/github-star"
 import { SiteSearch } from "@/components/site-search"
 import { xHandle, xUrl } from "@/lib/docs"
 import type { SearchGroup } from "@/lib/search"
 
+// On a phone the links move into the menu key; the header keeps the mark, search and theme.
 const links = [
   { href: "/docs", label: "Docs" },
   { href: "/components", label: "Components" },
@@ -40,8 +42,7 @@ export function SiteHeader({ searchIndex, stars }: { searchIndex: SearchGroup[];
           <img src="/logo.png" alt="" width={24} height={24} className="size-6" />
           Bevel
         </Link>
-        {/* On a phone the links scroll sideways rather than push the buttons off screen. */}
-        <nav className="-my-1 flex min-w-0 gap-4 overflow-x-auto py-1 text-sm whitespace-nowrap [scrollbar-width:none] sm:gap-6">
+        <nav className="hidden min-w-0 gap-6 text-sm whitespace-nowrap sm:flex">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -56,6 +57,20 @@ export function SiteHeader({ searchIndex, stars }: { searchIndex: SearchGroup[];
           ))}
         </nav>
         <SiteSearch index={searchIndex} />
+        <Menu>
+          <MenuTrigger render={<IconKey variant="ghost" aria-label="More pages" className="sm:hidden" />}>
+            <MenuIcon aria-hidden />
+          </MenuTrigger>
+          <MenuContent align="end">
+            {links.map((link) => (
+              <MenuLinkItem key={link.href} render={<Link href={link.href} />}>
+                {link.label}
+              </MenuLinkItem>
+            ))}
+            <MenuSeparator />
+            <MenuLinkItem href={xUrl}>@{xHandle} on X</MenuLinkItem>
+          </MenuContent>
+        </Menu>
         <GitHubStar stars={stars} size="sm" className="hidden sm:inline-flex" />
         <a
           href={xUrl}

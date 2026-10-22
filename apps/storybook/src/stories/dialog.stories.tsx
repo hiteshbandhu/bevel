@@ -90,7 +90,8 @@ export const Keyboard: Story = {
     await waitFor(() => expect(panel.contains(document.activeElement)).toBe(true))
     for (let i = 0; i < 6; i++) {
       await userEvent.tab()
-      await expect(panel.contains(document.activeElement)).toBe(true)
+      // The trap's focus guards hand focus back a tick later, so wait for it to land.
+      await waitFor(() => expect(panel.contains(document.activeElement)).toBe(true))
     }
     await userEvent.keyboard("{Escape}")
     await waitFor(() => expect(body().queryByRole("dialog")).toBeNull())

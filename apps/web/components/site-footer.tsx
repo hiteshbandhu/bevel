@@ -62,7 +62,7 @@ const linkClass =
  * was built under. Here each patent number links to the component it became.
  */
 export function SiteFooter() {
-  const count = components.filter((c) => !c.parent).length
+  const count = components.length
   return (
     <footer className="mt-24 border-t">
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
@@ -78,7 +78,7 @@ export function SiteFooter() {
             <p className="max-w-xs text-sm text-muted-foreground">
               {count} skeuomorphic React components for shadcn, each modelled on a real object. Open source.
             </p>
-            <InstallCommand command={`npx shadcn add ${registryNamespace}/meter`} />
+            <InstallCommand command={`npx shadcn@latest add ${registryNamespace}/meter`} />
           </div>
           {columns.map((column) => (
             <nav key={column.title} aria-label={column.title} className="flex flex-col gap-3 text-sm">
@@ -86,7 +86,8 @@ export function SiteFooter() {
               <ul className="flex flex-col gap-2">
                 {column.links.map((link) => (
                   <li key={link.href}>
-                    {link.href.startsWith("http") ? (
+                    {/* Files (sitemap.xml, registry.json) and other sites aren't pages to prefetch. */}
+                    {link.href.startsWith("http") || /\.\w+$/.test(link.href) ? (
                       <a href={link.href} className={linkClass}>
                         {link.label}
                       </a>

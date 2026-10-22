@@ -18,7 +18,7 @@ export function ComponentTile({ component, compact }: { component: ComponentDoc;
       <div
         className={cn(
           "tray flex items-center justify-center overflow-hidden rounded-(--bevel-radius-xl) px-6",
-          compact ? "h-48" : "h-64"
+          compact ? "h-56" : "h-64"
         )}
       >
         <div
@@ -28,14 +28,18 @@ export function ComponentTile({ component, compact }: { component: ComponentDoc;
           className={cn(
             "w-full max-w-64 transition-[translate] duration-(--bevel-duration-small) ease-(--bevel-ease-out) group-hover:-translate-y-1 motion-reduce:transition-none",
             // Previews are drawn for the full tray; the compact one scales the object, not its layout.
-            compact && "scale-[0.8]"
+            // Essentials are everyday-sized controls already, so they keep their size.
+            compact && component.category !== "essentials" && "scale-[0.75]"
           )}
         >
           {Preview && <Preview />}
         </div>
       </div>
       <p className={cn("font-semibold", compact ? "mt-3" : "mt-4")}>{component.name}</p>
-      <p className={cn("mt-1 text-sm text-muted-foreground", compact && "line-clamp-2")}>{component.description}</p>
+      <p className={cn("mt-1 text-sm text-muted-foreground", compact && "line-clamp-2")}>
+        {/* A compact tile says the first sentence whole rather than cutting the full text mid-clause. */}
+        {compact ? component.description.split(/(?<=[.!?])\s/)[0] : component.description}
+      </p>
     </Link>
   )
 }
