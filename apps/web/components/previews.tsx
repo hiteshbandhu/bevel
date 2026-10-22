@@ -1,4 +1,6 @@
 import type * as React from "react"
+import { Copy, X } from "lucide-react"
+import { IconKey } from "@workspace/ui/components/icon-key"
 import { Key, KeyLamp } from "@workspace/ui/components/key"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
 import { DipSwitch, DipSwitchBank, DipSwitchToggle } from "@workspace/ui/components/dip-switch"
@@ -96,6 +98,19 @@ export const previews: Record<string, React.ComponentType> = {
         <KeyLamp />
         Saving
       </Key>
+    </div>
+  ),
+  "icon-key": () => (
+    <div className="pointer-events-none flex scale-125 items-center gap-2">
+      <IconKey aria-label="Copy" tabIndex={-1}>
+        <Copy />
+      </IconKey>
+      <IconKey variant="primary" aria-label="Copy" tabIndex={-1}>
+        <Copy />
+      </IconKey>
+      <IconKey variant="ghost" aria-label="Close" tabIndex={-1}>
+        <X />
+      </IconKey>
     </div>
   ),
   "time-card": () => (

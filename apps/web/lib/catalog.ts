@@ -143,6 +143,36 @@ export const components: ComponentDoc[] = [
     ],
   },
   {
+    slug: "icon-key",
+    name: "Icon key",
+    category: "essentials",
+    parent: "key",
+    description:
+      "A square keycap for a single icon: copy, close, toolbar actions. It must be given an aria-label, and is secondary by default so a row of them stays quiet.",
+    files: ["components/icon-key.tsx"],
+    registryDependencies: ["key"],
+    dependencies: [],
+    anatomy: `<IconKey aria-label="Copy">
+  <Copy />
+</IconKey>`,
+    parts: [
+      {
+        name: "IconKey",
+        renders: "Key",
+        description:
+          "Every Key prop except square. aria-label is required. Sizes sm, md and lg are 32, 36 and 40px square.",
+      },
+    ],
+    examples: [
+      {
+        slug: "toolbar",
+        title: "Toolbar and copy button",
+        description: "Ghost keys in a formatting toolbar, and a copy key that latches while it writes to the clipboard.",
+        file: "icon-key-toolbar.tsx",
+      },
+    ],
+  },
+  {
     slug: "wallet",
     name: "Wallet",
     category: "money",
