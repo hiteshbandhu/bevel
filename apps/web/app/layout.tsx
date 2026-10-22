@@ -7,6 +7,7 @@ import "./site.css"
 import { SiteHeader } from "@/components/site-header"
 import { ThemeProvider } from "@/components/theme-provider"
 import { gaId } from "@/lib/analytics"
+import { getStars } from "@/lib/github"
 import { preview } from "@/lib/og"
 import { buildSearchIndex } from "@/lib/search"
 import { siteUrl } from "@/lib/site"
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
   ...preview({ title: "Bevel: skeuomorphic React components", description, image: "bevel.jpg", path: "/" }),
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
@@ -39,7 +40,7 @@ export default function RootLayout({
     >
       <body className="min-h-svh">
         <ThemeProvider>
-          <SiteHeader searchIndex={buildSearchIndex()} />
+          <SiteHeader searchIndex={buildSearchIndex()} stars={await getStars()} />
           {children}
         </ThemeProvider>
       </body>
