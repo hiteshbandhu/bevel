@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { cn } from "@workspace/ui/lib/utils"
 import { previews } from "@/components/previews"
 import { componentHref, type ComponentDoc } from "@/lib/catalog"
 
@@ -7,25 +8,34 @@ import { componentHref, type ComponentDoc } from "@/lib/catalog"
  * height and the object sits centred in it, so names and descriptions line
  * up across a row however tall each object is.
  */
-export function ComponentTile({ component }: { component: ComponentDoc }) {
+export function ComponentTile({ component, compact }: { component: ComponentDoc; compact?: boolean }) {
   const Preview = previews[component.slug]
   return (
     <Link
       href={componentHref(component)}
       className="group flex h-full flex-col rounded-(--bevel-radius-xl) outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
     >
-      <div className="tray flex h-64 items-center justify-center overflow-hidden rounded-(--bevel-radius-xl) px-6">
+      <div
+        className={cn(
+          "tray flex items-center justify-center overflow-hidden rounded-(--bevel-radius-xl) px-6",
+          compact ? "h-48" : "h-64"
+        )}
+      >
         <div
           inert
           aria-hidden
           data-slot="tile-preview"
-          className="w-full max-w-64 transition-[translate] duration-(--bevel-duration-small) ease-(--bevel-ease-out) group-hover:-translate-y-1 motion-reduce:transition-none"
+          className={cn(
+            "w-full max-w-64 transition-[translate] duration-(--bevel-duration-small) ease-(--bevel-ease-out) group-hover:-translate-y-1 motion-reduce:transition-none",
+            // Previews are drawn for the full tray; the compact one scales the object, not its layout.
+            compact && "scale-[0.8]"
+          )}
         >
           {Preview && <Preview />}
         </div>
       </div>
-      <p className="mt-4 font-semibold">{component.name}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{component.description}</p>
+      <p className={cn("font-semibold", compact ? "mt-3" : "mt-4")}>{component.name}</p>
+      <p className={cn("mt-1 text-sm text-muted-foreground", compact && "line-clamp-2")}>{component.description}</p>
     </Link>
   )
 }
