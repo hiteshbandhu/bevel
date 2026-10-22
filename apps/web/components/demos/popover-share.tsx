@@ -47,7 +47,7 @@ export function PopoverShare({ url = "https://bevel-ui.vercel.app/components/pop
             readOnly
             value={url}
             onFocus={(event) => event.currentTarget.select()}
-            className="h-8 min-w-0 flex-1 rounded-(--bevel-radius-sm) border border-current/15 bg-transparent px-2 font-mono text-xs shadow-(--bevel-depth-pressed) outline-none focus-visible:ring-2 focus-visible:ring-(--bevel-pen-blue)/50"
+            className="h-8 min-w-0 flex-1 rounded-(--bevel-radius-sm) border border-current/15 bg-transparent px-2 font-mono text-xs text-ellipsis shadow-(--bevel-depth-pressed) outline-none focus-visible:ring-2 focus-visible:ring-(--bevel-pen-blue)/50"
           />
           <button
             type="button"

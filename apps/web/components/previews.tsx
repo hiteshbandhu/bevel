@@ -97,7 +97,7 @@ import {
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
   key: () => (
-    <div className="pointer-events-none flex scale-125 items-center gap-2">
+    <div className="pointer-events-none flex scale-125 items-center justify-center gap-2">
       <Key variant="secondary" tabIndex={-1}>
         Cancel
       </Key>
@@ -108,7 +108,7 @@ export const previews: Record<string, React.ComponentType> = {
     </div>
   ),
   "icon-key": () => (
-    <div className="pointer-events-none flex scale-125 items-center gap-2">
+    <div className="pointer-events-none flex scale-125 items-center justify-center gap-2">
       <IconKey aria-label="Copy" tabIndex={-1}>
         <Copy />
       </IconKey>
@@ -121,14 +121,14 @@ export const previews: Record<string, React.ComponentType> = {
     </div>
   ),
   kbd: () => (
-    <KbdGroup className="scale-150">
+    <KbdGroup className="mx-auto flex w-fit scale-150">
       <Kbd>⌘</Kbd>
       <Kbd>⇧</Kbd>
       <Kbd>K</Kbd>
     </KbdGroup>
   ),
   badge: () => (
-    <div className="flex scale-125 flex-col items-start gap-2">
+    <div className="mx-auto flex w-fit scale-125 flex-col items-start gap-2">
       <Badge tone="success">
         <BadgeLamp />
         Live
@@ -162,7 +162,7 @@ export const previews: Record<string, React.ComponentType> = {
     </div>
   ),
   "latch-checkbox": () => (
-    <div className="pointer-events-none flex scale-150 gap-2">
+    <div className="pointer-events-none flex scale-150 justify-center gap-2">
       <LatchCheckbox aria-label="Checked" defaultChecked tabIndex={-1} />
       <LatchCheckbox aria-label="Mixed" indeterminate tabIndex={-1} />
       <LatchCheckbox aria-label="Unchecked" tabIndex={-1} />
@@ -221,8 +221,8 @@ export const previews: Record<string, React.ComponentType> = {
     </div>
   ),
   dialog: () => (
-    <div className="relative grid w-full place-items-center overflow-hidden rounded-(--bevel-radius-md) p-4">
-      <span className="dialog-dim absolute inset-0" />
+    // No scrim at tile size: drawn inside the tray it reads as a second card, not a dimmed room.
+    <div className="grid w-full place-items-center">
       <div data-slot="dialog-content" className="dialog-panel relative flex w-52 flex-col overflow-hidden rounded-(--bevel-radius-lg) text-sm">
         <span data-slot="dialog-screws" className="absolute inset-(--dialog-screw-inset)">
           <span className="dialog-screw absolute top-0 left-0" />
@@ -581,7 +581,8 @@ export const previews: Record<string, React.ComponentType> = {
     </BreakerPanel>
   ),
   ledger: () => (
-    <Ledger>
+    // Small type, so the amounts column fits a tile instead of scrolling out of it.
+    <Ledger className="text-xs">
       <LedgerTable>
         <LedgerBody>
           <LedgerRow>

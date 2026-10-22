@@ -9,6 +9,7 @@ import { LedgerHistory } from "@/components/demos/ledger-history"
 import { MeterLiveUsage } from "@/components/demos/meter-live-usage"
 import { TaskPlanAgent } from "@/components/demos/task-plan-agent"
 import { WalletCheckout } from "@/components/demos/wallet-checkout"
+import { Key } from "@workspace/ui/components/key"
 import { GitHubStar } from "@/components/github-star"
 import { HomeTabs } from "@/components/home-tabs"
 import { InstallCommand } from "@/components/install-command"
@@ -55,16 +56,14 @@ export default async function Home() {
             Interface parts with weight, edges and light.
           </h1>
           <p className="mt-6 max-w-[46ch] text-lg text-muted-foreground">
-            Bevel is an open-source library of skeuomorphic React components for shadcn, built on
-            Base UI and Tailwind. Add one with the shadcn CLI and the code is yours to change.
+            {components.length} real objects, from label-maker tape to a cockpit&apos;s guarded switch,
+            as skeuomorphic React components for shadcn. Each cites the patent or history it comes from, runs on
+            Base UI and Tailwind, and installs as source you own.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link
-              href="/components"
-              className="inline-flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
+            <Key variant="primary" size="lg" nativeButton={false} render={<Link href="/components" />}>
               Browse {components.length} components
-            </Link>
+            </Key>
             <GitHubStar stars={stars} />
             <InstallCommand command={`npx shadcn@latest add ${registryNamespace}/wallet`} />
           </div>

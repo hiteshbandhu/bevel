@@ -24,7 +24,8 @@ export function DocsNavMobile() {
           className="size-4 text-muted-foreground transition-transform duration-(--bevel-duration-small) ease-(--bevel-ease-out) group-open:rotate-180 motion-reduce:transition-none"
         />
       </summary>
-      <div className="border-t px-3 py-4">
+      {/* Scrolls in place, so closing it doesn't mean scrolling back past fifty links. */}
+      <div className="max-h-[60svh] overflow-y-auto overscroll-contain border-t px-3 py-4">
         <DocsNav />
       </div>
     </details>
