@@ -30,8 +30,10 @@ export function SiteHeader({ searchIndex, stars }: { searchIndex: SearchGroup[];
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 sm:gap-8 sm:px-6">
         <Link
           href="/"
-          className="wordmark shrink-0 rounded-sm text-xl font-extrabold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="wordmark flex shrink-0 items-center gap-2 rounded-sm text-xl font-extrabold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
+          {/* The mark: a bevel with its lamp lit. Decorative; the word names the link. */}
+          <img src="/logo.png" alt="" width={24} height={24} className="size-6" />
           Bevel
         </Link>
         {/* On a phone the links scroll sideways rather than push the buttons off screen. */}
