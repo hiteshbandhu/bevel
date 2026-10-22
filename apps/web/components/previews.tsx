@@ -104,6 +104,16 @@ export const previews: Record<string, React.ComponentType> = {
       </span>
     </div>
   ),
+  popover: () => (
+    <div className="flex flex-col items-center gap-3">
+      <span className="inline-flex h-8 items-center rounded-(--bevel-radius-sm) border bg-muted px-3 text-sm font-medium">Share</span>
+      <div data-slot="popover-content" className="popover-sheet relative flex w-56 flex-col gap-1 rounded-(--bevel-radius-md) p-3 text-sm">
+        <span data-slot="popover-tab" data-side="bottom" className="absolute left-1/2 -translate-x-1/2" />
+        <span className="font-semibold">Share this page</span>
+        <span className="text-(--popover-sheet-muted)">Anyone with the link can view it.</span>
+      </div>
+    </div>
+  ),
   "time-card": () => (
     <TimeCard
       title="Week 43"

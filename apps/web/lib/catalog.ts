@@ -1814,6 +1814,51 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "popover",
+    name: "Popover",
+    category: "essentials",
+    description:
+      "A sheet of panel stock lifted off the page on the shared light, with a folded tab at its trigger. It lifts toward you and settles; Escape or a click outside puts it down and returns focus.",
+    files: ["components/popover.tsx", "styles/popover.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Popover>
+  <PopoverTrigger />
+  <PopoverContent>
+    <PopoverHeader>
+      <PopoverTitle />
+      <PopoverDescription />
+      <PopoverClose />
+    </PopoverHeader>
+  </PopoverContent>
+</Popover>`,
+    parts: [
+      { name: "Popover", renders: "Popover root", description: "open, defaultOpen, onOpenChange, modal." },
+      { name: "PopoverTrigger", renders: "button", description: "Opens the sheet. Pass render to use your own button." },
+      {
+        name: "PopoverContent",
+        renders: "Popover popup",
+        description:
+          "The sheet, 20rem wide (--popover-width), padded and stacked. side (default bottom), align, sideOffset, alignOffset, collisionPadding. tab={false} leaves out the folded tab.",
+      },
+      { name: "PopoverHeader", renders: "div", description: "Title and description; leaves room for a corner close." },
+      { name: "PopoverTitle", renders: "h2", description: "Names the sheet for screen readers." },
+      { name: "PopoverDescription", renders: "p", description: "Muted text under the title." },
+      {
+        name: "PopoverClose",
+        renders: "button",
+        description: "With no children, a × in the top corner labelled “Close”. With children, an unstyled close button.",
+      },
+    ],
+    examples: [
+      {
+        slug: "share",
+        title: "Share a page",
+        description: "A link to copy and who can see it.",
+        file: "popover-share.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {
