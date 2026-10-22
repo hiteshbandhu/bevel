@@ -1,6 +1,7 @@
 import type * as React from "react"
 import { Copy, X } from "lucide-react"
 import { IconKey } from "@workspace/ui/components/icon-key"
+import { Kbd, KbdGroup } from "@workspace/ui/components/kbd"
 import { Key, KeyLamp } from "@workspace/ui/components/key"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
 import { DipSwitch, DipSwitchBank, DipSwitchToggle } from "@workspace/ui/components/dip-switch"
@@ -112,6 +113,13 @@ export const previews: Record<string, React.ComponentType> = {
         <X />
       </IconKey>
     </div>
+  ),
+  kbd: () => (
+    <KbdGroup className="scale-150">
+      <Kbd>⌘</Kbd>
+      <Kbd>⇧</Kbd>
+      <Kbd>K</Kbd>
+    </KbdGroup>
   ),
   "time-card": () => (
     <TimeCard

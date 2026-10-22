@@ -173,6 +173,40 @@ export const components: ComponentDoc[] = [
     ],
   },
   {
+    slug: "kbd",
+    name: "Kbd",
+    category: "essentials",
+    description:
+      "A keycap printed in a line of text, for shortcuts and docs. Symbols such as ⌘ are read aloud by name. With listen, the cap goes down when the reader presses that key on their own keyboard, so a shortcut list shows its keys working.",
+    files: ["components/kbd.tsx", "styles/kbd.css"],
+    dependencies: ["cn"],
+    anatomy: `<KbdGroup>
+  <Kbd listen>⌘</Kbd>
+  <Kbd listen>K</Kbd>
+</KbdGroup>`,
+    parts: [
+      {
+        name: "Kbd",
+        renders: "kbd",
+        description:
+          "Its text is the legend. listen: true listens for the printed key (⌘ is Meta, ⇧ is Shift, Esc is Escape); a string names it, such as \"k\", \"Escape\" or \"mod\" (⌘ on Apple, Ctrl elsewhere). Keys typed into a field don't press caps.",
+      },
+      {
+        name: "KbdGroup",
+        renders: "kbd",
+        description: "Caps pressed together. Each cap listens for its own key, so holding ⌘ presses only ⌘.",
+      },
+    ],
+    examples: [
+      {
+        slug: "shortcuts",
+        title: "Keyboard shortcuts",
+        description: "A shortcuts sheet whose caps go down as you press them. Try ⌘K or Esc.",
+        file: "kbd-shortcuts.tsx",
+      },
+    ],
+  },
+  {
     slug: "wallet",
     name: "Wallet",
     category: "money",
