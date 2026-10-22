@@ -1,0 +1,81 @@
+/*
+ * Menu: a selector plate. Items are engraved into brushed metal; the
+ * highlighted one sits pressed in, checked items light a lamp, separators
+ * are engraved rules and shortcuts are small keycaps. Builds on bevel.css
+ * (light, depth, materials, motion, shape).
+ */
+
+:root {
+  --menu-plate: oklch(0.91 0.004 250);
+  --menu-plate-edge: oklch(0.68 0.006 250);
+  --menu-rim: oklch(0 0 0 / 0.14);
+  --menu-brush: oklch(1 0 0 / 0.05); /* brushing marks across the plate */
+  --menu-ink: oklch(0.25 0.01 260);
+  --menu-ink-muted: oklch(0.45 0.01 260);
+  /* The light catches the lower lip of each engraved cut. */
+  --menu-engrave: 0 1px 0 oklch(1 0 0 / 0.55);
+  --menu-rule-shade: oklch(0 0 0 / 0.16);
+  --menu-rule-light: oklch(1 0 0 / 0.7);
+  --menu-lamp-off: oklch(0.6 0.02 150);
+  --menu-lamp-on: oklch(0.74 0.19 145);
+  --menu-key: oklch(0.98 0.003 90);
+  --menu-key-edge: oklch(0.74 0.006 250);
+  --menu-key-foreground: oklch(0.32 0.01 260);
+  --menu-danger: oklch(0.5 0.19 27);
+  --menu-depth:
+    inset 0 1px 0 var(--bevel-highlight-strong),
+    inset 0 0 0 1px var(--menu-rim),
+    0 1px 1px var(--bevel-cast),
+    0 10px 22px -8px var(--bevel-cast);
+  --menu-min-width: 12rem;
+  --menu-key-size: 1.125rem;
+  --menu-lift: 0.25rem;
+}
+
+.dark {
+  --menu-plate: oklch(0.32 0.006 260);
+  --menu-plate-edge: oklch(0.2 0.006 260);
+  --menu-rim: oklch(0 0 0 / 0.4);
+  --menu-ink: oklch(0.94 0.004 90);
+  --menu-ink-muted: oklch(0.72 0.008 260);
+  --menu-engrave: 0 -1px 0 oklch(0 0 0 / 0.5);
+  --menu-rule-shade: oklch(0 0 0 / 0.45);
+  --menu-rule-light: oklch(1 0 0 / 0.08);
+  --menu-lamp-off: oklch(0.38 0.02 150);
+  --menu-key: oklch(0.42 0.006 260);
+  --menu-key-edge: oklch(0.22 0.006 260);
+  --menu-key-foreground: oklch(0.92 0.004 90);
+  --menu-danger: oklch(0.72 0.17 27);
+}
+
+[data-slot="menu-content"] {
+  --bevel-material: var(--menu-plate);
+  --bevel-material-edge: var(--menu-plate-edge);
+}
+[data-slot="menu-shortcut"] {
+  --bevel-material: var(--menu-key);
+  --bevel-material-edge: var(--menu-key-edge);
+}
+[data-slot="menu-lamp"] {
+  --bevel-led: var(--menu-lamp-off);
+}
+[data-checked] > [data-slot="menu-lamp"] {
+  --bevel-led: var(--menu-lamp-on);
+}
+
+/* Brushed metal plate, lifted off the page. */
+@utility menu-plate {
+  background-color: var(--menu-plate);
+  background-image:
+    linear-gradient(to bottom, var(--bevel-highlight), transparent 40%, var(--bevel-shade) 140%),
+    repeating-linear-gradient(90deg, var(--menu-brush) 0 1px, transparent 1px 3px);
+  box-shadow: var(--menu-depth);
+  color: var(--menu-ink);
+  text-shadow: var(--menu-engrave);
+}
+
+/* An engraved rule: a shaded cut with a lit lip below it. */
+@utility menu-rule {
+  border-top: 1px solid var(--menu-rule-shade);
+  border-bottom: 1px solid var(--menu-rule-light);
+}

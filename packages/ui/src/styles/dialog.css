@@ -1,0 +1,114 @@
+/*
+ * Dialog: the room's lights go down and a panel rises onto the desk,
+ * screwed (or stitched) at its corners. Builds on bevel.css (light, depth,
+ * materials, motion, shape) and matches the theme change in
+ * theme-transition.css: dimming is slow, lights coming up is quicker.
+ */
+
+:root {
+  --dialog-panel: oklch(0.985 0.005 85);
+  --dialog-panel-foreground: oklch(0.26 0.015 260);
+  --dialog-panel-muted: oklch(0.5 0.015 260);
+  --dialog-ledge: oklch(0.955 0.007 85); /* the footer strip, a step lower */
+  --dialog-rim: oklch(0 0 0 / 0.12);
+  --dialog-rule-shade: oklch(0 0 0 / 0.1);
+  --dialog-rule-light: oklch(1 0 0 / 0.8);
+  /* The room with the lights down. */
+  --dialog-dim: oklch(0.14 0.01 260 / 0.42);
+  --dialog-dim-brightness: 0.8;
+  --dialog-screw: oklch(0.8 0.01 250);
+  --dialog-screw-slot: oklch(0.35 0.01 250 / 0.7);
+  --dialog-stitch: oklch(0.55 0.02 260 / 0.35);
+  --dialog-key: oklch(0.97 0.004 85);
+  --dialog-key-edge: oklch(0.76 0.008 250);
+  --dialog-key-foreground: oklch(0.26 0.015 260);
+  --dialog-danger: oklch(0.55 0.2 27);
+  --dialog-danger-edge: oklch(0.38 0.15 27);
+  --dialog-danger-foreground: oklch(0.99 0.005 90);
+  --dialog-depth:
+    inset 0 1px 0 var(--bevel-highlight-strong),
+    0 0 0 1px var(--dialog-rim),
+    0 2px 4px var(--bevel-cast),
+    0 30px 60px -20px var(--bevel-cast);
+  --dialog-width: 32rem;
+  --dialog-alert-width: 26rem;
+  --dialog-top: 12vh; /* where a top-aligned dialog (a command palette) sits */
+  --dialog-rise: 1rem; /* how far the panel travels up onto the desk */
+  --dialog-screw-size: 0.4375rem;
+  --dialog-screw-inset: 0.5rem;
+}
+
+.dark {
+  --dialog-panel: oklch(0.29 0.008 260);
+  --dialog-panel-foreground: oklch(0.95 0.005 90);
+  --dialog-panel-muted: oklch(0.72 0.01 260);
+  --dialog-ledge: oklch(0.255 0.008 260);
+  --dialog-rim: oklch(1 0 0 / 0.08);
+  --dialog-rule-shade: oklch(0 0 0 / 0.45);
+  --dialog-rule-light: oklch(1 0 0 / 0.06);
+  --dialog-dim: oklch(0.05 0.01 260 / 0.6);
+  --dialog-dim-brightness: 0.6;
+  --dialog-screw: oklch(0.55 0.01 250);
+  --dialog-screw-slot: oklch(0.15 0.01 250 / 0.8);
+  --dialog-stitch: oklch(0.85 0.02 260 / 0.25);
+  --dialog-key: oklch(0.38 0.008 260);
+  --dialog-key-edge: oklch(0.2 0.008 260);
+  --dialog-key-foreground: oklch(0.95 0.005 90);
+  --dialog-danger: oklch(0.55 0.19 27);
+  --dialog-danger-edge: oklch(0.32 0.13 27);
+}
+
+@utility dialog-panel {
+  background-color: var(--dialog-panel);
+  background-image: linear-gradient(to bottom, var(--bevel-highlight), transparent 20%);
+  box-shadow: var(--dialog-depth);
+  color: var(--dialog-panel-foreground);
+}
+
+/* The room going dark: a tint, and the page behind turned down. */
+@utility dialog-dim {
+  background-color: var(--dialog-dim);
+  backdrop-filter: brightness(var(--dialog-dim-brightness));
+}
+
+/* A slotted screw head, lit from above. Each one sits at its own angle. */
+@utility dialog-screw {
+  width: var(--dialog-screw-size);
+  height: var(--dialog-screw-size);
+  border-radius: 9999px;
+  background-color: var(--dialog-screw);
+  background-image:
+    linear-gradient(var(--dialog-screw-angle, 30deg), transparent 42%, var(--dialog-screw-slot) 42% 58%, transparent 58%),
+    radial-gradient(circle at 35% 30%, var(--bevel-highlight-strong), transparent 60%);
+  box-shadow:
+    inset 0 -1px 1px var(--bevel-shade),
+    0 1px 0 var(--bevel-highlight-strong);
+}
+
+/* No two screws turned alike. */
+[data-slot="dialog-screws"] > :nth-child(1) {
+  --dialog-screw-angle: 20deg;
+}
+[data-slot="dialog-screws"] > :nth-child(2) {
+  --dialog-screw-angle: 75deg;
+}
+[data-slot="dialog-screws"] > :nth-child(3) {
+  --dialog-screw-angle: 130deg;
+}
+[data-slot="dialog-screws"] > :nth-child(4) {
+  --dialog-screw-angle: 160deg;
+}
+
+/* Keys in the footer: neutral, or red for the destructive one. */
+[data-slot="dialog-close"],
+[data-slot="alert-dialog-cancel"],
+[data-slot="alert-dialog-action"] {
+  --bevel-material: var(--dialog-key);
+  --bevel-material-edge: var(--dialog-key-edge);
+  --dialog-key-ink: var(--dialog-key-foreground);
+}
+[data-tone="destructive"]:is([data-slot="dialog-close"], [data-slot="alert-dialog-action"]) {
+  --bevel-material: var(--dialog-danger);
+  --bevel-material-edge: var(--dialog-danger-edge);
+  --dialog-key-ink: var(--dialog-danger-foreground);
+}

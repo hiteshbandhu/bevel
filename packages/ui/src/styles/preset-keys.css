@@ -1,0 +1,79 @@
+/*
+ * Preset keys: interlocked push-keys in a keybed, as on a car radio. The key
+ * that's down sits lower, in shadow, with its lamp lit amber; the others
+ * stand proud. Builds on bevel.css (recessed, raised, pressed, led, spring).
+ */
+
+:root {
+  --preset-keys-bed: oklch(0.87 0.004 260);
+  --preset-keys-key: oklch(0.985 0.003 90);
+  --preset-keys-key-edge: oklch(0.76 0.006 90);
+  --preset-keys-print: oklch(0.45 0.01 260);
+  --preset-keys-print-down: oklch(0.2 0.01 260);
+  --preset-keys-lamp-off: oklch(0.8 0.006 260);
+  --preset-keys-lamp-on: oklch(0.76 0.16 66); /* amber */
+  --preset-keys-lamp-shade: oklch(0 0 0 / 0.25);
+  --preset-keys-focus: oklch(0.7 0.15 66);
+  --preset-keys-shade: oklch(0 0 0 / 0.25);
+  --preset-keys-inset: 0.1875rem; /* bed padding around the keys */
+  --preset-keys-gap: 0.1875rem;
+  --preset-keys-key-radius: 0.3125rem; /* concentric: bed radius minus inset */
+  --preset-keys-travel: 0.125rem; /* how far a key sinks when it latches */
+  --preset-keys-height: 2rem;
+  --preset-keys-pad: 0.875rem;
+  --preset-keys-text: 0.875rem;
+}
+
+.dark {
+  --preset-keys-bed: oklch(0.15 0.005 260);
+  --preset-keys-key: oklch(0.34 0.006 260);
+  --preset-keys-key-edge: oklch(0.2 0.006 260);
+  --preset-keys-print: oklch(0.74 0.01 260);
+  --preset-keys-print-down: oklch(0.96 0.005 260);
+  --preset-keys-lamp-off: oklch(0.24 0.006 260);
+  --preset-keys-lamp-on: oklch(0.8 0.16 70);
+  --preset-keys-shade: oklch(0 0 0 / 0.7);
+}
+
+:is([data-slot="preset-tabs-list"], [data-slot="preset-keys"])[data-size="sm"] {
+  --preset-keys-height: 1.75rem;
+  --preset-keys-pad: 0.625rem;
+  --preset-keys-text: 0.75rem;
+  --preset-keys-inset: 0.125rem;
+  --preset-keys-key-radius: 0.375rem;
+  --preset-keys-travel: 0.09375rem;
+}
+
+[data-slot="preset-tabs-list"],
+[data-slot="preset-keys"] {
+  --bevel-material-recess: var(--preset-keys-bed);
+  --bevel-shade-strong: var(--preset-keys-shade);
+}
+[data-slot="preset-tabs-tab"],
+[data-slot="preset-key"] {
+  --bevel-material: var(--preset-keys-key);
+  --bevel-material-edge: var(--preset-keys-key-edge);
+  --bevel-led: var(--preset-keys-lamp-on);
+}
+
+/* An unlit lamp is a dull lens; the key that's down lights it. */
+@utility preset-keys-lamp {
+  background-color: var(--preset-keys-lamp-off);
+  box-shadow: inset 0 1px 1px var(--preset-keys-lamp-shade);
+}
+:is([data-slot="preset-tabs-tab"][data-active], [data-slot="preset-key"][data-checked]) [data-slot="preset-keys-lamp"] {
+  background-color: var(--bevel-led);
+  background-image: radial-gradient(circle at 35% 30%, var(--bevel-highlight-strong), transparent 45%);
+  box-shadow: 0 0 5px var(--bevel-led);
+}
+
+@media (forced-colors: active) {
+  [data-slot="preset-tabs-tab"],
+  [data-slot="preset-key"] {
+    border: 1px solid ButtonText;
+  }
+  :is([data-slot="preset-tabs-tab"][data-active], [data-slot="preset-key"][data-checked]) {
+    border-color: Highlight;
+    outline: 1px solid Highlight;
+  }
+}

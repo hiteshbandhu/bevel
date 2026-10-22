@@ -1,0 +1,46 @@
+/*
+ * Badge: a status plate with an indicator lamp, like the small lit legends
+ * on a rack unit. Lamps burn steady; they never blink.
+ * Builds on bevel.css (light, led).
+ */
+
+:root {
+  --badge-plate-color: oklch(0.955 0.004 250);
+  --badge-plate-foreground: oklch(0.38 0.012 250);
+  --badge-neutral: oklch(0.86 0.02 90);
+  --badge-info: oklch(0.7 0.14 245);
+  --badge-success: oklch(0.74 0.17 150);
+  --badge-warning: oklch(0.8 0.16 75);
+  --badge-danger: oklch(0.63 0.22 27);
+}
+
+.dark {
+  --badge-plate-color: oklch(0.27 0.008 250);
+  --badge-plate-foreground: oklch(0.86 0.01 250);
+}
+
+[data-slot="badge"] {
+  --badge-plate: var(--badge-plate-color);
+  --badge-foreground: var(--badge-plate-foreground);
+  /* A thin plate set into the surface: lit along the top, a fine rim around it. */
+  --badge-plate-edge: inset 0 1px 0 var(--bevel-highlight), inset 0 0 0 1px oklch(0 0 0 / 0.08);
+  --badge-lamp: var(--badge-neutral);
+  --bevel-led: var(--badge-lamp);
+  /* An unlit lamp is still coloured glass, just dark. */
+  --badge-lamp-off: color-mix(in oklch, var(--badge-lamp), black 55%);
+}
+[data-slot="badge"][data-tone="neutral"] {
+  --badge-lamp: var(--badge-neutral);
+}
+[data-slot="badge"][data-tone="info"] {
+  --badge-lamp: var(--badge-info);
+}
+[data-slot="badge"][data-tone="success"] {
+  --badge-lamp: var(--badge-success);
+}
+[data-slot="badge"][data-tone="warning"] {
+  --badge-lamp: var(--badge-warning);
+}
+[data-slot="badge"][data-tone="danger"] {
+  --badge-lamp: var(--badge-danger);
+}

@@ -92,6 +92,12 @@ function variantRule(variant: string, utility: string): string | null {
   // in-data-[state=new]: styles the element when an ancestor matches.
   const inData = variant.match(/^in-data-\[([\w-]+)(?:=([\w-]+))?\]$/)
   if (inData) return `:where([data-${inData[1]}${inData[2] ? `="${inData[2]}"` : ""}]) ${cls}`
+  // group-data-checked/latch: styles the element when its named group ancestor matches.
+  const group = variant.match(/^group-data-(?:\[([\w-]+)(?:=([\w-]+))?\]|([\w-]+))\/([\w-]+)$/)
+  if (group) {
+    const [, key, value, bare, name] = group
+    return `:where(.${esc(`group/${name}`)}[data-${key ?? bare}${value ? `="${value}"` : ""}]) ${cls}`
+  }
   const data = variant.match(/^data-\[([\w-]+)(?:=([\w-]+))?\]$/) ?? variant.match(/^data-([\w-]+)()$/)
   if (data) return `${cls}[data-${data[1]}${data[2] ? `="${data[2]}"` : ""}]`
   const v = variantSelector[variant]
@@ -107,7 +113,7 @@ for (const file of cssFiles) {
     const name = rule.params.trim()
     const body = rule.nodes?.map((n) => n.toString()).join(";\n") ?? ""
     const extra: string[] = []
-    for (const [, variant] of code.matchAll(new RegExp(`([\\w-]+(?:\\[[^\\]]*\\])?):${name}\\b`, "g"))) {
+    for (const [, variant] of code.matchAll(new RegExp(`([\\w-]+(?:\\[[^\\]]*\\])?(?:/[\\w-]+)?):${name}\\b`, "g"))) {
       const sel = variantRule(variant!, name)
       if (!sel) {
         unsupported.add(`${variant}:${name}`)

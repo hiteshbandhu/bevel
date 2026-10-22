@@ -1,0 +1,23 @@
+/*
+ * Kbd: a keyboard keycap printed in a line of text. A pale cap on a short
+ * side; a listening cap goes down when the reader presses that key.
+ * Builds on bevel.css (light, motion).
+ */
+
+:root {
+  --kbd-cap: oklch(0.985 0.003 250);
+  --kbd-side: oklch(0.82 0.008 250);
+  --kbd-foreground: oklch(0.4 0.012 250);
+  --kbd-travel: 2px;
+}
+
+.dark {
+  --kbd-cap: oklch(0.34 0.008 250);
+  --kbd-side: oklch(0.21 0.008 250);
+  --kbd-foreground: oklch(0.88 0.01 250);
+}
+
+[data-slot="kbd"] {
+  --kbd-cap-light: inset 0 1px 0 var(--bevel-highlight-strong), inset 0 0 0 1px oklch(0 0 0 / 0.05);
+  --kbd-cast: 0 0 0 1px oklch(0 0 0 / 0.06), 0 1px 1px var(--bevel-cast);
+}
