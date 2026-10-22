@@ -114,6 +114,21 @@ export const previews: Record<string, React.ComponentType> = {
       </div>
     </div>
   ),
+  menu: () => (
+    <div data-slot="menu-content" className="menu-plate flex w-52 flex-col rounded-(--bevel-radius-md) p-1 text-sm">
+      <span className="flex h-8 items-center rounded-(--bevel-radius-sm) px-2">Copy as Markdown</span>
+      <span className="bevel-pressed flex h-8 items-center rounded-(--bevel-radius-sm) px-2 [text-shadow:none]">View as Markdown</span>
+      <span className="menu-rule -mx-1 my-1" />
+      <span data-checked="" className="flex h-8 items-center gap-2 rounded-(--bevel-radius-sm) px-2.5">
+        <span data-slot="menu-lamp" className="bevel-led h-1.5 w-2.5 rounded-full" />
+        Show preview
+        <span data-slot="menu-shortcut" className="ml-auto flex gap-0.5 [text-shadow:none]">
+          <kbd className="bevel-raised inline-flex h-(--menu-key-size) min-w-(--menu-key-size) items-center justify-center rounded-(--bevel-radius-xs) px-1 font-sans text-(length:--bevel-fine) text-(--menu-key-foreground)">⌘</kbd>
+          <kbd className="bevel-raised inline-flex h-(--menu-key-size) min-w-(--menu-key-size) items-center justify-center rounded-(--bevel-radius-xs) px-1 font-sans text-(length:--bevel-fine) text-(--menu-key-foreground)">P</kbd>
+        </span>
+      </span>
+    </div>
+  ),
   "time-card": () => (
     <TimeCard
       title="Week 43"

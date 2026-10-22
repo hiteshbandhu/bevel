@@ -1859,6 +1859,90 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "menu",
+    name: "Menu",
+    category: "essentials",
+    description:
+      "A selector plate: items engraved into brushed metal, the highlighted one pressed in, a lamp for checked settings, engraved rules between groups and keycaps for shortcuts. Dropdown, submenu and context menu.",
+    files: ["components/menu.tsx", "styles/menu.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Menu>
+  <MenuTrigger />
+  <MenuContent>
+    <MenuItem>
+      Duplicate
+      <MenuShortcut keys={["⌘", "D"]} />
+    </MenuItem>
+    <MenuLinkItem href="/page.md" />
+    <MenuSub>
+      <MenuSubTrigger />
+      <MenuSubContent>
+        <MenuItem />
+      </MenuSubContent>
+    </MenuSub>
+    <MenuSeparator />
+    <MenuCheckboxItem />
+    <MenuGroup>
+      <MenuGroupLabel />
+      <MenuRadioGroup>
+        <MenuRadioItem />
+      </MenuRadioGroup>
+    </MenuGroup>
+  </MenuContent>
+</Menu>`,
+    parts: [
+      { name: "Menu", renders: "Menu root", description: "open, defaultOpen, onOpenChange, modal." },
+      { name: "MenuTrigger", renders: "button", description: "Opens the plate. Pass render to use your own button." },
+      {
+        name: "MenuContent",
+        renders: "Menu popup",
+        description: "The plate. side (default bottom), align (default start), sideOffset, alignOffset, collisionPadding. Scrolls when tall.",
+      },
+      {
+        name: "MenuItem",
+        renders: "div (menuitem)",
+        description: "Pressed in while highlighted. onClick runs it. variant=\"destructive\" engraves it in red. Icons are muted and sized for you.",
+      },
+      { name: "MenuLinkItem", renders: "a (menuitem)", description: "An item that is a real link: href, target." },
+      {
+        name: "MenuCheckboxItem",
+        renders: "div (menuitemcheckbox)",
+        description: "A pill lamp, lit when checked. checked, onCheckedChange. Stays open when toggled.",
+      },
+      { name: "MenuRadioGroup", renders: "div (group)", description: "value, onValueChange." },
+      { name: "MenuRadioItem", renders: "div (menuitemradio)", description: "A round lamp, lit when chosen. value." },
+      { name: "MenuGroup", renders: "div (group)", description: "Groups items under a label." },
+      { name: "MenuGroupLabel", renders: "div", description: "A small stamped heading." },
+      { name: "MenuSeparator", renders: "div (separator)", description: "An engraved rule." },
+      {
+        name: "MenuShortcut",
+        renders: "span",
+        description: "keys: one keycap per key. Hidden from screen readers; put aria-keyshortcuts on the item.",
+      },
+      { name: "MenuSub", renders: "Submenu root", description: "Holds a submenu." },
+      { name: "MenuSubTrigger", renders: "div (menuitem)", description: "Opens the submenu on hover, → or Enter. Has a chevron." },
+      { name: "MenuSubContent", renders: "Menu popup", description: "The submenu's plate, beside its trigger." },
+      { name: "ContextMenu", renders: "Context menu root", description: "Opens on right-click or long-press." },
+      { name: "ContextMenuTrigger", renders: "div", description: "The area that opens it." },
+      { name: "ContextMenuContent", renders: "Menu popup", description: "The plate at the pointer. Fill it with the same items." },
+    ],
+    examples: [
+      {
+        slug: "copy-page",
+        title: "Copy page",
+        description:
+          "The menu on a docs page with a Markdown version: copy it, view it, or open it in ChatGPT or Claude. Pass markdownUrl.",
+        file: "menu-copy-page.tsx",
+      },
+      {
+        slug: "file-actions",
+        title: "File actions",
+        description: "Shortcuts as keycaps, a submenu, a setting with a lamp, a sort order and a destructive item.",
+        file: "menu-file-actions.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

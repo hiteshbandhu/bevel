@@ -2,6 +2,8 @@ import type * as React from "react"
 import { TooltipToolbar } from "./tooltip-toolbar"
 import { TooltipTapes } from "./tooltip-tapes"
 import { PopoverShare } from "./popover-share"
+import { MenuCopyPage } from "./menu-copy-page"
+import { MenuFileActions } from "./menu-file-actions"
 import { DipSwitchFlags } from "./dip-switch-flags"
 import { PatchBayWebhooks } from "./patch-bay-webhooks"
 import { TimeCardTimesheet } from "./time-card-timesheet"
@@ -94,4 +96,6 @@ export const demos: Record<string, React.ComponentType> = {
   "tooltip-toolbar.tsx": TooltipToolbar,
   "tooltip-tapes.tsx": TooltipTapes,
   "popover-share.tsx": PopoverShare,
+  "menu-copy-page.tsx": MenuCopyPage,
+  "menu-file-actions.tsx": MenuFileActions,
 }
