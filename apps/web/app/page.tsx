@@ -13,6 +13,7 @@ import { GitHubStar } from "@/components/github-star"
 import { InstallCommand } from "@/components/install-command"
 import { JsonLd, library } from "@/components/json-ld"
 import { categories, components, componentHref, getComponent } from "@/lib/catalog"
+import { faq } from "@/lib/faq"
 import { getStars } from "@/lib/github"
 import { origins } from "@/lib/origins"
 import { xHandle, xUrl } from "@/lib/docs"
@@ -174,6 +175,31 @@ export default async function Home() {
           <CategorySection key={category.slug} category={category} />
         ))}
       </div>
+
+      <section className="border-t py-16" aria-labelledby="faq">
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faq.map(({ q, a }) => ({
+              "@type": "Question",
+              name: q,
+              acceptedAnswer: { "@type": "Answer", text: a },
+            })),
+          }}
+        />
+        <h2 id="faq" className="text-2xl font-semibold tracking-tight">
+          Questions
+        </h2>
+        <dl className="mt-8 grid gap-x-12 gap-y-8 md:grid-cols-2">
+          {faq.map(({ q, a }) => (
+            <div key={q}>
+              <dt className="font-semibold">{q}</dt>
+              <dd className="mt-2 text-sm leading-relaxed text-muted-foreground">{a}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
 
       <footer className="flex flex-wrap justify-between gap-4 border-t py-10 text-sm text-muted-foreground">
         <p>Built on Base UI and Tailwind CSS. Installs with the shadcn CLI.</p>
