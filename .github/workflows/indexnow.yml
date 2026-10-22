@@ -1,0 +1,29 @@
+# After each production deploy, tell Bing (and the engines that read its
+# index: ChatGPT search, Copilot, DuckDuckGo) every URL in the sitemap, so
+# changes are crawled now instead of whenever the crawler next comes by.
+# The key file lives at apps/web/public/<key>.txt; IndexNow checks it there.
+name: IndexNow
+
+on:
+  deployment_status:
+
+permissions: {}
+
+jobs:
+  ping:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    env:
+      SITE_URL: ${{ vars.SITE_URL || 'https://bevel-ui.vercel.app' }}
+      INDEXNOW_KEY: 72ef7ff50ee700bf8872cbe9bcd97c63
+    steps:
+      - name: Submit the sitemap's URLs
+        run: |
+          urls=$(curl -fsSL "$SITE_URL/sitemap.xml" | grep -o '<loc>[^<]*</loc>' | sed -e 's/<loc>//' -e 's/<\/loc>//')
+          host=$(echo "$SITE_URL" | sed -e 's#^https://##' -e 's#/.*##')
+          body=$(jq -n --arg host "$host" --arg key "$INDEXNOW_KEY" --arg loc "$SITE_URL/$INDEXNOW_KEY.txt" \
+            --argjson urls "$(printf '%s\n' $urls | jq -R . | jq -s .)" \
+            '{host: $host, key: $key, keyLocation: $loc, urlList: $urls}')
+          echo "Submitting $(echo "$urls" | wc -l) URLs for $host"
+          curl -fsS -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json; charset=utf-8' -d "$body" -w 'IndexNow: %{http_code}\n'
