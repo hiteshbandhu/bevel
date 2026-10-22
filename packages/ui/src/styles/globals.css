@@ -40,6 +40,7 @@
 @import "./patch-bay.css";
 @import "./time-card.css";
 @import "./toggle-lever.css";
+@import "./latch-checkbox.css";
 @import "./theme-transition.css";
 /* Last, so a theme on <html> wins over the palettes above. */
 @import "./themes.css";

@@ -1,5 +1,6 @@
 import type * as React from "react"
 import { ToggleLeverNotifications } from "./toggle-lever-notifications"
+import { LatchCheckboxPermissions } from "./latch-checkbox-permissions"
 import { DipSwitchFlags } from "./dip-switch-flags"
 import { PatchBayWebhooks } from "./patch-bay-webhooks"
 import { TimeCardTimesheet } from "./time-card-timesheet"
@@ -90,4 +91,5 @@ export const demos: Record<string, React.ComponentType> = {
   "wallet-checkout.tsx": WalletCheckout,
   "wallet-usage.tsx": WalletUsage,
   "toggle-lever-notifications.tsx": ToggleLeverNotifications,
+  "latch-checkbox-permissions.tsx": LatchCheckboxPermissions,
 }

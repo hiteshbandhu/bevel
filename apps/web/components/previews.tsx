@@ -1,5 +1,6 @@
 import type * as React from "react"
 import { ToggleLever } from "@workspace/ui/components/toggle-lever"
+import { LatchCheckbox } from "@workspace/ui/components/latch-checkbox"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
 import { DipSwitch, DipSwitchBank, DipSwitchToggle } from "@workspace/ui/components/dip-switch"
 import { PatchBay, PatchBayJack, PatchBayPanel, PatchBayRow } from "@workspace/ui/components/patch-bay"
@@ -91,6 +92,13 @@ export const previews: Record<string, React.ComponentType> = {
     <div className="pointer-events-none flex scale-150 flex-col items-center gap-2">
       <ToggleLever aria-label="On" defaultChecked tabIndex={-1} />
       <ToggleLever aria-label="Off" tabIndex={-1} />
+    </div>
+  ),
+  "latch-checkbox": () => (
+    <div className="pointer-events-none flex scale-150 gap-2">
+      <LatchCheckbox aria-label="Checked" defaultChecked tabIndex={-1} />
+      <LatchCheckbox aria-label="Mixed" indeterminate tabIndex={-1} />
+      <LatchCheckbox aria-label="Unchecked" tabIndex={-1} />
     </div>
   ),
   "time-card": () => (

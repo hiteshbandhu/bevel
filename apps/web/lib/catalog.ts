@@ -1803,6 +1803,54 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "latch-checkbox",
+    name: "Latch checkbox",
+    category: "essentials",
+    description:
+      "A checkbox as a latching push-key. Press it and it sinks and stays down with its mark lit amber; press again and it springs back up. Mixed holds it half-down with a dash. Small enough for lists and table rows.",
+    files: ["components/latch-checkbox.tsx", "styles/latch-checkbox.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<LatchCheckboxGroup value={allowed} onValueChange={setAllowed} allValues={all}>
+  <LatchCheckboxField>
+    <LatchCheckbox parent />
+    <LatchCheckboxLabel />
+  </LatchCheckboxField>
+  <LatchCheckboxField>
+    <LatchCheckbox value="read" />
+    <LatchCheckboxLabel />
+    <LatchCheckboxDescription />
+  </LatchCheckboxField>
+</LatchCheckboxGroup>`,
+    parts: [
+      {
+        name: "LatchCheckbox",
+        renders: "Checkbox",
+        description:
+          "checked, defaultChecked, onCheckedChange, indeterminate, disabled, name. In a group: value, or parent to toggle them all. Space presses it. Alone, give it an aria-label.",
+      },
+      {
+        name: "LatchCheckboxField",
+        renders: "Field.Root",
+        description: "The key with its label beside it and an optional description below.",
+      },
+      { name: "LatchCheckboxLabel", renders: "Field.Label", description: "Names the checkbox. Clicking it presses the key." },
+      { name: "LatchCheckboxDescription", renders: "Field.Description", description: "Describes the checkbox." },
+      {
+        name: "LatchCheckboxGroup",
+        renders: "CheckboxGroup",
+        description: "value (the values that are down), defaultValue, onValueChange, allValues for a parent key. Name it with aria-labelledby.",
+      },
+    ],
+    examples: [
+      {
+        slug: "permissions",
+        title: "Agent permissions",
+        description: "Which tools an agent may use. The top key presses them all, and sits half-down while only some are on.",
+        file: "latch-checkbox-permissions.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {
