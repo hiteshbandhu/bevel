@@ -11,7 +11,7 @@ import {
   getComponent,
   type ComponentDoc,
 } from "@/lib/catalog"
-import { readDemo, readLibraryFile } from "@/lib/source"
+import { readLibraryFile, readProjectDemo } from "@/lib/source"
 import { origins } from "@/lib/origins"
 import { OriginPlate } from "@/components/origin-plate"
 import { registryNamespace, registryUrl } from "@/lib/site"
@@ -26,7 +26,7 @@ export async function ComponentDocPage({ component }: { component: ComponentDoc 
   const category = categories.find((c) => c.slug === component.category)!
 
   const [exampleSources, librarySources, foundationSource] = await Promise.all([
-    Promise.all(component.examples.map((example) => readDemo(example.file))),
+    Promise.all(component.examples.map((example) => readProjectDemo(example.file))),
     Promise.all(component.files.map((file) => readLibraryFile(file))),
     readLibraryFile(foundation.file),
   ])
@@ -225,21 +225,23 @@ export async function ComponentDocPage({ component }: { component: ComponentDoc 
       <section className="mt-20">
         <h2 className="text-2xl font-semibold tracking-tight">Parts</h2>
         <div className="mt-6 overflow-x-auto rounded-xl border">
-          <table className="w-full min-w-[36rem] text-left text-sm">
+          {/* On a phone the Renders column folds under the part's name, so the description has room. */}
+          <table className="w-full text-left text-sm sm:min-w-[36rem]">
             <thead className="bg-card text-muted-foreground">
               <tr>
                 <th scope="col" className="px-4 py-3 font-medium">Part</th>
-                <th scope="col" className="px-4 py-3 font-medium">Renders</th>
+                <th scope="col" className="hidden px-4 py-3 font-medium sm:table-cell">Renders</th>
                 <th scope="col" className="px-4 py-3 font-medium">What it does</th>
               </tr>
             </thead>
             <tbody className="divide-y">
               {component.parts.map((part) => (
                 <tr key={part.name} className="align-top">
-                  <th scope="row" className="px-4 py-3 font-mono text-[0.8125rem] font-medium whitespace-nowrap">
+                  <th scope="row" className="w-[45%] px-4 py-3 font-mono text-[0.8125rem] font-medium [overflow-wrap:anywhere] sm:w-auto sm:whitespace-nowrap">
                     {part.name}
+                    <span className="mt-1 block font-normal text-muted-foreground sm:hidden">{part.renders}</span>
                   </th>
-                  <td className="px-4 py-3 font-mono text-[0.8125rem] whitespace-nowrap text-muted-foreground">
+                  <td className="hidden px-4 py-3 font-mono text-[0.8125rem] whitespace-nowrap text-muted-foreground sm:table-cell">
                     {part.renders}
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">{part.description}</td>
