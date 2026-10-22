@@ -129,6 +129,25 @@ export const previews: Record<string, React.ComponentType> = {
       </span>
     </div>
   ),
+  dialog: () => (
+    <div className="relative grid w-full place-items-center overflow-hidden rounded-(--bevel-radius-md) p-6">
+      <span className="dialog-dim absolute inset-0" />
+      <div data-slot="dialog-content" className="dialog-panel relative flex w-60 flex-col overflow-hidden rounded-(--bevel-radius-lg) text-sm">
+        <span data-slot="dialog-screws" className="absolute inset-(--dialog-screw-inset)">
+          <span className="dialog-screw absolute top-0 left-0" />
+          <span className="dialog-screw absolute top-0 right-0" />
+          <span className="dialog-screw absolute bottom-0 left-0" />
+          <span className="dialog-screw absolute right-0 bottom-0" />
+        </span>
+        <span className="px-5 pt-5 font-semibold">Delete acme-web?</span>
+        <span className="px-5 pt-1 text-(--dialog-panel-muted)">This can&rsquo;t be undone.</span>
+        <span className="mt-4 flex justify-end gap-2 border-t border-t-(--dialog-rule-shade) bg-(--dialog-ledge) px-5 py-3">
+          <span data-slot="alert-dialog-cancel" className="bevel-raised inline-flex h-7 items-center rounded-(--bevel-radius-sm) px-2.5 text-xs font-medium text-(--dialog-key-ink)">Cancel</span>
+          <span data-slot="alert-dialog-action" data-tone="destructive" className="bevel-raised inline-flex h-7 items-center rounded-(--bevel-radius-sm) px-2.5 text-xs font-medium text-(--dialog-key-ink)">Delete</span>
+        </span>
+      </div>
+    </div>
+  ),
   "time-card": () => (
     <TimeCard
       title="Week 43"

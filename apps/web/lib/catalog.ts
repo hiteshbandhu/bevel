@@ -1943,6 +1943,90 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "dialog",
+    name: "Dialog",
+    category: "essentials",
+    description:
+      "The lights go down and a panel rises onto the desk, screwed or stitched at its corners. Content has no padding of its own, so it hosts forms and command palettes alike; AlertDialog asks before something can't be undone.",
+    files: ["components/dialog.tsx", "styles/dialog.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Dialog>
+  <DialogTrigger />
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle />
+      <DialogDescription />
+    </DialogHeader>
+    <DialogBody />
+    <DialogFooter>
+      <DialogClose />
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
+<AlertDialog>
+  <AlertDialogTrigger />
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle />
+      <AlertDialogDescription />
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel />
+      <AlertDialogAction />
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`,
+    parts: [
+      {
+        name: "Dialog",
+        renders: "Dialog root",
+        description: "open, defaultOpen, onOpenChange, modal. Escape, the backdrop and Close put it away; focus returns to the trigger.",
+      },
+      { name: "DialogTrigger", renders: "button", description: "Opens the dialog. Pass render to use your own button." },
+      {
+        name: "DialogContent",
+        renders: "Dialog popup",
+        description:
+          "Dims the room and raises the panel. No padding. align: center or top (for a palette). fasteners: screws (default), stitch, none. showCloseButton (default true). Width from --dialog-width; override with className.",
+      },
+      { name: "DialogHeader", renders: "div", description: "Title and description, padded, clear of the corner ×." },
+      { name: "DialogTitle", renders: "h2", description: "Names the dialog for screen readers. Required; hide it with sr-only if it must not show." },
+      { name: "DialogDescription", renders: "p", description: "Muted text under the title." },
+      { name: "DialogBody", renders: "div", description: "Padded; scrolls when the panel runs out of room." },
+      { name: "DialogFooter", renders: "div", description: "A ledge behind an engraved rule, holding the keys. Stacks on small screens." },
+      { name: "DialogClose", renders: "button", description: "A raised key that closes. tone: default or destructive." },
+      { name: "AlertDialog", renders: "Alert dialog root", description: "Doesn't close on an outside click." },
+      { name: "AlertDialogContent", renders: "Alert dialog popup", description: "The same panel, narrower (--dialog-alert-width), with no corner ×. fasteners." },
+      { name: "AlertDialogCancel", renders: "button", description: "The safe answer. Put it first: it takes focus. Says “Cancel” by default." },
+      {
+        name: "AlertDialogAction",
+        renders: "button",
+        description: "Does it and closes; onClick runs first. A red key by default (tone=\"destructive\").",
+      },
+    ],
+    examples: [
+      {
+        slug: "delete-project",
+        title: "Delete a project",
+        description: "An alert dialog with a red key. Cancel takes focus, and a stray click outside does nothing.",
+        file: "dialog-delete-project.tsx",
+      },
+      {
+        slug: "rename",
+        title: "A form",
+        description: "Rename a document. Enter saves; Escape, × or Cancel leave it.",
+        file: "dialog-rename.tsx",
+      },
+      {
+        slug: "command",
+        title: "Command palette",
+        description: "⌘K opens a palette in the dialog: top-aligned, no padding, no fasteners.",
+        file: "dialog-command.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

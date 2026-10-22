@@ -4,6 +4,9 @@ import { TooltipTapes } from "./tooltip-tapes"
 import { PopoverShare } from "./popover-share"
 import { MenuCopyPage } from "./menu-copy-page"
 import { MenuFileActions } from "./menu-file-actions"
+import { DialogDeleteProject } from "./dialog-delete-project"
+import { DialogRename } from "./dialog-rename"
+import { DialogCommand } from "./dialog-command"
 import { DipSwitchFlags } from "./dip-switch-flags"
 import { PatchBayWebhooks } from "./patch-bay-webhooks"
 import { TimeCardTimesheet } from "./time-card-timesheet"
@@ -98,4 +101,7 @@ export const demos: Record<string, React.ComponentType> = {
   "popover-share.tsx": PopoverShare,
   "menu-copy-page.tsx": MenuCopyPage,
   "menu-file-actions.tsx": MenuFileActions,
+  "dialog-delete-project.tsx": DialogDeleteProject,
+  "dialog-rename.tsx": DialogRename,
+  "dialog-command.tsx": DialogCommand,
 }
