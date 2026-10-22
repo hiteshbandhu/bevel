@@ -1,4 +1,5 @@
 import TurndownService from "turndown"
+import { siteUrl } from "@/lib/site"
 
 /**
  * A guide or post as Markdown, for LLMs and agents: /blog/<slug>.md and
@@ -26,11 +27,13 @@ turndown.addRule("codeBlock", {
 })
 turndown.remove((node) => node.nodeName === "FIGCAPTION" && !!(node as HTMLElement).closest?.("figure")?.querySelector("pre"))
 
-export async function GET(request: Request, { params }: { params: Promise<{ path: string[] }> }) {
+export async function GET(_request: Request, { params }: { params: Promise<{ path: string[] }> }) {
   const path = (await params).path.join("/")
   if (!allowed.test(path)) return new Response("Not found", { status: 404 })
 
-  const url = new URL(`/${path}`, request.url)
+  // Always our own site, never the request's Host header: a forged Host would
+  // otherwise make this fetch, and cache, someone else's page.
+  const url = new URL(`/${path}`, siteUrl)
   const res = await fetch(url, { next: { revalidate: 3600 } })
   if (!res.ok) return new Response("Not found", { status: 404 })
   const html = await res.text()

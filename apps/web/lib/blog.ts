@@ -12,7 +12,7 @@ export const posts = [
     slug: "skeuomorphism-vs-neumorphism",
     title: "Skeuomorphism vs neumorphism vs flat design",
     description:
-      "Skeuomorphism vs neumorphism vs flat design: the same button in each style, live, with CSS, and how they differ in depth, contrast and accessibility.",
+      "Skeuomorphism vs neumorphism vs flat design vs glassmorphism: the same button and switch in each style, live, with CSS and measured contrast.",
     date: "2026-10-22",
     objects: ["guarded-switch", "breaker", "annunciator"],
   },
