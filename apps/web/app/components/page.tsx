@@ -9,7 +9,7 @@ const description =
 export const metadata: Metadata = {
   title: "Skeuomorphic React components",
   description,
-  ...preview({ title: "Skeuomorphic React components – Bevel", description, image: "bevel.jpg", path: "/components" }),
+  ...preview({ title: "Skeuomorphic React components – Bevel", description, image: "page-components.jpg", path: "/components" }),
 }
 
 export default function ComponentsIndex() {

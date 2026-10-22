@@ -9,7 +9,7 @@ const description =
 export const metadata: Metadata = {
   title: "Blog",
   description,
-  ...preview({ title: "Blog – Bevel", description, image: "bevel.jpg", path: "/blog" }),
+  ...preview({ title: "Blog – Bevel", description, image: "page-blog.jpg", path: "/blog" }),
 }
 
 export default function Blog() {
