@@ -1915,6 +1915,63 @@ export const components: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "preset-keys",
+    name: "Preset keys",
+    category: "essentials",
+    description:
+      "Tabs and segmented controls as interlocked preset keys, like a car radio's: press one and it latches down while the one that was down springs back up. Only one is ever down. PresetTabs switches panels; PresetKeys picks a value.",
+    files: ["components/preset-keys.tsx", "styles/preset-keys.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<PresetTabs defaultValue="preview">
+  <PresetTabsList size="sm">
+    <PresetTabsTab value="preview" />
+    <PresetTabsTab value="code" />
+  </PresetTabsList>
+  <PresetTabsPanel value="preview" />
+  <PresetTabsPanel value="code" />
+</PresetTabs>
+
+<PresetKeys aria-label="Range" value={range} onValueChange={setRange}>
+  <PresetKey value="7d" />
+  <PresetKey value="30d" />
+</PresetKeys>`,
+    parts: [
+      {
+        name: "PresetTabs",
+        renders: "Tabs.Root",
+        description: "value, defaultValue, onValueChange, orientation. Arrow keys move along the keys; Enter or Space presses one.",
+      },
+      {
+        name: "PresetTabsList",
+        renders: "Tabs.List",
+        description: "The keybed. size sm for a Preview/Code row or a toolbar, md for a screen's sections. activateOnFocus to press as you arrow.",
+      },
+      { name: "PresetTabsTab", renders: "Tabs.Tab", description: "One key, with a lamp lit while it's down. value, disabled." },
+      { name: "PresetTabsPanel", renders: "Tabs.Panel", description: "The panel a key shows. value, keepMounted." },
+      {
+        name: "PresetKeys",
+        renders: "RadioGroup",
+        description:
+          "A segmented control: value, defaultValue, onValueChange, name, disabled, size. Exactly one key is down; arrow keys move and press. Give it an aria-label.",
+      },
+      { name: "PresetKey", renders: "Radio", description: "One key. value, disabled." },
+    ],
+    examples: [
+      {
+        slug: "example",
+        title: "Preview and code",
+        description: "The tabs over a docs example, at the small size.",
+        file: "preset-keys-example.tsx",
+      },
+      {
+        slug: "range",
+        title: "Time range",
+        description: "A segmented range picker over a usage chart.",
+        file: "preset-keys-range.tsx",
+      },
+    ],
+  },
 ]
 
 export function getComponent(slug: string) {

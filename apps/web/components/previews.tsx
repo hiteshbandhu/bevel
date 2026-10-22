@@ -3,6 +3,7 @@ import { Search } from "lucide-react"
 import { TextField, TextFieldAdornment, TextFieldInput, TextFieldKbd, TextFieldLabel, TextFieldSlot } from "@workspace/ui/components/text-field"
 import { ToggleLever } from "@workspace/ui/components/toggle-lever"
 import { LatchCheckbox } from "@workspace/ui/components/latch-checkbox"
+import { PresetKey, PresetKeys } from "@workspace/ui/components/preset-keys"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
 import { DipSwitch, DipSwitchBank, DipSwitchToggle } from "@workspace/ui/components/dip-switch"
 import { PatchBay, PatchBayJack, PatchBayPanel, PatchBayRow } from "@workspace/ui/components/patch-bay"
@@ -114,6 +115,15 @@ export const previews: Record<string, React.ComponentType> = {
       <LatchCheckbox aria-label="Mixed" indeterminate tabIndex={-1} />
       <LatchCheckbox aria-label="Unchecked" tabIndex={-1} />
     </div>
+  ),
+  "preset-keys": () => (
+    <PresetKeys aria-label="Range" defaultValue="7d" className="pointer-events-none">
+      {["24h", "7d", "30d"].map((v) => (
+        <PresetKey key={v} value={v} tabIndex={-1}>
+          {v}
+        </PresetKey>
+      ))}
+    </PresetKeys>
   ),
   "time-card": () => (
     <TimeCard
