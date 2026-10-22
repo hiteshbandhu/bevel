@@ -54,6 +54,12 @@ export const foundation = {
 
 export const categories: Category[] = [
   {
+    slug: "essentials",
+    name: "Essentials",
+    description:
+      "Everyday controls (buttons, fields, switches, overlays) made of Bevel's materials. The real Base UI control, with a body.",
+  },
+  {
     slug: "money",
     name: "Money",
     description: "Balances, payment methods and credits for checkout, billing and usage-based products.",
@@ -94,6 +100,48 @@ export const categories: Category[] = [
 ]
 
 export const components: ComponentDoc[] = [
+  {
+    slug: "key",
+    name: "Key",
+    category: "essentials",
+    description:
+      "A button made as a keycap: a cap with a lit top edge on a visible side, which travels down by the side's depth when pressed by pointer, Space or Enter. While its action runs it latches down with a small lamp lit, instead of a spinner, and pops back up when done.",
+    files: ["components/key.tsx", "styles/key.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Key variant="primary" pending={saving} onClick={save}>
+  <KeyLamp />
+  Save changes
+</Key>`,
+    parts: [
+      {
+        name: "Key",
+        renders: "Button",
+        description:
+          "variant primary (a lit amber key), secondary, ghost (no body until pressed) or danger; size sm, md or lg (32, 36 and 40px tall, side included, like shadcn's buttons). pending latches the key down, sets aria-busy and keeps focus; disabled sinks it into its housing. Render a link with render={<a href=\"…\" />} and nativeButton={false}. Icons from lucide size themselves.",
+      },
+      {
+        name: "KeyLamp",
+        renders: "span (decorative)",
+        description: "A small lamp on the cap: dark at rest, lit while the key is pending. Put it first or last.",
+      },
+    ],
+    examples: [
+      {
+        slug: "form",
+        title: "Saving a form",
+        description:
+          "Cancel and Save at the foot of a settings form. Save latches down with its lamp lit while the request runs, then pops back up.",
+        file: "key-form.tsx",
+      },
+      {
+        slug: "variants",
+        title: "Variants and sizes",
+        description: "Primary, secondary, ghost and danger at sm, md and lg, with icons, and disabled.",
+        file: "key-variants.tsx",
+        wide: true,
+      },
+    ],
+  },
   {
     slug: "wallet",
     name: "Wallet",

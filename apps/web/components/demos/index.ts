@@ -1,4 +1,6 @@
 import type * as React from "react"
+import { KeyForm } from "./key-form"
+import { KeyVariants } from "./key-variants"
 import { DipSwitchFlags } from "./dip-switch-flags"
 import { PatchBayWebhooks } from "./patch-bay-webhooks"
 import { TimeCardTimesheet } from "./time-card-timesheet"
@@ -45,6 +47,8 @@ import { WalletUsage } from "./wallet-usage"
 
 /** Demo components by file name, matching `Example.file` in the catalog. */
 export const demos: Record<string, React.ComponentType> = {
+  "key-form.tsx": KeyForm,
+  "key-variants.tsx": KeyVariants,
   "dip-switch-flags.tsx": DipSwitchFlags,
   "patch-bay-webhooks.tsx": PatchBayWebhooks,
   "time-card-timesheet.tsx": TimeCardTimesheet,

@@ -58,6 +58,12 @@
   --time-card-key-edge: var(--bevel-theme-panel-edge);
   --vigilance-panel: var(--bevel-theme-panel);
   --vigilance-panel-edge: var(--bevel-theme-panel-edge);
+  --key-primary: var(--bevel-theme-hardware);
+  --key-primary-side: var(--bevel-theme-hardware-edge);
+  --key-primary-foreground: oklch(from var(--bevel-theme-hardware) 0.25 c h);
+  --key-secondary: var(--bevel-theme-key);
+  --key-secondary-side: var(--bevel-theme-panel-edge);
+  --key-secondary-foreground: var(--bevel-theme-face);
 
   /* Custom properties resolve where they're declared, so the scaled values are restated here. */
   --bevel-radius-xs: calc(0.25rem * var(--bevel-radius-scale, 1));

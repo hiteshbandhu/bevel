@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { Key, KeyLamp } from "@workspace/ui/components/key"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
 import { DipSwitch, DipSwitchBank, DipSwitchToggle } from "@workspace/ui/components/dip-switch"
 import { PatchBay, PatchBayJack, PatchBayPanel, PatchBayRow } from "@workspace/ui/components/patch-bay"
@@ -86,6 +87,17 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  key: () => (
+    <div className="pointer-events-none flex scale-125 items-center gap-2">
+      <Key variant="secondary" tabIndex={-1}>
+        Cancel
+      </Key>
+      <Key pending tabIndex={-1}>
+        <KeyLamp />
+        Saving
+      </Key>
+    </div>
+  ),
   "time-card": () => (
     <TimeCard
       title="Week 43"
