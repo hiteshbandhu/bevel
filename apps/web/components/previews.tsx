@@ -1,5 +1,6 @@
 import type * as React from "react"
 import { Copy, X } from "lucide-react"
+import { Badge, BadgeLamp } from "@workspace/ui/components/badge"
 import { IconKey } from "@workspace/ui/components/icon-key"
 import { Kbd, KbdGroup } from "@workspace/ui/components/kbd"
 import { Key, KeyLamp } from "@workspace/ui/components/key"
@@ -120,6 +121,22 @@ export const previews: Record<string, React.ComponentType> = {
       <Kbd>⇧</Kbd>
       <Kbd>K</Kbd>
     </KbdGroup>
+  ),
+  badge: () => (
+    <div className="flex scale-125 flex-col items-start gap-2">
+      <Badge tone="success">
+        <BadgeLamp />
+        Live
+      </Badge>
+      <Badge tone="warning">
+        <BadgeLamp />
+        Building
+      </Badge>
+      <Badge tone="danger" lit={false}>
+        <BadgeLamp />
+        Paused
+      </Badge>
+    </div>
   ),
   "time-card": () => (
     <TimeCard

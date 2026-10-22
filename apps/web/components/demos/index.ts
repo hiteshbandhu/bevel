@@ -1,4 +1,5 @@
 import type * as React from "react"
+import { BadgeDeploys } from "./badge-deploys"
 import { IconKeyToolbar } from "./icon-key-toolbar"
 import { KbdShortcuts } from "./kbd-shortcuts"
 import { KeyForm } from "./key-form"
@@ -53,6 +54,7 @@ export const demos: Record<string, React.ComponentType> = {
   "key-variants.tsx": KeyVariants,
   "icon-key-toolbar.tsx": IconKeyToolbar,
   "kbd-shortcuts.tsx": KbdShortcuts,
+  "badge-deploys.tsx": BadgeDeploys,
   "dip-switch-flags.tsx": DipSwitchFlags,
   "patch-bay-webhooks.tsx": PatchBayWebhooks,
   "time-card-timesheet.tsx": TimeCardTimesheet,

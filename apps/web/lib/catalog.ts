@@ -207,6 +207,41 @@ export const components: ComponentDoc[] = [
     ],
   },
   {
+    slug: "badge",
+    name: "Badge",
+    category: "essentials",
+    description:
+      "A small printed plate with an indicator lamp, for status in tables, lists and headings. Five tones; a lamp is lit while its condition holds and dark when it doesn't. Lamps burn steady and never blink.",
+    files: ["components/badge.tsx", "styles/badge.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Badge tone="success">
+  <BadgeLamp />
+  Deployed
+</Badge>`,
+    parts: [
+      {
+        name: "Badge",
+        renders: "span",
+        description:
+          "tone neutral, info, success, warning or danger; lit (default true). The label is the status; colour only backs it up. Render a link with render.",
+      },
+      {
+        name: "BadgeLamp",
+        renders: "span (decorative)",
+        description: "The indicator lamp, in the tone's colour. Leave it out for a plain plate.",
+      },
+    ],
+    examples: [
+      {
+        slug: "deploys",
+        title: "Deployments",
+        description: "A deployments table: the lamp is lit while a build runs or a release is live, and dark once it's superseded.",
+        file: "badge-deploys.tsx",
+        wide: true,
+      },
+    ],
+  },
+  {
     slug: "wallet",
     name: "Wallet",
     category: "money",
