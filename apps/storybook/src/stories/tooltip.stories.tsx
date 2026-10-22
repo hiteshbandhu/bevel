@@ -47,12 +47,12 @@ export const Default: Story = {
 export const Red: Story = { args: { tone: "red", children: "Deletes for everyone", defaultOpen: true } }
 export const Blue: Story = { args: { tone: "blue", children: "New", side: "right" } }
 
-/** Every side, open at once: the tab always points back at the trigger. */
+/** Each side, opened in turn: one tooltip is open at a time. The tab points the way the tape opened. */
 export const Sides: Story = {
   render: ({ disabled: _d, defaultOpen: _o, ...args }) => (
     <div className="grid grid-cols-2 gap-x-40 gap-y-24 p-16">
       {(["top", "bottom", "left", "right"] as const).map((side) => (
-        <Tooltip key={side} defaultOpen>
+        <Tooltip key={side}>
           <TooltipTrigger className={trigger}>{side}</TooltipTrigger>
           <TooltipContent {...args} side={side}>
             {side}
@@ -61,12 +61,16 @@ export const Sides: Story = {
       ))}
     </div>
   ),
-  play: async () => {
-    for (const side of ["top", "bottom", "left", "right"]) {
-      const tab = await waitFor(() =>
-        document.querySelector(`[data-slot=tooltip-content][data-side=${side}] [data-slot=tooltip-tab]`)
-      )
-      await expect(tab).toHaveAttribute("data-side", side)
+  play: async ({ userEvent }) => {
+    for (let i = 0; i < 4; i++) {
+      await userEvent.tab()
+      // waitFor retries only on a throw; Base UI may flip a side with no room, so compare to the tape.
+      const tape = await waitFor(() => {
+        const el = document.querySelector("[data-slot=tooltip-content][data-open]")
+        if (!el) throw new Error("tooltip still opening")
+        return el
+      })
+      await expect(tape.querySelector("[data-slot=tooltip-tab]")).toHaveAttribute("data-side", tape.getAttribute("data-side")!)
     }
   },
 }

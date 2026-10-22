@@ -158,7 +158,12 @@ function DialogBody({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-body"
-      className={cn("min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-4", className)}
+      // Focusable, so a body that scrolls can be scrolled from the keyboard.
+      tabIndex={0}
+      className={cn(
+        "min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-4 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+        className
+      )}
       {...props}
     />
   )
