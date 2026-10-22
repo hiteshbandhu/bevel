@@ -1,0 +1,95 @@
+/*
+ * Key: a keycap. A cap with a lit top edge sits on a visible side; pressing
+ * it travels the cap down by the side's depth. Busy keys latch down.
+ * Builds on bevel.css (light, motion, led).
+ *
+ * Themes override the --key-* palette, e.g. --key-primary for the brand key.
+ */
+
+:root {
+  /* Primary: a lit amber key. */
+  --key-primary: oklch(0.76 0.14 68);
+  --key-primary-side: oklch(0.58 0.13 55);
+  --key-primary-foreground: oklch(0.24 0.04 55);
+  /* Secondary: a putty cap in daylight, graphite at night. */
+  --key-secondary: oklch(0.97 0.004 250);
+  --key-secondary-side: oklch(0.8 0.008 250);
+  --key-secondary-foreground: oklch(0.27 0.012 250);
+  /* Danger: a red key. */
+  --key-danger: oklch(0.55 0.19 27);
+  --key-danger-side: oklch(0.4 0.15 27);
+  --key-danger-foreground: oklch(0.98 0.01 27);
+  /* Ghost: no cap until pressed. */
+  --key-ghost-foreground: currentColor;
+  --key-ghost-hover: oklch(0.5 0.01 250 / 0.08);
+  --key-ghost-well: oklch(0.5 0.01 250 / 0.14);
+  /* The lamp while the key works. */
+  --key-lamp: oklch(0.82 0.17 145);
+  --key-lamp-off: oklch(0.45 0.01 250 / 0.55);
+  /* How far the cap travels: the side's height. */
+  --key-travel-sm: 2px;
+  --key-travel: 3px;
+  --key-travel-lg: 3px;
+}
+
+.dark {
+  --key-primary: oklch(0.74 0.13 68);
+  --key-primary-side: oklch(0.5 0.11 55);
+  --key-secondary: oklch(0.36 0.008 250);
+  --key-secondary-side: oklch(0.22 0.008 250);
+  --key-secondary-foreground: oklch(0.94 0.01 90);
+  --key-danger: oklch(0.56 0.18 27);
+  --key-danger-side: oklch(0.36 0.13 27);
+  --key-ghost-hover: oklch(1 0 0 / 0.06);
+  --key-ghost-well: oklch(0 0 0 / 0.3);
+}
+
+[data-slot="key"] {
+  --key-depth: var(--key-travel);
+  --key-cap: var(--key-primary);
+  --key-cap-side: var(--key-primary-side);
+  --key-cap-foreground: var(--key-primary-foreground);
+  --bevel-led: var(--key-lamp);
+  /* The light on the cap: a lit top edge and a faint rim. */
+  --key-cap-sheen: var(--bevel-highlight);
+  --key-cap-light: inset 0 1px 0 var(--bevel-highlight-strong), inset 0 0 0 1px oklch(0 0 0 / 0.06);
+  /* The shadow the key casts on the surface. */
+  --key-cast: 0 1px 2px var(--bevel-cast);
+}
+[data-slot="key"][data-size="sm"] {
+  --key-depth: var(--key-travel-sm);
+}
+[data-slot="key"][data-size="lg"] {
+  --key-depth: var(--key-travel-lg);
+}
+[data-slot="key"][data-variant="secondary"] {
+  --key-cap: var(--key-secondary);
+  --key-cap-side: var(--key-secondary-side);
+  --key-cap-foreground: var(--key-secondary-foreground);
+}
+[data-slot="key"][data-variant="danger"] {
+  --key-cap: var(--key-danger);
+  --key-cap-side: var(--key-danger-side);
+  --key-cap-foreground: var(--key-danger-foreground);
+}
+/* A ghost key has no body: it is engraved into the surface and has no travel. */
+[data-slot="key"][data-variant="ghost"] {
+  --key-depth: 0px;
+  --key-cap: transparent;
+  --key-cap-side: transparent;
+  --key-cap-foreground: var(--key-ghost-foreground);
+  --key-cap-sheen: transparent;
+  --key-cap-light: none;
+  --key-cast: none;
+}
+[data-slot="key"][data-variant="ghost"]:hover:not([data-state]) {
+  --key-cap: var(--key-ghost-hover);
+}
+/* Pressed or busy, the ghost shows the well it sits in. */
+[data-slot="key"][data-variant="ghost"]:is([data-pressed], [data-state="pending"]) {
+  --key-cap: var(--key-ghost-well);
+  --key-cap-light: var(--bevel-depth-pressed);
+}
+[data-slot="key"][data-state="disabled"] {
+  --key-cap-light: none;
+}

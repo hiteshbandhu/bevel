@@ -1,4 +1,9 @@
 import type * as React from "react"
+import { Copy, X } from "lucide-react"
+import { Badge, BadgeLamp } from "@workspace/ui/components/badge"
+import { IconKey } from "@workspace/ui/components/icon-key"
+import { Kbd, KbdGroup } from "@workspace/ui/components/kbd"
+import { Key, KeyLamp } from "@workspace/ui/components/key"
 import { DueDateSlip } from "@workspace/ui/components/due-date-slip"
 import { DipSwitch, DipSwitchBank, DipSwitchToggle } from "@workspace/ui/components/dip-switch"
 import { PatchBay, PatchBayJack, PatchBayPanel, PatchBayRow } from "@workspace/ui/components/patch-bay"
@@ -86,6 +91,53 @@ import {
 
 /** Still previews for component tiles: no controls, nothing focusable. */
 export const previews: Record<string, React.ComponentType> = {
+  key: () => (
+    <div className="pointer-events-none flex scale-125 items-center gap-2">
+      <Key variant="secondary" tabIndex={-1}>
+        Cancel
+      </Key>
+      <Key pending tabIndex={-1}>
+        <KeyLamp />
+        Saving
+      </Key>
+    </div>
+  ),
+  "icon-key": () => (
+    <div className="pointer-events-none flex scale-125 items-center gap-2">
+      <IconKey aria-label="Copy" tabIndex={-1}>
+        <Copy />
+      </IconKey>
+      <IconKey variant="primary" aria-label="Copy" tabIndex={-1}>
+        <Copy />
+      </IconKey>
+      <IconKey variant="ghost" aria-label="Close" tabIndex={-1}>
+        <X />
+      </IconKey>
+    </div>
+  ),
+  kbd: () => (
+    <KbdGroup className="scale-150">
+      <Kbd>⌘</Kbd>
+      <Kbd>⇧</Kbd>
+      <Kbd>K</Kbd>
+    </KbdGroup>
+  ),
+  badge: () => (
+    <div className="flex scale-125 flex-col items-start gap-2">
+      <Badge tone="success">
+        <BadgeLamp />
+        Live
+      </Badge>
+      <Badge tone="warning">
+        <BadgeLamp />
+        Building
+      </Badge>
+      <Badge tone="danger" lit={false}>
+        <BadgeLamp />
+        Paused
+      </Badge>
+    </div>
+  ),
   "time-card": () => (
     <TimeCard
       title="Week 43"

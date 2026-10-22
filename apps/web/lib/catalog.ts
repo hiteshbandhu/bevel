@@ -54,6 +54,12 @@ export const foundation = {
 
 export const categories: Category[] = [
   {
+    slug: "essentials",
+    name: "Essentials",
+    description:
+      "Everyday controls (buttons, fields, switches, overlays) made of Bevel's materials. The real Base UI control, with a body.",
+  },
+  {
     slug: "money",
     name: "Money",
     description: "Balances, payment methods and credits for checkout, billing and usage-based products.",
@@ -94,6 +100,147 @@ export const categories: Category[] = [
 ]
 
 export const components: ComponentDoc[] = [
+  {
+    slug: "key",
+    name: "Key",
+    category: "essentials",
+    description:
+      "A button made as a keycap: a cap with a lit top edge on a visible side, which travels down by the side's depth when pressed by pointer, Space or Enter. While its action runs it latches down with a small lamp lit, instead of a spinner, and pops back up when done.",
+    files: ["components/key.tsx", "styles/key.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Key variant="primary" pending={saving} onClick={save}>
+  <KeyLamp />
+  Save changes
+</Key>`,
+    parts: [
+      {
+        name: "Key",
+        renders: "Button",
+        description:
+          "variant primary (a lit amber key), secondary, ghost (no body until pressed) or danger; size sm, md or lg (32, 36 and 40px tall, side included, like shadcn's buttons). pending latches the key down, sets aria-busy and keeps focus; disabled sinks it into its housing. Render a link with render={<a href=\"…\" />} and nativeButton={false}. Icons from lucide size themselves.",
+      },
+      {
+        name: "KeyLamp",
+        renders: "span (decorative)",
+        description: "A small lamp on the cap: dark at rest, lit while the key is pending. Put it first or last.",
+      },
+    ],
+    examples: [
+      {
+        slug: "form",
+        title: "Saving a form",
+        description:
+          "Cancel and Save at the foot of a settings form. Save latches down with its lamp lit while the request runs, then pops back up.",
+        file: "key-form.tsx",
+      },
+      {
+        slug: "variants",
+        title: "Variants and sizes",
+        description: "Primary, secondary, ghost and danger at sm, md and lg, with icons, and disabled.",
+        file: "key-variants.tsx",
+        wide: true,
+      },
+    ],
+  },
+  {
+    slug: "icon-key",
+    name: "Icon key",
+    category: "essentials",
+    parent: "key",
+    description:
+      "A square keycap for a single icon: copy, close, toolbar actions. It must be given an aria-label, and is secondary by default so a row of them stays quiet.",
+    files: ["components/icon-key.tsx"],
+    registryDependencies: ["key"],
+    dependencies: [],
+    anatomy: `<IconKey aria-label="Copy">
+  <Copy />
+</IconKey>`,
+    parts: [
+      {
+        name: "IconKey",
+        renders: "Key",
+        description:
+          "Every Key prop except square. aria-label is required. Sizes sm, md and lg are 32, 36 and 40px square.",
+      },
+    ],
+    examples: [
+      {
+        slug: "toolbar",
+        title: "Toolbar and copy button",
+        description: "Ghost keys in a formatting toolbar, and a copy key that latches while it writes to the clipboard.",
+        file: "icon-key-toolbar.tsx",
+      },
+    ],
+  },
+  {
+    slug: "kbd",
+    name: "Kbd",
+    category: "essentials",
+    description:
+      "A keycap printed in a line of text, for shortcuts and docs. Symbols such as ⌘ are read aloud by name. With listen, the cap goes down when the reader presses that key on their own keyboard, so a shortcut list shows its keys working.",
+    files: ["components/kbd.tsx", "styles/kbd.css"],
+    dependencies: ["cn"],
+    anatomy: `<KbdGroup>
+  <Kbd listen>⌘</Kbd>
+  <Kbd listen>K</Kbd>
+</KbdGroup>`,
+    parts: [
+      {
+        name: "Kbd",
+        renders: "kbd",
+        description:
+          "Its text is the legend. listen: true listens for the printed key (⌘ is Meta, ⇧ is Shift, Esc is Escape); a string names it, such as \"k\", \"Escape\" or \"mod\" (⌘ on Apple, Ctrl elsewhere). Keys typed into a field don't press caps.",
+      },
+      {
+        name: "KbdGroup",
+        renders: "kbd",
+        description: "Caps pressed together. Each cap listens for its own key, so holding ⌘ presses only ⌘.",
+      },
+    ],
+    examples: [
+      {
+        slug: "shortcuts",
+        title: "Keyboard shortcuts",
+        description: "A shortcuts sheet whose caps go down as you press them. Try ⌘K or Esc.",
+        file: "kbd-shortcuts.tsx",
+      },
+    ],
+  },
+  {
+    slug: "badge",
+    name: "Badge",
+    category: "essentials",
+    description:
+      "A small printed plate with an indicator lamp, for status in tables, lists and headings. Five tones; a lamp is lit while its condition holds and dark when it doesn't. Lamps burn steady and never blink.",
+    files: ["components/badge.tsx", "styles/badge.css"],
+    dependencies: ["@base-ui/react", "cn"],
+    anatomy: `<Badge tone="success">
+  <BadgeLamp />
+  Deployed
+</Badge>`,
+    parts: [
+      {
+        name: "Badge",
+        renders: "span",
+        description:
+          "tone neutral, info, success, warning or danger; lit (default true). The label is the status; colour only backs it up. Render a link with render.",
+      },
+      {
+        name: "BadgeLamp",
+        renders: "span (decorative)",
+        description: "The indicator lamp, in the tone's colour. Leave it out for a plain plate.",
+      },
+    ],
+    examples: [
+      {
+        slug: "deploys",
+        title: "Deployments",
+        description: "A deployments table: the lamp is lit while a build runs or a release is live, and dark once it's superseded.",
+        file: "badge-deploys.tsx",
+        wide: true,
+      },
+    ],
+  },
   {
     slug: "wallet",
     name: "Wallet",

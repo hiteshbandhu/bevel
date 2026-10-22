@@ -39,6 +39,9 @@
 @import "./dip-switch.css";
 @import "./patch-bay.css";
 @import "./time-card.css";
+@import "./key.css";
+@import "./kbd.css";
+@import "./badge.css";
 @import "./theme-transition.css";
 /* Last, so a theme on <html> wins over the palettes above. */
 @import "./themes.css";
