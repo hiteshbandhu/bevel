@@ -196,6 +196,12 @@ const command = "npx shadcn@latest add @bevel/key"
 
 /* ---------------------------------------------------------------- scenes */
 
+/** Vertical layout per frame shape: 9:16 for Reels, 4:5 for the X feed. */
+const tall = { h: 1920, top: 230, introMax: 255, strip: 1420, object: 860, plate: 1440, strobe: 420, strobeH: 900, wallMax: 330, grid: 700, cell: 200, cellZoom: 0.75, caption: 1640, objectScale: 1 }
+const feed = { h: 1350, top: 90, introMax: 200, strip: 1050, object: 560, plate: 1160, strobe: 300, strobeH: 950, wallMax: 200, grid: 480, cell: 160, cellZoom: 0.6, caption: 1235, objectScale: 0.8 }
+/** Set by ReelCut before its scenes render; one reel per page. */
+let L = tall
+
 /** A hard cut: the new card punches in over three frames. */
 const punch = (t: number, at: number) => 1 + 0.07 * (1 - seg(t, at, at + 0.1))
 
@@ -215,19 +221,19 @@ function Intro({ t }: { t: number }) {
   const words = ["Your", "UI", "has no", "body"]
   return (
     <div className="absolute inset-0" style={{ background: paper, transform: `scale(${punch(t, 0)})` }}>
-      <div className="absolute inset-x-[60px] top-[230px] flex flex-col gap-3" style={{ color: ink }}>
+      <div className="absolute inset-x-[60px] flex flex-col gap-3" style={{ top: L.top, color: ink }}>
         {words.map((w, i) => {
           const at = bt(i * 2)
           const p = seg(t, at, at + 0.12)
           return (
-            <span key={w} style={{ ...head, fontSize: fit(w, 960, 255), opacity: p > 0 ? 1 : 0, transform: `scale(${1.25 - 0.25 * outExpo(p)})`, transformOrigin: "left center" }}>
+            <span key={w} style={{ ...head, fontSize: fit(w, 960, L.introMax), opacity: p > 0 ? 1 : 0, transform: `scale(${1.25 - 0.25 * outExpo(p)})`, transformOrigin: "left center" }}>
               {w}
             </span>
           )
         })}
       </div>
       {/* The flat UI everyone ships: no edges, no light, no weight. */}
-      <div className="absolute inset-x-[60px] top-[1420px] flex h-[200px] items-center justify-around rounded-lg bg-white shadow-[0_1px_2px_#0002] [&>*]:[zoom:2.2]">
+      <div style={{ top: L.strip }} className="absolute inset-x-[60px] flex h-[200px] items-center justify-around rounded-lg bg-white shadow-[0_1px_2px_#0002] [&>*]:[zoom:2.2]">
         <FlatButton />
         <FlatCheck />
         <FlatToggle on={t > bt(5)} />
@@ -251,7 +257,7 @@ function TurnScene({ turn, at, t }: { turn: Turn; at: number; t: number }) {
   const p = plate(turn.slug)
   return (
     <div className="absolute inset-0" style={{ background: turn.bg, transform: `scale(${punch(t, at)})` }}>
-      <div className="absolute inset-x-[60px] top-[230px]" style={{ color: fg }}>
+      <div className="absolute inset-x-[60px]" style={{ top: L.top, color: fg }}>
         <div className="relative inline-block" style={{ ...head, fontSize: 150, opacity: turned ? 0.55 : 1 }}>
           {turn.flatWord}
           {/* Struck out in marker on the kick. */}
@@ -259,15 +265,15 @@ function TurnScene({ turn, at, t }: { turn: Turn; at: number; t: number }) {
         </div>
         <div style={{ ...head, fontSize: fit(turn.word, 960, 330), marginTop: 18, opacity: nameIn > 0 ? 1 : 0, transform: `translateY(${(1 - outExpo(nameIn)) * 60}px)` }}>{turn.word}</div>
       </div>
-      <div className="absolute inset-x-0 top-[860px] flex h-[560px] items-center justify-center">
+      <div style={{ top: L.object }} className="absolute inset-x-0 flex h-[560px] items-center justify-center">
         {!turned ? (
           <div style={{ zoom: 6, filter: "grayscale(1)" }}>{turn.flat}</div>
         ) : (
-          <div style={{ zoom: turn.zoom, transform: `scale(${0.7 + 0.3 * outBack(sPop)})`, filter: `drop-shadow(0 6px 10px oklch(0 0 0 / 0.35))` }}>{turn.real(sState)}</div>
+          <div style={{ zoom: turn.zoom * L.objectScale, transform: `scale(${0.7 + 0.3 * outBack(sPop)})`, filter: `drop-shadow(0 6px 10px oklch(0 0 0 / 0.35))` }}>{turn.real(sState)}</div>
         )}
       </div>
       {p && (
-        <div className="absolute inset-x-0 top-[1440px] flex justify-center" style={{ opacity: seg(local, bt(2), bt(2) + 0.1) }}>
+        <div className="absolute inset-x-0 flex justify-center" style={{ top: L.plate, opacity: seg(local, bt(2), bt(2) + 0.1) }}>
           <span className="bevel-metal rounded-lg px-5 py-2.5 font-mono text-[30px] font-semibold text-[oklch(0.3_0.05_70)] shadow-(--bevel-depth-raised) [--bevel-material:var(--bevel-brass)] [--bevel-material-edge:var(--bevel-brass-edge)] [text-shadow:0_1px_0_oklch(1_0_0/0.35)]">
             {p}
           </span>
@@ -287,10 +293,10 @@ function Strobe({ t, at }: { t: number; at: number }) {
   const Preview = previews[s.slug]
   return (
     <div className="absolute inset-0" style={{ background: s.bg, transform: `scale(${punch(t, at + i * B)})` }}>
-      <div className="absolute inset-x-0 top-[420px] flex h-[900px] items-center justify-center">
+      <div className="absolute inset-x-0 flex items-center justify-center" style={{ top: L.strobe, height: L.strobeH }}>
         <div style={{ zoom: 3.6, transform: `rotate(${(rand(i) - 0.5) * 6}deg)`, filter: "drop-shadow(0 6px 10px oklch(0 0 0 / 0.35))" }}>{Preview && <Preview />}</div>
       </div>
-      <div className="absolute inset-x-[60px] top-[230px]" style={{ ...head, fontSize: fit(c.name, 960, 200), color: light ? ink : "oklch(0.98 0.005 90)" }}>
+      <div className="absolute inset-x-[60px]" style={{ top: L.top, ...head, fontSize: fit(c.name, 960, 200), color: light ? ink : "oklch(0.98 0.005 90)" }}>
         {c.name}
       </div>
     </div>
@@ -301,22 +307,22 @@ function Wall({ t, at }: { t: number; at: number }) {
   const local = t - at
   return (
     <div className="absolute inset-0" style={{ background: paper, transform: `scale(${punch(t, at)})` }}>
-      <div className="absolute inset-x-[60px] top-[230px]" style={{ color: ink }}>
-        <div style={{ ...head, fontSize: fit("50 real", 960, 330) }}>{components.length} real</div>
-        <div style={{ ...head, fontSize: fit("objects", 960, 330) }}>objects</div>
+      <div className="absolute inset-x-[60px]" style={{ top: L.top, color: ink }}>
+        <div style={{ ...head, fontSize: fit("50 real", 960, L.wallMax) }}>{components.length} real</div>
+        <div style={{ ...head, fontSize: fit("objects", 960, L.wallMax) }}>objects</div>
       </div>
-      <div className="absolute inset-x-[60px] top-[700px] grid grid-cols-3 gap-5">
+      <div className="absolute inset-x-[60px] grid grid-cols-3 gap-5" style={{ top: L.grid }}>
         {wall.map((slug, i) => {
           const p = seg(local, i * (B / 3), i * (B / 3) + 0.25)
           const Preview = previews[slug]
           return (
-            <div key={slug} className="flex h-[200px] items-center justify-center overflow-hidden rounded-2xl" style={{ background: cards.graphite, opacity: p > 0 ? 1 : 0, transform: `scale(${0.6 + 0.4 * outBack(p)})` }}>
-              <div style={{ zoom: slug === "key" || slug === "toggle-lever" ? 1.2 : 0.75 }}>{Preview && <Preview />}</div>
+            <div key={slug} className="flex items-center justify-center overflow-hidden rounded-2xl" style={{ height: L.cell, background: cards.graphite, opacity: p > 0 ? 1 : 0, transform: `scale(${0.6 + 0.4 * outBack(p)})` }}>
+              <div style={{ zoom: slug === "key" || slug === "toggle-lever" ? L.cellZoom * 1.6 : L.cellZoom }}>{Preview && <Preview />}</div>
             </div>
           )
         })}
       </div>
-      <div className="absolute inset-x-[60px] top-[1640px] text-center" style={{ ...head, fontSize: 64, color: ink, opacity: seg(local, bt(3), bt(3) + 0.1) }}>
+      <div className="absolute inset-x-[60px] text-center" style={{ top: L.caption, ...head, fontSize: 64, color: ink, opacity: seg(local, bt(3), bt(3) + 0.1) }}>
         Each with its patent or past
       </div>
     </div>
@@ -344,12 +350,13 @@ function End({ t, at }: { t: number; at: number }) {
   )
 }
 
-export function ReelCut() {
+export function ReelCut({ feed: isFeed = false }: { feed?: boolean }) {
+  L = isFeed ? feed : tall
   const [t, setT] = React.useState(0)
   const [fit_, setFit] = React.useState(1)
 
   React.useEffect(() => {
-    const resize = () => setFit(Math.min(1, window.innerWidth / 1080, window.innerHeight / 1920))
+    const resize = () => setFit(Math.min(1, window.innerWidth / 1080, window.innerHeight / L.h))
     resize()
     window.addEventListener("resize", resize)
     return () => window.removeEventListener("resize", resize)
@@ -393,7 +400,7 @@ export function ReelCut() {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black">
-      <div data-reel="" className="dark relative shrink-0 overflow-hidden" style={{ width: 1080, height: 1920, transform: `scale(${fit_})` }}>
+      <div data-reel="" className="dark relative shrink-0 overflow-hidden" style={{ width: 1080, height: L.h, transform: `scale(${fit_})` }}>
         {scene}
         <Grain />
       </div>

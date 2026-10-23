@@ -6,8 +6,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
-/** The 9:16 reel cut with the reel-edit skill; rendered through launch-kit/reel-edit/engine.html. */
-export default function ReelCutPage() {
+/** The reel cut with the reel-edit skill: 9:16, or 4:5 for the X feed with ?shape=45. */
+export default async function ReelCutPage({ searchParams }: { searchParams: Promise<{ shape?: string }> }) {
+  const { shape } = await searchParams
   return (
     <>
       {/* Frames are a function of t alone, so components' own transitions are off. */}
@@ -15,7 +16,7 @@ export default function ReelCutPage() {
 [data-reel] .split-flap-top, [data-reel] .split-flap-bottom { display: none !important; }
 [data-reel] .split-flap-fade { display: block !important; }
 nextjs-portal { display: none !important; }`}</style>
-      <ReelCut />
+      <ReelCut feed={shape === "45"} />
     </>
   )
 }
