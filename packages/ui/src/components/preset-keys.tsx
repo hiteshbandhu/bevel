@@ -17,13 +17,13 @@ import { useBevelFeedback } from "@workspace/ui/lib/feedback"
 type Size = "sm" | "md"
 
 const bed =
-  "bevel-recessed inline-flex max-w-full items-stretch gap-(--preset-keys-gap) overflow-x-auto rounded-(--bevel-radius-sm) p-(--preset-keys-inset) outline-none"
+  "bevel-recessed inline-flex max-w-full items-stretch gap-(--preset-keys-gap) overflow-x-auto rounded-(--bevel-radius-sm) p-(--preset-keys-inset) focus-visible:outline-none"
 
 const key = cn(
-  "bevel-raised group/key inline-flex h-(--preset-keys-height) shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-(--preset-keys-key-radius) px-(--preset-keys-pad) text-(length:--preset-keys-text) font-medium whitespace-nowrap text-(--preset-keys-print) outline-none select-none",
+  "bevel-raised group/key inline-flex h-(--preset-keys-height) shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-(--preset-keys-key-radius) px-(--preset-keys-pad) text-(length:--preset-keys-text) font-medium whitespace-nowrap text-(--preset-keys-print) select-none",
   // Popping up: released by the next key, it springs back.
   "transition-[translate] duration-(--bevel-duration-move) ease-(--bevel-ease-spring) motion-reduce:transition-none",
-  "focus-visible:ring-2 focus-visible:ring-(--preset-keys-focus) focus-visible:ring-inset",
+  "outline-none focus-visible:ring-2 focus-visible:ring-(--preset-keys-focus) focus-visible:ring-inset",
   "data-disabled:cursor-not-allowed data-disabled:opacity-50",
   "[&_svg]:size-3.5 [&_svg]:shrink-0"
 )

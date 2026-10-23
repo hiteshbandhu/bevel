@@ -22,8 +22,8 @@ function LatchCheckbox({ className, onCheckedChange, ...props }: CheckboxPrimiti
         onCheckedChange?.(checked, details)
       }}
       className={cn(
-        "group/latch bevel-recessed inline-flex size-(--latch-checkbox-size) shrink-0 cursor-pointer items-start justify-center rounded-(--bevel-radius-xs) pt-px outline-none",
-        "focus-visible:ring-2 focus-visible:ring-(--latch-checkbox-focus) focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "group/latch bevel-recessed inline-flex size-(--latch-checkbox-size) shrink-0 cursor-pointer items-start justify-center rounded-(--bevel-radius-xs) pt-px",
+        "outline-none focus-visible:ring-2 focus-visible:ring-(--latch-checkbox-focus) focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "data-disabled:cursor-not-allowed data-disabled:opacity-60",
         "in-data-[slot=latch-checkbox-field]:row-span-2 in-data-[slot=latch-checkbox-field]:mt-px",
         className

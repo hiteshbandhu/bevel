@@ -7,6 +7,7 @@
 //
 // Writes <outDir>/<slug>.tsx, <outDir>/<slug>.demo.tsx and a package.json the
 // 21st CLI reads to check dependencies.
+import { existsSync } from "node:fs"
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
 import postcss, { type AtRule } from "postcss"
@@ -39,7 +40,10 @@ await visit(entry)
 // The demo may use other Bevel modules too (a keycard demo shows a payment
 // card): those join the bundle and keep their exports, so the demo can import
 // everything from the one file.
-const demoSource = await readFile(path.join(root, "apps/web/components/demos", component.examples[0]!.file), "utf8")
+// A cover demo in apps/web/21st-demos wins: 21st photographs the demo on a wide
+// canvas, so it should be one bounded object, not a full-width form.
+const coverDemo = path.join(root, "apps/web/21st-demos", `${slug}.tsx`)
+const demoSource = await readFile(existsSync(coverDemo) ? coverDemo : path.join(root, "apps/web/components/demos", component.examples[0]!.file), "utf8")
 const exported = new Set([entry])
 for (const [, dir, name] of demoSource.matchAll(workspaceImport)) {
   const file = `${dir}/${name}${dir === "lib" ? ".ts" : ".tsx"}`
@@ -162,7 +166,7 @@ if (typeof document !== "undefined" && !document.getElementById(BEVEL_STYLE_ID))
 `
 const file = `${header}\n${[...npmImports].join("\n")}\n${styleInjection}\n${code}\n`
 
-// The demo: the catalog's first example, importing everything from the bundle.
+// The demo (the cover demo, else the catalog's first example), importing everything from the bundle.
 const demo = demoSource.replace(/"@workspace\/ui\/(components|lib)\/[\w-]+"/g, `"./${slug}"`)
 // 21st's preview imports each demo as: import Demo from "./demos/<slug>"
 const demoName = demo.match(/export function (\w+)/)?.[1]

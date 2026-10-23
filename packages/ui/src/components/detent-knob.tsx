@@ -136,7 +136,7 @@ function DetentKnob({
           onPointerMove={(event) => {
             if (event.currentTarget.hasPointerCapture(event.pointerId)) fromPointer(event)
           }}
-          className="group size-32 touch-none rounded-full outline-none"
+          className="group size-32 touch-none rounded-full focus-visible:outline-none" // the face below draws the focus ring
           {...props}
         >
           <div

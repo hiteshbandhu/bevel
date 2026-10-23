@@ -129,10 +129,10 @@ function MeterButton({ className, ...props }: ButtonPrimitive.Props) {
     <ButtonPrimitive
       data-slot="meter-button"
       className={cn(
-        "bevel-raised inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-(--bevel-radius-sm) px-3 text-sm font-semibold text-(--bevel-ivory-foreground) outline-none select-none",
+        "bevel-raised inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-(--bevel-radius-sm) px-3 text-sm font-semibold text-(--bevel-ivory-foreground) select-none",
         "transition-[translate,box-shadow] duration-(--bevel-duration-press) ease-(--bevel-ease-out) motion-reduce:transition-none",
         "active:translate-y-0.5 active:bevel-pressed data-pressed:translate-y-0.5 data-pressed:bevel-pressed",
-        "focus-visible:ring-3 focus-visible:ring-(--meter-foreground)/40",
+        "outline-none focus-visible:ring-3 focus-visible:ring-(--meter-foreground)/40",
         "data-disabled:cursor-not-allowed data-disabled:opacity-60",
         "forced-colors:border forced-colors:border-[ButtonText]",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",

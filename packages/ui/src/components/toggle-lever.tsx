@@ -28,8 +28,8 @@ function ToggleLever({ className, size = "md", onCheckedChange, ...props }: Togg
         onCheckedChange?.(checked, details)
       }}
       className={cn(
-        "bevel-metal inline-flex h-6 shrink-0 cursor-pointer items-center gap-1.5 rounded-(--bevel-radius-xs) px-1.5 outline-none select-none",
-        "focus-visible:ring-2 focus-visible:ring-(--toggle-lever-focus) focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "bevel-metal inline-flex h-6 shrink-0 cursor-pointer items-center gap-1.5 rounded-(--bevel-radius-xs) px-1.5 select-none",
+        "outline-none focus-visible:ring-2 focus-visible:ring-(--toggle-lever-focus) focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "data-disabled:cursor-not-allowed data-disabled:opacity-60",
         "in-data-[slot=toggle-lever-field]:col-start-2 in-data-[slot=toggle-lever-field]:row-span-2 in-data-[slot=toggle-lever-field]:row-start-1 in-data-[slot=toggle-lever-field]:self-center",
         className

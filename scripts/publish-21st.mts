@@ -2,6 +2,7 @@
 // submits each to the catalog. Needs `21st login`. Skips anything already
 // published; reuses a component's draft if one was prepared earlier.
 //   node scripts/publish-21st.mts <slug>...
+//   node scripts/publish-21st.mts --revise <slug>...   new version of a published one, resubmitted for review
 import { execFile } from "node:child_process"
 import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs"
 import path from "node:path"
@@ -23,12 +24,15 @@ const short = (text: string, max = 220) => {
   return out || `${text.slice(0, text.lastIndexOf(" ", max - 1))}…`
 }
 
-for (const slug of process.argv.slice(2)) {
+const revise = process.argv.includes("--revise")
+
+for (const slug of process.argv.slice(2).filter((a) => !a.startsWith("--"))) {
   const dir = path.join(root, ".21st", slug)
   const c = components.find((x) => x.slug === slug)
   if (!c) throw new Error(`no component "${slug}"`)
   const state = path.join(dir, "published.json")
-  if (existsSync(state)) {
+  const published = existsSync(state) ? (JSON.parse(readFileSync(state, "utf8")) as { component_id: number }) : undefined
+  if (published && !revise) {
     console.log(`skip ${slug}: already published`)
     continue
   }
@@ -50,7 +54,7 @@ for (const slug of process.argv.slice(2)) {
     "--to", "bevel", "--name", c.name, "--slug", slug,
     "--tags", ["skeuomorphic", category, "shadcn", "base-ui", "tactile"].join(","),
     "--description", description, "--visibility", "published", "--auto", "--no-open", "--json",
-    ...(prepared ? ["--draft", `draft:${prepared}`] : []),
+    ...(published ? ["--component", `component:${published.component_id}`] : prepared ? ["--draft", `draft:${prepared}`] : []),
   ]
   try {
     // The CLI has hung for half an hour on a publish; give up on one after five minutes.
@@ -58,7 +62,8 @@ for (const slug of process.argv.slice(2)) {
     const result = JSON.parse(stdout.trim().split("\n").pop()!)
     if (result.state !== "published") throw new Error(stdout.slice(-400))
     writeFileSync(state, JSON.stringify(result, null, 2))
-    const submit = await run("npx", [...cli, "submit", slug], { cwd: dir })
+    // A component sent back with "needs changes" goes back through resubmit, not submit.
+    const submit = await run("npx", [...cli, published ? "resubmit" : "submit", slug], { cwd: dir })
     console.log(`ok   ${slug}: ${result.url} (${submit.stdout.trim()})`)
   } catch (e) {
     const err = e as { code?: number; stdout?: string; stderr?: string; message: string }
