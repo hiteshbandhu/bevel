@@ -160,9 +160,9 @@ function GuardedSwitchControl({ className }: { className?: string }) {
           setOpen(!open)
         }}
         className={cn(
-          "guarded-switch-cover absolute inset-x-0 top-0 z-10 h-24 origin-top cursor-pointer rounded-(--bevel-radius-sm) outline-none",
+          "guarded-switch-cover absolute inset-x-0 top-0 z-10 h-24 origin-top cursor-pointer rounded-(--bevel-radius-sm)",
           "transition-[rotate] duration-(--bevel-duration-move) ease-(--bevel-ease-out) motion-reduce:transition-none",
-          "focus-visible:ring-3 focus-visible:ring-(--guarded-switch-on)/60 disabled:cursor-not-allowed",
+          "outline-none focus-visible:ring-3 focus-visible:ring-(--guarded-switch-on)/60 disabled:cursor-not-allowed",
           open ? "[rotate:x_var(--guarded-switch-open-angle)]" : "[rotate:x_0deg]"
         )}
       >

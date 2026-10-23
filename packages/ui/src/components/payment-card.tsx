@@ -24,8 +24,8 @@ function PaymentCard({ className, render, tone = "graphite", ...props }: Payment
         "data-slot": "payment-card",
         "data-tone": tone,
         className: cn(
-          "bevel-plastic relative flex aspect-[85.6/53.98] w-full items-start gap-2 overflow-hidden rounded-(--bevel-radius-md) px-3 pt-1 text-(--payment-card-foreground) outline-none select-none",
-          "focus-visible:ring-2 focus-visible:ring-(--payment-card-foreground)/80",
+          "bevel-plastic relative flex aspect-[85.6/53.98] w-full items-start gap-2 overflow-hidden rounded-(--bevel-radius-md) px-3 pt-1 text-(--payment-card-foreground) select-none",
+          "outline-none focus-visible:ring-2 focus-visible:ring-(--payment-card-foreground)/80",
           "data-disabled:cursor-not-allowed data-disabled:brightness-75 data-disabled:saturate-50",
           "forced-colors:border forced-colors:border-[CanvasText]",
           className

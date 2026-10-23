@@ -116,8 +116,8 @@ function AnnunciatorTile({ className, id, active, tone = "amber", children, onCl
         if (isNew) acknowledge(id)
       }}
       className={cn(
-        "relative flex min-h-14 items-center justify-center overflow-hidden rounded-(--bevel-radius-xs) bg-(--annunciator-off) px-2 py-2 text-center text-xs leading-tight font-bold tracking-(--bevel-tracking-label) text-(--annunciator-off-foreground) uppercase outline-none",
-        "focus-visible:ring-3 focus-visible:ring-(--annunciator-white)/60",
+        "relative flex min-h-14 items-center justify-center overflow-hidden rounded-(--bevel-radius-xs) bg-(--annunciator-off) px-2 py-2 text-center text-xs leading-tight font-bold tracking-(--bevel-tracking-label) text-(--annunciator-off-foreground) uppercase",
+        "outline-none focus-visible:ring-3 focus-visible:ring-(--annunciator-white)/60",
         className
       )}
       {...props}
@@ -157,9 +157,9 @@ function AnnunciatorAcknowledge({ className, children, onClick, ...props }: Butt
         acknowledge()
       }}
       className={cn(
-        "bevel-raised h-10 self-end rounded-(--bevel-radius-sm) px-4 text-sm font-semibold text-(--annunciator-white) outline-none [--bevel-material:var(--annunciator-off)]",
+        "bevel-raised h-10 self-end rounded-(--bevel-radius-sm) px-4 text-sm font-semibold text-(--annunciator-white) [--bevel-material:var(--annunciator-off)]",
         "transition-[translate,box-shadow] duration-(--bevel-duration-press) ease-(--bevel-ease-out) active:translate-y-0.5 active:bevel-pressed motion-reduce:transition-none",
-        "focus-visible:ring-3 focus-visible:ring-(--annunciator-white)/60 data-disabled:cursor-not-allowed data-disabled:opacity-50",
+        "outline-none focus-visible:ring-3 focus-visible:ring-(--annunciator-white)/60 data-disabled:cursor-not-allowed data-disabled:opacity-50",
         className
       )}
       {...props}

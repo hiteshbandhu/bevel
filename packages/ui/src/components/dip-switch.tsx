@@ -149,8 +149,8 @@ function DipSwitchToggle({ className, value, children, disabled: disabledProp, .
           set(value, next)
         }}
         className={cn(
-          "bevel-recessed relative flex h-(--dip-switch-slot-height) w-(--dip-switch-slot-width) cursor-pointer justify-center rounded-(--bevel-radius-xs) py-0.5 outline-none",
-          "focus-visible:ring-2 focus-visible:ring-(--dip-switch-focus) focus-visible:ring-offset-1 focus-visible:ring-offset-(--dip-switch-body) data-disabled:cursor-not-allowed",
+          "bevel-recessed relative flex h-(--dip-switch-slot-height) w-(--dip-switch-slot-width) cursor-pointer justify-center rounded-(--bevel-radius-xs) py-0.5",
+          "outline-none focus-visible:ring-2 focus-visible:ring-(--dip-switch-focus) focus-visible:ring-offset-1 focus-visible:ring-offset-(--dip-switch-body) data-disabled:cursor-not-allowed",
           className
         )}
         {...props}
