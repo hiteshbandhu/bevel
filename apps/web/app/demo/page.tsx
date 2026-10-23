@@ -11,7 +11,7 @@ const description =
 export const metadata: Metadata = {
   title: "Demos",
   description,
-  ...preview({ title: "Demos – Bevel", description, image: "bevel.jpg", path: "/demo" }),
+  ...preview({ title: "Demos – Bevel", description, image: "page-demos.jpg", path: "/demo" }),
 }
 
 const nameOf = (slug: string) => components.find((c) => c.slug === slug)?.name ?? slug
