@@ -34,7 +34,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ pat
   // Always our own site, never the request's Host header: a forged Host would
   // otherwise make this fetch, and cache, someone else's page.
   const url = new URL(`/${path}`, siteUrl)
-  const res = await fetch(url, { next: { revalidate: 3600 } })
+  // Not cached here: a page's whole HTML is many 8 KB Data Cache units per
+  // write. The page itself is static and CDN-cached, and so is this response.
+  const res = await fetch(url, { cache: "no-store" })
   if (!res.ok) return new Response("Not found", { status: 404 })
   const html = await res.text()
   const article = html.match(/<article[\s\S]*<\/article>/)?.[0]
@@ -44,7 +46,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ pat
   return new Response(`${markdown}\n\nSource: ${url.href}\n`, {
     headers: {
       "Content-Type": "text/markdown; charset=utf-8",
-      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
     },
   })
 }
