@@ -2,6 +2,9 @@ import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@workspace/ui"],
+  experimental: {
+    agentUpgrade: "security",
+  },
   async rewrites() {
     return {
       // A component's page URL plus ".md" is its Markdown, for LLMs (see lib/llms.ts).
